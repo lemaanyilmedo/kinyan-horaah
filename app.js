@@ -7,8 +7,22 @@ let firebaseConfig = {
     appId: "YOUR_APP_ID"
 };
 
-firebase.initializeApp(firebaseConfig);
-const db = firebase.firestore();
+let db = null;
+let firebaseEnabled = false;
+
+try {
+    if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
+        firebase.initializeApp(firebaseConfig);
+        db = firebase.firestore();
+        firebaseEnabled = true;
+        console.log('Firebase initialized successfully');
+    } else {
+        console.log('Firebase not configured - running in local mode');
+    }
+} catch (error) {
+    console.log('Firebase initialization failed - running in local mode:', error);
+    firebaseEnabled = false;
+}
 
 let currentQuiz = null;
 let currentQuestionIndex = 0;
@@ -51,20 +65,24 @@ async function startQuiz(quizType) {
 }
 
 async function loadQuizData(quizType) {
-    try {
-        const quizDoc = await db.collection('quizzes').doc(quizType).get();
-        if (quizDoc.exists) {
-            quizData = quizDoc.data();
-        } else {
+    if (firebaseEnabled && db) {
+        try {
+            const quizDoc = await db.collection('quizzes').doc(quizType).get();
+            if (quizDoc.exists) {
+                quizData = quizDoc.data();
+            } else {
+                quizData = getDefaultQuizData(quizType);
+            }
+        } catch (error) {
+            console.error('Error loading quiz from Firebase:', error);
             quizData = getDefaultQuizData(quizType);
         }
-        
-        const topicName = quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
-        document.getElementById('quiz-topic').textContent = `נושא: ${topicName}`;
-    } catch (error) {
-        console.error('Error loading quiz:', error);
+    } else {
         quizData = getDefaultQuizData(quizType);
     }
+    
+    const topicName = quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
+    document.getElementById('quiz-topic').textContent = `נושא: ${topicName}`;
 }
 
 function getDefaultQuizData(quizType) {
@@ -181,23 +199,26 @@ function getDefaultQuizData(quizType) {
 }
 
 async function createNewAttempt() {
-    try {
-        const attemptData = {
-            user_phone: userData.phone || 'anonymous',
-            quiz_type: currentQuiz,
-            status: 'active',
-            current_q_index: 0,
-            answers: {},
-            final_score: 0,
-            selected_benefit: null,
-            created_at: firebase.firestore.FieldValue.serverTimestamp()
-        };
-        
-        const docRef = await db.collection('attempts').add(attemptData);
-        currentAttemptId = docRef.id;
-    } catch (error) {
-        console.error('Error creating attempt:', error);
-        currentAttemptId = 'local_' + Date.now();
+    currentAttemptId = 'local_' + Date.now();
+    
+    if (firebaseEnabled && db) {
+        try {
+            const attemptData = {
+                user_phone: userData.phone || 'anonymous',
+                quiz_type: currentQuiz,
+                status: 'active',
+                current_q_index: 0,
+                answers: {},
+                final_score: 0,
+                selected_benefit: null,
+                created_at: firebase.firestore.FieldValue.serverTimestamp()
+            };
+            
+            const docRef = await db.collection('attempts').add(attemptData);
+            currentAttemptId = docRef.id;
+        } catch (error) {
+            console.error('Error creating attempt in Firebase:', error);
+        }
     }
 }
 
@@ -259,7 +280,7 @@ async function selectAnswer(answerIndex) {
 }
 
 async function updateAttemptInDB() {
-    if (!currentAttemptId || currentAttemptId.startsWith('local_')) return;
+    if (!firebaseEnabled || !db || !currentAttemptId || currentAttemptId.startsWith('local_')) return;
     
     try {
         await db.collection('attempts').doc(currentAttemptId).update({
@@ -291,7 +312,7 @@ document.getElementById('pause-form').addEventListener('submit', async (e) => {
     
     await saveUserData();
     
-    if (currentAttemptId && !currentAttemptId.startsWith('local_')) {
+    if (firebaseEnabled && db && currentAttemptId && !currentAttemptId.startsWith('local_')) {
         try {
             await db.collection('attempts').doc(currentAttemptId).update({
                 user_phone: contact,
@@ -311,7 +332,7 @@ document.getElementById('pause-form').addEventListener('submit', async (e) => {
 });
 
 async function saveUserData() {
-    if (!userData.phone) return;
+    if (!userData.phone || !firebaseEnabled || !db) return;
     
     try {
         await db.collection('users').doc(userData.phone).set({
@@ -326,6 +347,13 @@ async function saveUserData() {
 }
 
 async function resumeQuizFromPause(phone, quizType) {
+    if (!firebaseEnabled || !db) {
+        await loadQuizData(quizType);
+        await createNewAttempt();
+        showQuestion();
+        return;
+    }
+    
     try {
         const attemptsQuery = await db.collection('attempts')
             .where('user_phone', '==', phone)
@@ -345,10 +373,12 @@ async function resumeQuizFromPause(phone, quizType) {
             
             await loadQuizData(quizType);
             
-            await db.collection('attempts').doc(currentAttemptId).update({
-                status: 'active',
-                updated_at: firebase.firestore.FieldValue.serverTimestamp()
-            });
+            if (firebaseEnabled && db) {
+                await db.collection('attempts').doc(currentAttemptId).update({
+                    status: 'active',
+                    updated_at: firebase.firestore.FieldValue.serverTimestamp()
+                });
+            }
             
             showQuestion();
         } else {
@@ -375,7 +405,7 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     
     const score = calculateScore();
     
-    if (currentAttemptId && !currentAttemptId.startsWith('local_')) {
+    if (firebaseEnabled && db && currentAttemptId && !currentAttemptId.startsWith('local_')) {
         try {
             await db.collection('attempts').doc(currentAttemptId).update({
                 user_phone: userData.phone,
@@ -410,6 +440,8 @@ function calculateScore() {
 }
 
 async function updateGlobalStats(score) {
+    if (!firebaseEnabled || !db) return;
+    
     try {
         const statsRef = db.collection('stats').doc('global_stats');
         const fieldName = currentQuiz === 'shabbat' ? 'total_shabbat_takers' : 'total_issur_heter_takers';
@@ -497,7 +529,7 @@ document.getElementById('benefit-form').addEventListener('submit', async (e) => 
     
     const selectedBenefit = document.querySelector('input[name="benefit"]:checked').value;
     
-    if (currentAttemptId && !currentAttemptId.startsWith('local_')) {
+    if (firebaseEnabled && db && currentAttemptId && !currentAttemptId.startsWith('local_')) {
         try {
             await db.collection('attempts').doc(currentAttemptId).update({
                 selected_benefit: selectedBenefit,
