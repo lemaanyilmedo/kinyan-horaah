@@ -935,10 +935,33 @@ async function downloadPDF() {
             heightLeft -= pageHeight;
         }
         
-        const fileName = `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`;
-        pdf.save(fileName);
+        const pdfBlob = pdf.output('blob');
+        const pdfBase64 = pdf.output('dataurlstring');
+        const pdfUrl = URL.createObjectURL(pdfBlob);
         
-        alert('הקובץ הורד בהצלחה! הקובץ נשמר במכשיר שלך.');
+        window.open(pdfUrl, '_blank');
+        
+        const pdfWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
+        
+        fetch(pdfWebhookURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                email: userData.email,
+                name: userData.name,
+                phone: userData.phone,
+                quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
+                score: score,
+                pdf_base64: pdfBase64,
+                pdf_filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
+            })
+        }).catch(error => {
+            console.error('Error sending PDF to email:', error);
+        });
+        
+        alert('הקובץ נפתח בחלון חדש וגם נשלח למייל שלך!');
     } catch (error) {
         console.error('Error generating PDF:', error);
         alert('אירעה שגיאה ביצירת הקובץ. אנא נסה שוב.');
