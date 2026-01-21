@@ -1,10 +1,11 @@
 let firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_PROJECT.firebaseapp.com",
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_PROJECT.appspot.com",
-    messagingSenderId: "YOUR_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyC1g2vKVbO9hQReaNJ2R3CaLX_0Lc3HwCQ",
+    authDomain: "kinyan-26210.firebaseapp.com",
+    projectId: "kinyan-26210",
+    storageBucket: "kinyan-26210.firebasestorage.app",
+    messagingSenderId: "443697566818",
+    appId: "1:443697566818:web:ed548251d67df16e6bed3b",
+    measurementId: "G-HM09TZR0HW"
 };
 
 let db = null;
