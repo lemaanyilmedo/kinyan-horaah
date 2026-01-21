@@ -861,128 +861,99 @@ async function sendToCRM(benefit) {
 
 async function downloadPDF() {
     try {
-        const pdfContent = document.getElementById('pdf-content');
         const score = calculateScore();
+        const quizTitle = currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
         
-        document.getElementById('pdf-user-info').innerHTML = `
-            <div style="border-bottom: 2px solid #D4B182; padding-bottom: 15px;">
-                <p style="font-size: 18px; color: #32373c;"><strong>שם:</strong> ${userData.name}</p>
-                <p style="font-size: 18px; color: #32373c;"><strong>טלפון:</strong> ${userData.phone}</p>
-                <p style="font-size: 18px; color: #32373c;"><strong>מייל:</strong> ${userData.email}</p>
-            </div>
-        `;
-        
-        document.getElementById('pdf-score').innerHTML = `
-            <div style="background: linear-gradient(135deg, #b89968, #D4B182); padding: 30px; border-radius: 12px; text-align: center;">
-                <h2 style="color: white; font-size: 48px; margin: 0;">${score}%</h2>
-                <p style="color: white; font-size: 20px; margin: 10px 0 0 0;">הציון שלך</p>
-            </div>
-        `;
-        
-        let questionsHTML = '<h3 style="color: #D4B182; font-size: 24px; margin-bottom: 20px;">שאלות ותשובות:</h3>';
-        
+        let questionsHTML = '';
         quizData.questions.forEach((q, index) => {
             const userAnswer = userAnswers[`q${index}`];
             const isCorrect = userAnswer === q.correctIndex;
+            const statusIcon = isCorrect ? '✓' : '✗';
+            const statusColor = isCorrect ? '#22c55e' : '#ef4444';
             
             questionsHTML += `
-                <div style="margin-bottom: 30px; padding: 20px; background: #fdfbf8; border-right: 4px solid ${isCorrect ? '#22c55e' : '#ef4444'}; border-radius: 8px;">
-                    <h4 style="color: #32373c; font-size: 18px; margin-bottom: 10px;">שאלה ${index + 1}:</h4>
-                    <p style="color: #32373c; font-size: 16px; margin-bottom: 15px;">${q.question}</p>
+                <div style="margin-bottom: 25px; padding: 20px; background: #fdfbf8; border-right: 5px solid ${statusColor}; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <span style="font-size: 28px; color: ${statusColor}; margin-left: 10px;">${statusIcon}</span>
+                        <h4 style="color: #32373c; font-size: 20px; margin: 0; font-weight: 700;">שאלה ${index + 1}</h4>
+                    </div>
+                    <p style="color: #32373c; font-size: 17px; line-height: 1.7; margin-bottom: 18px; font-weight: 500;">${q.question}</p>
                     
-                    <p style="color: #32373c; margin-bottom: 5px;"><strong>התשובה שלך:</strong> ${q.options[userAnswer] || 'לא נענתה'}</p>
-                    <p style="color: #22c55e; margin-bottom: 5px;"><strong>התשובה הנכונה:</strong> ${q.options[q.correctIndex]}</p>
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <p style="color: #32373c; margin: 0 0 8px 0; font-size: 16px;"><strong style="color: #D4B182;">התשובה שלך:</strong> ${q.options[userAnswer] || 'לא נענתה'}</p>
+                        <p style="color: #22c55e; margin: 0; font-size: 16px;"><strong style="color: #D4B182;">התשובה הנכונה:</strong> ${q.options[q.correctIndex]}</p>
+                    </div>
                     
-                    <div style="margin-top: 15px; padding: 15px; background: white; border-radius: 6px;">
-                        <p style="color: #32373c; font-size: 14px; margin: 0;"><strong>הסבר:</strong> ${q.explanation}</p>
+                    <div style="margin-top: 15px; padding: 18px; background: linear-gradient(135deg, rgba(212, 177, 130, 0.08), rgba(212, 177, 130, 0.15)); border-radius: 8px; border: 1px solid rgba(212, 177, 130, 0.3);">
+                        <p style="color: #32373c; font-size: 15px; line-height: 1.6; margin: 0;"><strong style="color: #b89968;">💡 הסבר:</strong> ${q.explanation}</p>
                     </div>
                 </div>
             `;
         });
         
-        document.getElementById('pdf-questions').innerHTML = questionsHTML;
+        const htmlEmail = `
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תוצאות אתגר הפסיקה - קניין הוראה</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #fdfbf8 0%, #f5f0e8 100%); direction: rtl;">
+    <div style="max-width: 650px; margin: 0 auto; padding: 30px 20px;">
+        <div style="background: linear-gradient(135deg, #b89968, #D4B182, #e8d4b8); padding: 40px 30px; border-radius: 20px 20px 0 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h1 style="color: white; font-size: 42px; margin: 0 0 10px 0; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">קניין הוראה</h1>
+            <p style="color: white; font-size: 22px; margin: 0; font-weight: 600; opacity: 0.95;">תוצאות אתגר הפסיקה שלך</p>
+        </div>
         
-        pdfContent.classList.remove('hidden');
+        <div style="background: white; padding: 35px 30px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+            <div style="border-bottom: 3px solid #D4B182; padding-bottom: 20px; margin-bottom: 25px;">
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">שם:</strong> ${userData.name}</p>
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">טלפון:</strong> ${userData.phone}</p>
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">מייל:</strong> ${userData.email}</p>
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">נושא:</strong> ${quizTitle}</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #b89968, #D4B182); padding: 35px; border-radius: 15px; text-align: center; margin-bottom: 30px; box-shadow: 0 6px 20px rgba(212, 177, 130, 0.4);">
+                <div style="color: white; font-size: 64px; font-weight: 800; margin: 0 0 8px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">${score}%</div>
+                <p style="color: white; font-size: 24px; margin: 0; font-weight: 600; opacity: 0.95;">הציון שלך</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; text-align: center;">
+                <h2 style="color: #D4B182; font-size: 32px; margin: 0 0 10px 0; font-weight: 700;">📚 שאלות ותשובות</h2>
+                <p style="color: #32373c; font-size: 17px; margin: 0; opacity: 0.8;">סקירה מפורטת של הפסיקות שלך</p>
+            </div>
+            
+            ${questionsHTML}
+            
+            <div style="margin-top: 35px; padding-top: 25px; border-top: 2px solid #e8d4b8; text-align: center;">
+                <p style="color: #b89968; font-size: 18px; margin: 0 0 15px 0; font-weight: 600;">🌟 מעוניין להעמיק בלימוד הוראה?</p>
+                <p style="color: #32373c; font-size: 16px; line-height: 1.6; margin: 0;">צור קשר עם נציגינו למימוש ההטבה שבחרת והצטרפות למסלולי ההכשרה שלנו.</p>
+            </div>
+        </div>
         
-        const canvas = await html2canvas(pdfContent, {
-            scale: 1,
-            useCORS: true,
-            logging: false,
-            backgroundColor: '#ffffff',
-            allowTaint: false,
-            imageTimeout: 0
-        });
+        <div style="text-align: center; margin-top: 25px; padding: 20px;">
+            <p style="color: #b89968; font-size: 15px; margin: 0; opacity: 0.8;">© קניין הוראה - הפוסק שבך</p>
+        </div>
+    </div>
+</body>
+</html>
+        `;
         
-        pdfContent.classList.add('hidden');
+        const emailWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
         
-        const imgData = canvas.toDataURL('image/jpeg', 0.7);
-        const { jsPDF } = window.jspdf;
-        const pdf = new jsPDF({
-            orientation: 'portrait',
-            unit: 'mm',
-            format: 'a4',
-            compress: true
-        });
+        const payload = {
+            "to": userData.email,
+            "subject": `תוצאות אתגר הפסיקה שלך - ${quizTitle} - קניין הוראה`,
+            "html": htmlEmail
+        };
         
-        const imgWidth = 210;
-        const pageHeight = 297;
-        const imgHeight = (canvas.height * imgWidth) / canvas.width;
-        let heightLeft = imgHeight;
-        let position = 0;
+        console.log('📤 Sending HTML email to webhook...');
+        console.log('Webhook URL:', emailWebhookURL);
+        console.log('Recipient:', userData.email);
+        console.log('Subject:', payload.subject);
         
-        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-        heightLeft -= pageHeight;
-        
-        while (heightLeft >= 0) {
-            position = heightLeft - imgHeight;
-            pdf.addPage();
-            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
-            heightLeft -= pageHeight;
-        }
-        
-        const pdfBlob = pdf.output('blob');
-        const pdfDataURIRaw = pdf.output('datauristring');
-        // ניקוי Data URI - הסרת filename=generated.pdf; שמקלקל את הפורמט
-        const pdfDataURI = pdfDataURIRaw.replace(/;filename=[^;]+;/, ';');
-        const pdfBase64Clean = pdfDataURI.split(',')[1]; // רק ה-base64 הנקי
-        const pdfUrl = URL.createObjectURL(pdfBlob);
-        
-        console.log('📄 PDF created successfully');
-        console.log('📧 User email:', userData.email);
-        console.log('📦 PDF Base64 length:', pdfBase64Clean.length, 'characters');
-        console.log('🔍 First 100 chars of Base64:', pdfBase64Clean.substring(0, 100));
-        console.log('🔍 Last 100 chars of Base64:', pdfBase64Clean.substring(pdfBase64Clean.length - 100));
-        
-        window.open(pdfUrl, '_blank');
-        console.log('✅ PDF opened in new tab');
-        
-        const pdfWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
-        
-        const payload = [
-            {
-                "to": [userData.email],
-                "subject": "מצורף דוח אתגר הפסיקה שלך",
-                "bodyType": "collection",
-                "attachments": [
-                    {
-                        "data": pdfBase64Clean,
-                        "filename": `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
-                    }
-                ]
-            }
-        ];
-        
-        console.log('📤 Sending PDF to webhook...');
-        console.log('Webhook URL:', pdfWebhookURL);
-        console.log('Payload:', {
-            to: payload[0].to,
-            subject: payload[0].subject,
-            bodyType: payload[0].bodyType,
-            filename: payload[0].attachments[0].filename,
-            data_length: payload[0].attachments[0].data.length
-        });
-        
-        fetch(pdfWebhookURL, {
+        fetch(emailWebhookURL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -996,17 +967,18 @@ async function downloadPDF() {
         })
         .then(data => {
             console.log('✅ Webhook response data:', data);
-            console.log('✅ PDF sent to email successfully!');
+            console.log('✅ HTML email sent successfully!');
+            alert('דוח התוצאות נשלח בהצלחה למייל שלך! 📧');
         })
         .catch(error => {
-            console.error('❌ Error sending PDF to email:', error);
+            console.error('❌ Error sending email:', error);
             console.error('Error details:', error.message);
+            alert('אירעה שגיאה בשליחת המייל. אנא נסה שוב.');
         });
         
-        alert('הקובץ נפתח בחלון חדש וגם נשלח למייל שלך!');
     } catch (error) {
-        console.error('Error generating PDF:', error);
-        alert('אירעה שגיאה ביצירת הקובץ. אנא נסה שוב.');
+        console.error('Error sending email:', error);
+        alert('אירעה שגיאה בשליחת המייל. אנא נסה שוב.');
     }
 }
 
