@@ -816,6 +816,8 @@ document.getElementById('benefit-form').addEventListener('submit', async (e) => 
     
     document.getElementById('benefit-form').classList.add('hidden');
     document.getElementById('final-actions').classList.remove('hidden');
+    
+    await downloadPDF();
 });
 
 async function sendToCRM(benefit) {
