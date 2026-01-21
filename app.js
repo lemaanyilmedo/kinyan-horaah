@@ -939,12 +939,13 @@ async function downloadPDF() {
         }
         
         const pdfBlob = pdf.output('blob');
-        const pdfBase64 = pdf.output('dataurlstring');
+        const pdfBase64Full = pdf.output('dataurlstring');
+        const pdfBase64Clean = pdfBase64Full.split(',')[1];
         const pdfUrl = URL.createObjectURL(pdfBlob);
         
         console.log('📄 PDF created successfully');
         console.log('📧 User email:', userData.email);
-        console.log('📦 PDF size (Base64):', pdfBase64.length, 'characters');
+        console.log('📦 PDF size (Base64):', pdfBase64Clean.length, 'characters');
         
         window.open(pdfUrl, '_blank');
         console.log('✅ PDF opened in new tab');
@@ -957,7 +958,7 @@ async function downloadPDF() {
             phone: userData.phone,
             quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
             score: score,
-            pdf_base64: pdfBase64,
+            pdf_base64: pdfBase64Clean,
             pdf_filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
         };
         
