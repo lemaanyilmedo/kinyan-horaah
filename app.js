@@ -903,20 +903,23 @@ async function downloadPDF() {
         pdfContent.classList.remove('hidden');
         
         const canvas = await html2canvas(pdfContent, {
-            scale: 2,
+            scale: 1,
             useCORS: true,
             logging: false,
-            backgroundColor: '#ffffff'
+            backgroundColor: '#ffffff',
+            allowTaint: false,
+            imageTimeout: 0
         });
         
         pdfContent.classList.add('hidden');
         
-        const imgData = canvas.toDataURL('image/png');
+        const imgData = canvas.toDataURL('image/jpeg', 0.7);
         const { jsPDF } = window.jspdf;
         const pdf = new jsPDF({
             orientation: 'portrait',
             unit: 'mm',
-            format: 'a4'
+            format: 'a4',
+            compress: true
         });
         
         const imgWidth = 210;
@@ -925,13 +928,13 @@ async function downloadPDF() {
         let heightLeft = imgHeight;
         let position = 0;
         
-        pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+        pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
         heightLeft -= pageHeight;
         
         while (heightLeft >= 0) {
             position = heightLeft - imgHeight;
             pdf.addPage();
-            pdf.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
+            pdf.addImage(imgData, 'JPEG', 0, position, imgWidth, imgHeight);
             heightLeft -= pageHeight;
         }
         
