@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Firebase Test</title>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+</head>
+<body>
+    <h1>Firebase Connection Test</h1>
+    <button onclick="testFirebase()">Test Firebase</button>
+    <div id="result"></div>
+
+    <script>
+        let firebaseConfig = {
+            apiKey: "AIzaSyC1g2vKVbO9hQReaNJ2R3CaLX_0Lc3HwCQ",
+            authDomain: "kinyan-26210.firebaseapp.com",
+            projectId: "kinyan-26210",
+            storageBucket: "kinyan-26210.firebasestorage.app",
+            messagingSenderId: "443697566818",
+            appId: "1:443697566818:web:ed548251d67df16e6bed3b",
+            measurementId: "G-HM09TZR0HW"
+        };
+
+        try {
+            firebase.initializeApp(firebaseConfig);
+            const db = firebase.firestore();
+            document.getElementById('result').innerHTML = '<p style="color: green;">Firebase initialized successfully!</p>';
+            
+            window.testFirebase = async function() {
+                try {
+                    await db.collection('test').add({
+                        message: 'Test from GitHub Pages',
+                        timestamp: new Date()
+                    });
+                    document.getElementById('result').innerHTML += '<p style="color: green;">Data saved successfully!</p>';
+                } catch (error) {
+                    document.getElementById('result').innerHTML += '<p style="color: red;">Error: ' + error.message + '</p>';
+                }
+            };
+        } catch (error) {
+            document.getElementById('result').innerHTML = '<p style="color: red;">Firebase init error: ' + error.message + '</p>';
+        }
+    </script>
+</body>
+</html>
