@@ -66,24 +66,22 @@ async function startQuiz(quizType) {
 }
 
 async function loadQuizData(quizType) {
+    quizData = getDefaultQuizData(quizType);
+    
+    const topicName = quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
+    document.getElementById('quiz-topic').textContent = `נושא: ${topicName}`;
+    
     if (firebaseEnabled && db) {
         try {
             const quizDoc = await db.collection('quizzes').doc(quizType).get();
             if (quizDoc.exists) {
                 quizData = quizDoc.data();
-            } else {
-                quizData = getDefaultQuizData(quizType);
+                console.log('Loaded quiz from Firebase');
             }
         } catch (error) {
-            console.error('Error loading quiz from Firebase:', error);
-            quizData = getDefaultQuizData(quizType);
+            console.log('Using default quiz data (Firebase unavailable)');
         }
-    } else {
-        quizData = getDefaultQuizData(quizType);
     }
-    
-    const topicName = quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
-    document.getElementById('quiz-topic').textContent = `נושא: ${topicName}`;
 }
 
 function getDefaultQuizData(quizType) {
