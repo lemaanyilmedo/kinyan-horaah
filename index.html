@@ -11,6 +11,21 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
+        .version-badge {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+    </style>
+    <style>
         :root {
             --gold: #D4B182;
             --dark-slate: #32373c;
@@ -515,6 +530,9 @@
     </style>
 </head>
 <body>
+    <!-- Version Badge -->
+    <div class="version-badge">גירסה 2</div>
+    
     <!-- Screen 1: Hero Album -->
     <div id="screen-lobby" class="hero-album">
         <div class="container mx-auto px-4">

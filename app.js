@@ -939,26 +939,56 @@ async function downloadPDF() {
         const pdfBase64 = pdf.output('dataurlstring');
         const pdfUrl = URL.createObjectURL(pdfBlob);
         
+        console.log('📄 PDF created successfully');
+        console.log('📧 User email:', userData.email);
+        console.log('📦 PDF size (Base64):', pdfBase64.length, 'characters');
+        
         window.open(pdfUrl, '_blank');
+        console.log('✅ PDF opened in new tab');
         
         const pdfWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
+        
+        const payload = {
+            email: userData.email,
+            name: userData.name,
+            phone: userData.phone,
+            quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
+            score: score,
+            pdf_base64: pdfBase64,
+            pdf_filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
+        };
+        
+        console.log('📤 Sending PDF to webhook...');
+        console.log('Webhook URL:', pdfWebhookURL);
+        console.log('Payload:', {
+            email: payload.email,
+            name: payload.name,
+            phone: payload.phone,
+            quiz_type: payload.quiz_type,
+            score: payload.score,
+            pdf_filename: payload.pdf_filename,
+            pdf_base64_length: payload.pdf_base64.length
+        });
         
         fetch(pdfWebhookURL, {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({
-                email: userData.email,
-                name: userData.name,
-                phone: userData.phone,
-                quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
-                score: score,
-                pdf_base64: pdfBase64,
-                pdf_filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
-            })
-        }).catch(error => {
-            console.error('Error sending PDF to email:', error);
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            console.log('📬 Webhook response status:', response.status);
+            console.log('📬 Webhook response OK:', response.ok);
+            return response.text();
+        })
+        .then(data => {
+            console.log('✅ Webhook response data:', data);
+            console.log('✅ PDF sent to email successfully!');
+        })
+        .catch(error => {
+            console.error('❌ Error sending PDF to email:', error);
+            console.error('Error details:', error.message);
         });
         
         alert('הקובץ נפתח בחלון חדש וגם נשלח למייל שלך!');
