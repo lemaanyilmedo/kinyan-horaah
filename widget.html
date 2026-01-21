@@ -1,3 +1,846 @@
+﻿<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קניין הוראה - הפוסק שבך</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4B182;
+            --dark-slate: #32373c;
+            --light-cream: #fdfbf8;
+            --gold-dark: #b89968;
+            --gold-light: #e8d4b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Assistant', 'Almoni Tzar', sans-serif;
+            background: var(--light-cream);
+            color: var(--dark-slate);
+            overflow-x: hidden;
+            font-size: 20px;
+        }
+        
+        .hero-album {
+            min-height: 100vh;
+            background: linear-gradient(rgba(50, 55, 60, 0.85), rgba(50, 55, 60, 0.85)),
+                        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920') center/cover fixed;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+        }
+        
+        .glass-form {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 20px;
+            padding: 2.5rem;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+        }
+        
+        .gold-divider {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
+            padding: 4rem 2rem;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .gold-divider::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
+            animation: shimmer 3s infinite;
+        }
+        
+        @keyframes shimmer {
+            0% { left: -100%; }
+            100% { left: 100%; }
+        }
+        
+        .lift-card {
+            background: white;
+            border-radius: 16px;
+            padding: 2rem;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: 2px solid transparent;
+        }
+        
+        .lift-card:hover {
+            transform: translateY(-12px);
+            box-shadow: 0 20px 40px rgba(212, 177, 130, 0.3);
+            border-color: var(--gold);
+        }
+        
+        .icon-outline {
+            width: 64px;
+            height: 64px;
+            stroke: var(--gold);
+            stroke-width: 1.1;
+            fill: none;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: white;
+            padding: 1.25rem 3rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 700;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(212, 177, 130, 0.4);
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(212, 177, 130, 0.6);
+        }
+        
+        .btn-secondary {
+            background: var(--dark-slate);
+            color: white;
+            padding: 1.25rem 3rem;
+            border-radius: 12px;
+            border: none;
+            font-weight: 600;
+            font-size: 1.35rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #454a50;
+            transform: translateY(-2px);
+        }
+        
+        .answer-option {
+            background: white;
+            border: 2px solid #e5e7eb;
+            padding: 1.75rem 2rem;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 1.5rem;
+            line-height: 1.6;
+        }
+        
+        .answer-option:hover {
+            border-color: var(--gold);
+            background: var(--light-cream);
+            transform: translateX(-4px);
+        }
+        
+        .answer-option.selected {
+            background: linear-gradient(135deg, rgba(212, 177, 130, 0.15), rgba(212, 177, 130, 0.25));
+            border-color: var(--gold);
+            border-width: 3px;
+        }
+        
+        .carousel {
+            overflow: hidden;
+            position: relative;
+            background: var(--dark-slate);
+            padding: 3rem 0;
+        }
+        
+        .carousel-track {
+            display: flex;
+            animation: scroll 20s linear infinite;
+        }
+        
+        .carousel-item {
+            min-width: 300px;
+            height: 200px;
+            margin: 0 1rem;
+            border-radius: 12px;
+            background-size: cover;
+            background-position: center;
+        }
+        
+        @keyframes scroll {
+            0% { transform: translateX(0); }
+            100% { transform: translateX(-50%); }
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--gold);
+            border-radius: 4px;
+            transition: width 0.5s ease;
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .text-gold {
+            color: var(--gold);
+        }
+        
+        .bg-gold {
+            background-color: var(--gold);
+        }
+        
+        .border-gold {
+            border-color: var(--gold);
+        }
+        
+        .loading-spinner {
+            border: 4px solid rgba(212, 177, 130, 0.2);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .quiz-sidebar {
+            position: sticky;
+            top: 2rem;
+            background: white;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+            border: 2px solid var(--gold);
+        }
+        
+        .product-image-container {
+            width: 100%;
+            height: 280px;
+            background: var(--light-cream);
+            border-radius: 16px;
+            overflow: hidden;
+            margin-bottom: 2rem;
+            border: 3px solid var(--gold);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .product-image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .progress-tracker {
+            margin-top: 2rem;
+        }
+        
+        .progress-step {
+            display: flex;
+            align-items: center;
+            border-radius: 50%;
+            background: #e5e7eb;
+            color: var(--dark-slate);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.3rem;
+            margin-left: 1rem;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 1;
+        }
+        
+        .progress-step.completed .progress-number {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: white;
+        }
+        
+        .progress-step.active .progress-number {
+            background: var(--gold);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(212, 177, 130, 0.3);
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(212, 177, 130, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(212, 177, 130, 0.1); }
+        }
+        
+        .progress-step.completed .progress-pie-number {
+            color: #22c55e;
+        }
+        
+        .progress-step.active .progress-pie-number {
+            color: var(--gold);
+            font-weight: 800;
+        }
+        
+        /* Pie Chart Progress */
+        .progress-pie {
+            width: 70px;
+            height: 70px;
+            position: relative;
+        }
+        
+        .progress-pie svg {
+            transform: rotate(-90deg);
+        }
+        
+        .progress-pie-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 7;
+        }
+        
+        .progress-pie-fill {
+            fill: none;
+            stroke-width: 7;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.6s ease, stroke 0.3s ease;
+        }
+        
+        .progress-pie-fill.empty {
+            stroke: #e5e7eb;
+            stroke-dasharray: 0 100;
+        }
+        
+        .progress-pie-fill.partial {
+            stroke: #f59e0b;
+            stroke-dasharray: 33 100;
+        }
+        
+        .progress-pie-fill.complete {
+            stroke: #22c55e;
+            stroke-dasharray: 100 100;
+        }
+        
+        .progress-pie-fill.perfect {
+            stroke: #22c55e;
+            stroke-dasharray: 100 100;
+            filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
+        }
+        
+        .progress-pie-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-weight: bold;
+            font-size: 1.4rem;
+            color: var(--dark-slate);
+        }
+        
+        /* Timer */
+        .question-timer {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 2rem;
+        }
+        
+        .timer-circle {
+            position: relative;
+            width: 80px;
+            height: 80px;
+        }
+        
+        .timer-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .timer-bg {
+            fill: none;
+            stroke: #e5e7eb;
+            stroke-width: 6;
+        }
+        
+        .timer-progress {
+            fill: none;
+            stroke-width: 6;
+            stroke-linecap: round;
+            transition: stroke-dasharray 1s linear, stroke 0.3s ease;
+        }
+        
+        .timer-progress.normal {
+            stroke: var(--gold);
+        }
+        
+        .timer-progress.warning {
+            stroke: #f59e0b;
+        }
+        
+        .timer-progress.danger {
+            stroke: #ef4444;
+            animation: pulse-timer 1s infinite;
+        }
+        
+        @keyframes pulse-timer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .timer-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            font-weight: bold;
+            color: var(--dark-slate);
+        }
+        
+        .timer-label {
+            margin-right: 1rem;
+            font-size: 1.1rem;
+            color: var(--dark-slate);
+            font-weight: 600;
+        }
+        
+        /* Feedback Messages */
+        .feedback-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 2rem 3rem;
+            border-radius: 20px;
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            z-index: 1000;
+            animation: fadeInScale 0.4s ease;
+            text-align: center;
+        }
+        
+        .feedback-message.correct {
+            border: 3px solid #22c55e;
+        }
+        
+        .feedback-message.wrong {
+            border: 3px solid #f59e0b;
+        }
+        
+        .feedback-message.timeout {
+            border: 3px solid var(--gold);
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        /* Confetti Effect */
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            animation: confetti-fall 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 999;
+        }
+        
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        /* Shake Animation for Wrong Answer */
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .shake {
+            animation: shake 0.4s ease;
+        }
+        
+        /* Slide Transition */
+        .slide-out-left {
+            animation: slideOutLeft 0.4s ease forwards;
+        }
+        
+        .slide-in-right {
+            animation: slideInRight 0.4s ease forwards;
+        }
+        
+        @keyframes slideOutLeft {
+            from { transform: translateX(0); opacity: 1; }
+            to { transform: translateX(-100%); opacity: 0; }
+        }
+        
+        @keyframes slideInRight {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Screen 1: Hero Album -->
+    <div id="screen-lobby" class="hero-album">
+        <div class="container mx-auto px-4">
+            <div class="grid md:grid-cols-2 gap-8 items-center">
+                <!-- Right: Marketing Copy -->
+                <div class="text-white fade-in">
+                    <h1 class="text-7xl md:text-8xl font-bold mb-6" style="line-height: 1.2;">
+                        וואס וועסטו מכריע?
+                    </h1>
+                    <h2 class="text-5xl md:text-6xl mb-8 text-gold">
+                        אתגר פסיקה מעשית
+                    </h2>
+                    <p class="text-2xl md:text-3xl mb-6 leading-relaxed opacity-90">
+                        שאלות מעשיות אמיתיות שמגיעות מבתי הוראה בפועל.<br>
+                        בוא נראה איך אתה פוסק בשטח - בזמן אמת, תחת לחץ.
+                    </p>
+                    <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white border-opacity-20">
+                        <p class="text-2xl mb-4">
+                            בחר את התחום ההלכתי שבו תרצה להתמודד עם שאלות מהשטח.
+                        </p>
+                        <p class="text-gold font-bold text-2xl">
+                            הכרע נכון, וזכה בהטבות יקרות ערך ללימודי הוראה + הגרלה על שבת 'גולדיס' מפוארת.
+                        </p>
+                    </div>
+                </div>
+                
+                <!-- Left: Glass Form -->
+                <div class="glass-form fade-in">
+                    <h3 class="text-4xl font-bold text-white mb-6 text-center">בחר תחום לאתגר פסיקה</h3>
+                    <div class="space-y-4">
+                        <button onclick="startQuiz('shabbat')" class="btn-primary w-full text-center">
+                            🕯️ שאלות מעשיות בהלכות שבת
+                        </button>
+                        <button onclick="startQuiz('issur_heter')" class="btn-primary w-full text-center">
+                            🥩 שאלות מעשיות באיסור והיתר
+                        </button>
+                    </div>
+                    <p class="text-white text-xl mt-6 text-center opacity-80">
+                        ניתן להתמודד בשני התחומים ולהכפיל את סיכויי הזכייה
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Slogan Divider -->
+    <div class="gold-divider">
+        <h2 class="text-6xl md:text-7xl font-bold text-white" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
+            מהשטח, לפסיקה, למעשה!
+        </h2>
+    </div>
+
+    <!-- Screen 2: Question Interface -->
+    <div id="screen-question" class="hidden" style="background: var(--light-cream); min-height: 100vh; padding: 3rem 0;">
+        <div class="container mx-auto px-4" style="max-width: 1400px;">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Main Content - Left Side -->
+                <div class="lg:col-span-2">
+                    <div class="lift-card fade-in">
+                        <!-- Status Bar -->
+                        <div class="mb-6 pb-4" style="border-bottom: 2px solid var(--gold);">
+                            <div class="flex justify-between items-center" style="color: var(--dark-slate);">
+                                <span id="question-counter" class="font-bold text-3xl">שאלה 1 מתוך 5</span>
+                                <span id="quiz-topic" class="font-medium text-gold text-2xl">נושא: הלכות שבת</span>
+                            </div>
+                            <div class="mt-4 bg-gray-200 rounded-full" style="height: 12px;">
+                                <div id="progress-bar" class="progress-bar" style="width: 20%"></div>
+                            </div>
+                        </div>
+                        
+                        <!-- Timer -->
+                        <div class="question-timer">
+                            <span class="timer-label">זמן נותר:</span>
+                            <div class="timer-circle">
+                                <svg width="80" height="80">
+                                    <circle class="timer-bg" cx="40" cy="40" r="34"></circle>
+                                    <circle id="timer-progress" class="timer-progress normal" cx="40" cy="40" r="34" 
+                                            style="stroke-dasharray: 213.6 213.6;"></circle>
+                                </svg>
+                                <div id="timer-number" class="timer-number">30</div>
+                            </div>
+                        </div>
+                        
+                        <!-- Question Area -->
+                        <div class="mb-8">
+                            <div id="question-text" class="text-3xl md:text-4xl font-semibold leading-relaxed mb-8" style="color: var(--dark-slate);">
+                                <!-- Question will be loaded here -->
+                            </div>
+                        </div>
+                        
+                        <!-- Answer Options -->
+                        <div id="answers-container" class="space-y-5 mb-6">
+                            <!-- Answers will be loaded here -->
+                        </div>
+                        
+                        <!-- Special Button -->
+                        <div class="mt-8 pt-6" style="border-top: 1px solid #e5e7eb;">
+                            <button onclick="showNeedReview()" class="btn-secondary w-full">
+                                📚 צריך עיון (גם מורה הוראה פותח ספר לפעמים)
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Sidebar - Right Side -->
+                <div class="lg:col-span-1">
+                    <div class="quiz-sidebar fade-in">
+                        <!-- Product Image -->
+                        <div class="product-image-container">
+                            <img id="product-image" src="https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400" alt="מוצר" style="display: block;">
+                            <div id="product-placeholder" style="display: none; color: var(--gold); font-size: 4rem;">📦</div>
+                        </div>
+                        
+                        <!-- Progress Tracker -->
+                        <div class="progress-tracker">
+                            <h3 class="text-2xl font-bold mb-4 text-gold text-center">התקדמות בפסיקה</h3>
+                            <div id="progress-steps" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
+                                <!-- Will be populated dynamically -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Need Review Popup -->
+    <div id="screen-need-review" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden" style="z-index: 1000;">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full fade-in">
+            <h2 class="text-4xl font-bold mb-4 text-center text-gold">
+                "מתונים היו בדין"
+            </h2>
+            
+            <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
+                אנחנו מעריכים את הזהירות שלך. פוסק אמיתי יודע מתי צריך לעיין במקורות לפני הכרעה.
+            </p>
+            
+            <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
+                כדי שתוכל לעיין בנחת ולחזור לפסוק כשאתה בטוח, שמרנו לך את המקום.
+                הכנס פרטים לקבלת קישור אישי להמשך אתגר הפסיקה בדיוק מהנקודה הזו.
+            </p>
+            
+            <form id="pause-form" class="space-y-4">
+                <div>
+                    <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">שם:</label>
+                    <input type="text" id="pause-name" required
+                           class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);">
+                </div>
+                
+                <div>
+                    <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">וואטסאפ/מייל:</label>
+                    <input type="text" id="pause-contact" required
+                           class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="submit" class="flex-1 btn-primary">
+                        שלחו לי לינק להמשך המבחן
+                    </button>
+                    <button type="button" onclick="closeNeedReview()" class="px-6 py-3 border-2 rounded-lg text-lg" style="border-color: var(--dark-slate);">
+                        ביטול
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Screen 4: Lead Collection -->
+    <div id="screen-lead-collection" class="hidden" style="background: var(--light-cream); min-height: 100vh; padding: 3rem 0;">
+        <div class="container mx-auto px-4 max-w-2xl">
+            <div class="lift-card fade-in">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-center text-gold">
+                    הפסיקות שלך נקלטו.
+                </h2>
+                
+                <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
+                    ההכרעות שלך נקלטו במערכת ועובדו מול פסיקות של מאות מורי הוראה אחרים.
+                </p>
+                
+                <div class="rounded-lg p-6 mb-8" style="background: linear-gradient(135deg, rgba(212, 177, 130, 0.1), rgba(212, 177, 130, 0.2));">
+                    <p class="font-bold mb-3 text-gold text-xl">
+                        לפני שנחשוף את התוצאות:
+                    </p>
+                    <p class="mb-2 text-lg" style="color: var(--dark-slate);">
+                        מלא את הפרטים כדי שנוכל:
+                    </p>
+                    <ul class="list-disc list-inside space-y-1 mr-4 text-lg" style="color: var(--dark-slate);">
+                        <li>להציג לך ניתוח מפורט של הפסיקות שלך.</li>
+                        <li>לשלוח לך את דף המקורות והפסיקה המלאה למעשה.</li>
+                        <li>ליצור קשר למימוש ההטבות והזכייה בהגרלה.</li>
+                    </ul>
+                </div>
+                
+                <form id="lead-form" class="space-y-4">
+                    <div>
+                        <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">שם מלא:</label>
+                        <input type="text" id="lead-name" required
+                               class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);">
+                    </div>
+                    
+                    <div>
+                        <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">טלפון נייד:</label>
+                        <input type="tel" id="lead-phone" required
+                               class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);"
+                               placeholder="050-1234567">
+                    </div>
+                    
+                    <div>
+                        <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">מייל:</label>
+                        <input type="email" id="lead-email" required
+                               class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);"
+                               placeholder="example@email.com">
+                    </div>
+                    
+                    <button type="submit" class="w-full btn-primary">
+                        חשוף את הפסיקות שלי ◀
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 5: Results & Rewards -->
+    <div id="screen-results" class="hidden" style="background: var(--light-cream); min-height: 100vh; padding: 3rem 0;">
+        <div class="container mx-auto px-4 max-w-3xl">
+            <div class="lift-card fade-in">
+                <!-- Results Header -->
+                <div id="results-header" class="text-center mb-8">
+                    <!-- Will be populated based on score -->
+                </div>
+                
+                <!-- Score Display -->
+                <div class="rounded-xl p-8 text-white text-center mb-8" style="background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));">
+                    <div class="text-6xl font-bold mb-2" id="final-score">85%</div>
+                    <div class="text-xl font-semibold">הציון שלך</div>
+                </div>
+                
+                <!-- Social Proof Stats -->
+                <div id="social-stats" class="rounded-lg p-6 mb-8" style="background: linear-gradient(135deg, rgba(212, 177, 130, 0.1), rgba(212, 177, 130, 0.15));">
+                    <!-- Will be populated with stats -->
+                </div>
+                
+                <!-- Benefit Selection -->
+                <div class="mb-8">
+                    <h3 class="text-3xl font-bold mb-4 text-center text-gold">
+                        "שכר לימוד הליכה" – בחר את ההטבה שלך:
+                    </h3>
+                    
+                    <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
+                        בנוסף להגרלה, זכית בהטבה מובטחת להצטרפות לאחד ממסלולי הכשרת המורים שלנו.
+                        באיזה נושא אתה מרגיש שאתה רוצה להתחזק ולהפוך למורה הוראה?
+                    </p>
+                    
+                    <form id="benefit-form" class="space-y-3">
+                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
+                            <input type="radio" name="benefit" value="shabbat_course_discount" required class="ml-3">
+                            <span class="text-xl" style="color: var(--dark-slate);">הלכות שבת - הטבה ע"ס 400 ₪ לקורס הקרוב</span>
+                        </label>
+                        
+                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
+                            <input type="radio" name="benefit" value="issur_heter_course_discount" required class="ml-3">
+                            <span class="text-xl" style="color: var(--dark-slate);">איסור והיתר - הטבה ע"ס 400 ₪ לקורס הקרוב</span>
+                        </label>
+                        
+                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
+                            <input type="radio" name="benefit" value="niddah_course_discount" required class="ml-3">
+                            <span class="text-xl" style="color: var(--dark-slate);">הלכות נידה/טהרה - הטבה ע"ס 500 ₪</span>
+                        </label>
+                        
+                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
+                            <input type="radio" name="benefit" value="mamonot_special" required class="ml-3">
+                            <span class="text-xl" style="color: var(--dark-slate);">ממונות (חושן משפט) - הטבה מיוחדת</span>
+                        </label>
+                        
+                        <button type="submit" class="w-full btn-primary mt-6">
+                            אשר בחירה ושמור
+                        </button>
+                    </form>
+                </div>
+                
+                <!-- Final Actions -->
+                <div id="final-actions" class="hidden">
+                    <div class="rounded-lg p-6 mb-6 text-center" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2)); border: 2px solid #22c55e;">
+                        <p class="font-medium text-xl" style="color: #15803d;">
+                            ✅ הפרטים שלך עודכנו. נציג יחזור אליך למימוש ההטבה.
+                        </p>
+                    </div>
+                    
+                    <div class="space-y-3">
+                        <button onclick="downloadPDF()" class="w-full btn-primary">
+                            📥 הורד את קובץ התשובות והמקורות (PDF)
+                        </button>
+                        
+                        <button onclick="restartQuiz()" class="w-full btn-secondary">
+                            🔄 רוצה להכפיל סיכויים? היבחן עכשיו בנושא השני!
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Carousel Section -->
+    <div class="carousel">
+        <div class="carousel-track">
+            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400');"></div>
+            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400');"></div>
+            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400');"></div>
+            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400');"></div>
+            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400');"></div>
+            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400');"></div>
+        </div>
+    </div>
+
+    <!-- PDF Export Container (hidden) -->
+    <div id="pdf-content" class="hidden" style="padding: 40px; background: white;">
+        <div style="text-align: center; margin-bottom: 30px;">
+            <h1 style="color: var(--gold); font-size: 36px; margin-bottom: 10px;">קניין הוראה</h1>
+            <h2 style="color: var(--dark-slate); font-size: 24px;">תוצאות המבחן ומקורות</h2>
+        </div>
+        <div id="pdf-user-info" style="margin-bottom: 30px;"></div>
+        <div id="pdf-score" style="margin-bottom: 30px;"></div>
+        <div id="pdf-questions" style="margin-top: 30px;"></div>
+    </div>
+
+    <script>
 const CSV_URLS = {
     shabbat: 'https://docs.google.com/spreadsheets/d/e/YOUR_SHABBAT_SHEET_ID/pub?output=csv',
     issur_heter: 'https://docs.google.com/spreadsheets/d/e/YOUR_ISSUR_HETER_SHEET_ID/pub?output=csv'
@@ -1015,3 +1858,8 @@ radioLabels.forEach(label => {
         }
     });
 });
+
+</script>
+</body>
+</html>
+
