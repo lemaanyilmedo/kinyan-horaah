@@ -939,13 +939,12 @@ async function downloadPDF() {
         }
         
         const pdfBlob = pdf.output('blob');
-        const pdfBase64Full = pdf.output('dataurlstring');
-        const pdfBase64Clean = pdfBase64Full.split(',')[1];
+        const pdfBase64 = pdf.output('datauri');
         const pdfUrl = URL.createObjectURL(pdfBlob);
         
         console.log('📄 PDF created successfully');
         console.log('📧 User email:', userData.email);
-        console.log('📦 PDF size (Base64):', pdfBase64Clean.length, 'characters');
+        console.log('📦 PDF Data URI length:', pdfBase64.length, 'characters');
         
         window.open(pdfUrl, '_blank');
         console.log('✅ PDF opened in new tab');
@@ -958,8 +957,8 @@ async function downloadPDF() {
             phone: userData.phone,
             quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
             score: score,
-            pdf_base64: pdfBase64Clean,
-            pdf_filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
+            data: pdfBase64,
+            filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
         };
         
         console.log('📤 Sending PDF to webhook...');
@@ -970,8 +969,8 @@ async function downloadPDF() {
             phone: payload.phone,
             quiz_type: payload.quiz_type,
             score: payload.score,
-            pdf_filename: payload.pdf_filename,
-            pdf_base64_length: payload.pdf_base64.length
+            filename: payload.filename,
+            data_length: payload.data.length
         });
         
         fetch(pdfWebhookURL, {
