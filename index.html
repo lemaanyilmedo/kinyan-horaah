@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קניין הוראה - הפוסק שבך</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Heebo:wght@300;400;500;700&display=swap');
+        
+        body {
+            font-family: 'Heebo', sans-serif;
+        }
+        
+        .quiz-button {
+            transition: all 0.3s ease;
+        }
+        
+        .quiz-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+        }
+        
+        .answer-option {
+            transition: all 0.2s ease;
+        }
+        
+        .answer-option:hover {
+            background-color: #f3f4f6;
+        }
+        
+        .answer-option.selected {
+            background-color: #dbeafe;
+            border-color: #3b82f6;
+        }
+        
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body class="bg-gradient-to-br from-blue-50 to-indigo-100 min-h-screen">
+    
+    <!-- Screen 1: Lobby -->
+    <div id="screen-lobby" class="container mx-auto px-4 py-8 max-w-2xl">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold text-indigo-900 mb-4">
+                וואס וועסטו מכריע?
+            </h1>
+            <h2 class="text-xl md:text-2xl text-gray-700 mb-6">
+                מה תכריע?
+            </h2>
+            
+            <p class="text-lg text-gray-600 mb-4 leading-relaxed">
+                בסוגיות הסבוכות של החיים, האינטואיציה לא מספיקה.<br>
+                האם יש לך את הידע והדיוק ההלכתי כדי לפסוק נכון בזמן אמת?
+            </p>
+            
+            <div class="bg-indigo-50 rounded-lg p-6 mb-8">
+                <p class="text-gray-700 mb-4">
+                    בחר את הזירה ההלכתית בה תרצה להעמיד את הידע שלך למבחן.<br>
+                    בכל מסלול מחכים לך 5 מקרי-בוחן מהשטח.
+                </p>
+                <p class="text-gray-700 font-medium">
+                    ענה נכון, ואולי תזכה בשבת 'גולדיס' מפוארת<br>
+                    (או בהטבות יקרות ערך ללימודי הוראה).
+                </p>
+            </div>
+            
+            <div class="space-y-4 mb-6">
+                <button onclick="startQuiz('shabbat')" 
+                        class="quiz-button w-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-6 px-8 rounded-xl text-xl font-bold shadow-lg hover:shadow-xl">
+                    🕯️ הלכות שבת - אתגר אותי
+                </button>
+                
+                <button onclick="startQuiz('issur_heter')" 
+                        class="quiz-button w-full bg-gradient-to-r from-green-600 to-teal-600 text-white py-6 px-8 rounded-xl text-xl font-bold shadow-lg hover:shadow-xl">
+                    🥩 איסור והיתר - אתגר אותי
+                </button>
+            </div>
+            
+            <p class="text-sm text-gray-500 italic">
+                ניתן להיבחן בשני המסלולים (בנפרד) ולהכפיל את סיכויי הזכייה.
+            </p>
+        </div>
+    </div>
+
+    <!-- Screen 2: Question Interface -->
+    <div id="screen-question" class="container mx-auto px-4 py-8 max-w-2xl hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-6 md:p-8">
+            <!-- Status Bar -->
+            <div class="mb-6 pb-4 border-b border-gray-200">
+                <div class="flex justify-between items-center text-sm text-gray-600">
+                    <span id="question-counter" class="font-medium">שאלה 1 מתוך 5</span>
+                    <span id="quiz-topic" class="font-medium">נושא: הלכות שבת</span>
+                </div>
+                <div class="mt-2 bg-gray-200 rounded-full h-2">
+                    <div id="progress-bar" class="bg-indigo-600 h-2 rounded-full transition-all duration-300" style="width: 20%"></div>
+                </div>
+            </div>
+            
+            <!-- Question Area -->
+            <div class="mb-8">
+                <div id="question-text" class="text-lg md:text-xl text-gray-800 leading-relaxed mb-6">
+                    <!-- Question will be loaded here -->
+                </div>
+            </div>
+            
+            <!-- Answer Options -->
+            <div id="answers-container" class="space-y-3 mb-6">
+                <!-- Answers will be loaded here -->
+            </div>
+            
+            <!-- Special Button -->
+            <div class="mt-8 pt-6 border-t border-gray-200">
+                <button onclick="showNeedReview()" 
+                        class="w-full bg-amber-500 hover:bg-amber-600 text-white py-4 px-6 rounded-xl font-bold shadow-md transition-all">
+                    📚 צריך עיון (אני לא בטוח, תנו לי לבדוק)
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Screen 3: Need Review Popup -->
+    <div id="screen-need-review" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 hidden z-50">
+        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full">
+            <h2 class="text-3xl font-bold text-indigo-900 mb-4 text-center">
+                "מתונים היו בדין"
+            </h2>
+            
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                אנחנו מעריכים את הזהירות שלך. מורה הוראה אמיתי יודע מתי לפתוח ספר, ואסור לשלוף תשובה מהמותן.
+            </p>
+            
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                כדי שתוכל לעיין בנחת במקורות ולחזור להשיב כשאתה בטוח, שמרנו לך את המקום.
+                הכנס פרטים לקבלת קישור אישי להמשך המבחן בדיוק מהנקודה הזו.
+            </p>
+            
+            <form id="pause-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">שם:</label>
+                    <input type="text" id="pause-name" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">וואטסאפ/מייל:</label>
+                    <input type="text" id="pause-contact" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                </div>
+                
+                <div class="flex gap-3">
+                    <button type="submit" 
+                            class="flex-1 bg-indigo-600 hover:bg-indigo-700 text-white py-3 px-6 rounded-lg font-bold transition-all">
+                        שלחו לי לינק להמשך המבחן
+                    </button>
+                    <button type="button" onclick="closeNeedReview()"
+                            class="px-6 py-3 border border-gray-300 rounded-lg hover:bg-gray-50 transition-all">
+                        ביטול
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Screen 4: Lead Collection -->
+    <div id="screen-lead-collection" class="container mx-auto px-4 py-8 max-w-2xl hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <h2 class="text-3xl md:text-4xl font-bold text-indigo-900 mb-4 text-center">
+                ההכרעה התקבלה.
+            </h2>
+            
+            <p class="text-gray-700 mb-6 leading-relaxed">
+                התשובות שלך נקלטו במערכת ועובדו מול נתוני אמת של מאות נבחנים אחרים.
+            </p>
+            
+            <div class="bg-indigo-50 rounded-lg p-6 mb-8">
+                <p class="text-gray-800 font-medium mb-3">
+                    לפני שנחשוף את הציון שלך:
+                </p>
+                <p class="text-gray-700 mb-2">
+                    מלא את הפרטים כדי שנוכל:
+                </p>
+                <ul class="list-disc list-inside text-gray-700 space-y-1 mr-4">
+                    <li>להציג לך את הניתוח ההשוואתי המלא.</li>
+                    <li>לשלוח לך את דף המקורות המלא (עם הפסיקה למעשה).</li>
+                    <li>ליצור קשר למימוש הזכייה בהגרלה.</li>
+                </ul>
+            </div>
+            
+            <form id="lead-form" class="space-y-4">
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">שם מלא:</label>
+                    <input type="text" id="lead-name" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">טלפון נייד:</label>
+                    <input type="tel" id="lead-phone" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                           placeholder="050-1234567">
+                </div>
+                
+                <div>
+                    <label class="block text-gray-700 font-medium mb-2">מייל:</label>
+                    <input type="email" id="lead-email" required
+                           class="w-full px-4 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:border-transparent"
+                           placeholder="example@email.com">
+                </div>
+                
+                <button type="submit" 
+                        class="w-full bg-gradient-to-r from-indigo-600 to-purple-600 hover:from-indigo-700 hover:to-purple-700 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg transition-all">
+                    הצג תוצאות ובדוק זכאות לפרס ◀
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Screen 5: Results & Rewards -->
+    <div id="screen-results" class="container mx-auto px-4 py-8 max-w-2xl hidden">
+        <div class="bg-white rounded-2xl shadow-2xl p-8">
+            <!-- Results Header -->
+            <div id="results-header" class="text-center mb-8">
+                <!-- Will be populated based on score -->
+            </div>
+            
+            <!-- Score Display -->
+            <div class="bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl p-8 text-white text-center mb-8">
+                <div class="text-6xl font-bold mb-2" id="final-score">85%</div>
+                <div class="text-xl">הציון שלך</div>
+            </div>
+            
+            <!-- Social Proof Stats -->
+            <div id="social-stats" class="bg-gray-50 rounded-lg p-6 mb-8">
+                <!-- Will be populated with stats -->
+            </div>
+            
+            <!-- Benefit Selection -->
+            <div class="mb-8">
+                <h3 class="text-2xl font-bold text-indigo-900 mb-4 text-center">
+                    "שכר לימוד הליכה" – בחר את ההטבה שלך:
+                </h3>
+                
+                <p class="text-gray-700 mb-6 leading-relaxed">
+                    בנוסף להגרלה, זכית בהטבה מובטחת להצטרפות לאחד ממסלולי הכשרת המורים שלנו.
+                    באיזה נושא אתה מרגיש שאתה רוצה להתחזק ולהפוך למורה הוראה?
+                </p>
+                
+                <form id="benefit-form" class="space-y-3">
+                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-indigo-50 transition-all">
+                        <input type="radio" name="benefit" value="shabbat_course_discount" required class="ml-3">
+                        <span class="text-gray-800">הלכות שבת - הטבה ע"ס 400 ₪ לקורס הקרוב</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-indigo-50 transition-all">
+                        <input type="radio" name="benefit" value="issur_heter_course_discount" required class="ml-3">
+                        <span class="text-gray-800">איסור והיתר - הטבה ע"ס 400 ₪ לקורס הקרוב</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-indigo-50 transition-all">
+                        <input type="radio" name="benefit" value="niddah_course_discount" required class="ml-3">
+                        <span class="text-gray-800">הלכות נידה/טהרה - הטבה ע"ס 500 ₪</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-2 border-gray-300 rounded-lg cursor-pointer hover:bg-indigo-50 transition-all">
+                        <input type="radio" name="benefit" value="mamonot_special" required class="ml-3">
+                        <span class="text-gray-800">ממונות (חושן משפט) - הטבה מיוחדת</span>
+                    </label>
+                    
+                    <button type="submit" 
+                            class="w-full bg-green-600 hover:bg-green-700 text-white py-4 px-6 rounded-xl font-bold text-lg shadow-lg transition-all mt-6">
+                        אשר בחירה ושמור
+                    </button>
+                </form>
+            </div>
+            
+            <!-- Final Actions -->
+            <div id="final-actions" class="hidden">
+                <div class="bg-green-50 border-2 border-green-500 rounded-lg p-6 mb-6 text-center">
+                    <p class="text-green-800 font-medium text-lg">
+                        ✅ הפרטים שלך עודכנו. נציג יחזור אליך למימוש ההטבה.
+                    </p>
+                </div>
+                
+                <div class="space-y-3">
+                    <button onclick="downloadPDF()" 
+                            class="w-full bg-blue-600 hover:bg-blue-700 text-white py-4 px-6 rounded-xl font-bold shadow-md transition-all">
+                        📥 הורד את קובץ התשובות והמקורות (PDF)
+                    </button>
+                    
+                    <button onclick="restartQuiz()" 
+                            class="w-full bg-purple-600 hover:bg-purple-700 text-white py-4 px-6 rounded-xl font-bold shadow-md transition-all">
+                        🔄 רוצה להכפיל סיכויים? היבחן עכשיו בנושא השני!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
