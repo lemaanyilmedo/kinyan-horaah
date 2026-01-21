@@ -939,38 +939,43 @@ async function downloadPDF() {
         }
         
         const pdfBlob = pdf.output('blob');
-        const pdfBase64 = pdf.output('datauri');
+        const pdfDataURI = pdf.output('datauristring'); // Data URI מלא עם הפריפיקס
+        const pdfBase64Clean = pdfDataURI.split(',')[1]; // רק ה-base64 הנקי
         const pdfUrl = URL.createObjectURL(pdfBlob);
         
         console.log('📄 PDF created successfully');
         console.log('📧 User email:', userData.email);
-        console.log('📦 PDF Data URI length:', pdfBase64.length, 'characters');
+        console.log('📦 PDF Data URI length:', pdfDataURI.length, 'characters');
+        console.log('🔍 First 150 chars of Data URI:', pdfDataURI.substring(0, 150));
+        console.log('🔍 Last 100 chars of Data URI:', pdfDataURI.substring(pdfDataURI.length - 100));
         
         window.open(pdfUrl, '_blank');
         console.log('✅ PDF opened in new tab');
         
         const pdfWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
         
-        const payload = {
-            email: userData.email,
-            name: userData.name,
-            phone: userData.phone,
-            quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
-            score: score,
-            data: pdfBase64,
-            filename: `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
-        };
+        const payload = [
+            {
+                "to": [userData.email],
+                "subject": "מצורף דוח אתגר הפסיקה שלך",
+                "bodyType": "collection",
+                "attachments": [
+                    {
+                        "data": pdfDataURI,
+                        "filename": `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
+                    }
+                ]
+            }
+        ];
         
         console.log('📤 Sending PDF to webhook...');
         console.log('Webhook URL:', pdfWebhookURL);
         console.log('Payload:', {
-            email: payload.email,
-            name: payload.name,
-            phone: payload.phone,
-            quiz_type: payload.quiz_type,
-            score: payload.score,
-            filename: payload.filename,
-            data_length: payload.data.length
+            to: payload[0].to,
+            subject: payload[0].subject,
+            bodyType: payload[0].bodyType,
+            filename: payload[0].attachments[0].filename,
+            data_length: payload[0].attachments[0].data.length
         });
         
         fetch(pdfWebhookURL, {
