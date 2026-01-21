@@ -947,9 +947,9 @@ async function downloadPDF() {
         
         console.log('📄 PDF created successfully');
         console.log('📧 User email:', userData.email);
-        console.log('📦 PDF Data URI length:', pdfDataURI.length, 'characters');
-        console.log('🔍 First 150 chars of Data URI:', pdfDataURI.substring(0, 150));
-        console.log('🔍 Last 100 chars of Data URI:', pdfDataURI.substring(pdfDataURI.length - 100));
+        console.log('📦 PDF Base64 length:', pdfBase64Clean.length, 'characters');
+        console.log('🔍 First 100 chars of Base64:', pdfBase64Clean.substring(0, 100));
+        console.log('🔍 Last 100 chars of Base64:', pdfBase64Clean.substring(pdfBase64Clean.length - 100));
         
         window.open(pdfUrl, '_blank');
         console.log('✅ PDF opened in new tab');
@@ -963,7 +963,7 @@ async function downloadPDF() {
                 "bodyType": "collection",
                 "attachments": [
                     {
-                        "data": pdfDataURI,
+                        "data": pdfBase64Clean,
                         "filename": `קניין_הוראה_${userData.name.replace(/\s+/g, '_')}_${new Date().toISOString().split('T')[0]}.pdf`
                     }
                 ]
