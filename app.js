@@ -939,7 +939,9 @@ async function downloadPDF() {
         }
         
         const pdfBlob = pdf.output('blob');
-        const pdfDataURI = pdf.output('datauristring'); // Data URI מלא עם הפריפיקס
+        const pdfDataURIRaw = pdf.output('datauristring');
+        // ניקוי Data URI - הסרת filename=generated.pdf; שמקלקל את הפורמט
+        const pdfDataURI = pdfDataURIRaw.replace(/;filename=[^;]+;/, ';');
         const pdfBase64Clean = pdfDataURI.split(',')[1]; // רק ה-base64 הנקי
         const pdfUrl = URL.createObjectURL(pdfBlob);
         
