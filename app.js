@@ -15,8 +15,14 @@ try {
     if (firebaseConfig.apiKey !== "YOUR_API_KEY") {
         firebase.initializeApp(firebaseConfig);
         db = firebase.firestore();
+        
+        db.settings({
+            experimentalForceLongPolling: true,
+            experimentalAutoDetectLongPolling: true
+        });
+        
         firebaseEnabled = true;
-        console.log('Firebase initialized successfully');
+        console.log('Firebase initialized successfully with Long Polling (NetFree compatible)');
     } else {
         console.log('Firebase not configured - running in local mode');
     }
@@ -70,18 +76,6 @@ async function loadQuizData(quizType) {
     
     const topicName = quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
     document.getElementById('quiz-topic').textContent = `נושא: ${topicName}`;
-    
-    if (firebaseEnabled && db) {
-        try {
-            const quizDoc = await db.collection('quizzes').doc(quizType).get();
-            if (quizDoc.exists) {
-                quizData = quizDoc.data();
-                console.log('Loaded quiz from Firebase');
-            }
-        } catch (error) {
-            console.log('Using default quiz data (Firebase unavailable)');
-        }
-    }
 }
 
 function getDefaultQuizData(quizType) {
