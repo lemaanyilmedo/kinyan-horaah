@@ -24,7 +24,8 @@ try {
         db = firebase.firestore();
         
         db.settings({
-            experimentalForceLongPolling: true
+            experimentalForceLongPolling: true,
+            experimentalAutoDetectLongPolling: true
         });
         
         firebaseEnabled = true;
@@ -935,7 +936,7 @@ async function showResults(score) {
             <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
                 זה לא מעיד על חוסר ידע, אלא על האתגר הגדול שבמעבר מ"לימוד התיאוריה" ל"פסיקה למעשה". בדיוק בגלל זה הוקמה קניין הוראה - שמחוללת מהפך אצל מאות תלמידים שכבר יודעים להכריע!
             </p>
-            ${score > 0 ? `<p style="font-weight: bold; color: #93c5fd; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+            ${finalScore > 0 ? `<p style="font-weight: bold; color: #93c5fd; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
                 ✅ צברת ניקוד המזכה אותך בהשתתפות בהגרלה על מלגות לימודים!
             </p>` : ''}
         `;
@@ -983,155 +984,9 @@ document.getElementById('benefit-form').addEventListener('submit', async (e) => 
         }
     }
     
-    await sendToCRM(selectedBenefit);
-    
     document.getElementById('benefit-form').classList.add('hidden');
     document.getElementById('final-actions').classList.remove('hidden');
 });
-
-async function sendToCRM(benefit) {
-    const webhookURL = 'https://hook.eu2.make.com/xlel1ekv0qh3q3hgcwhvyv45jbwen7jy';
-    
-    const score = calculateScore();
-    
-    // Format date and time in Hebrew
-    const now = new Date();
-    const hebrewMonths = ['ינואר', 'פברואר', 'מרץ', 'אפריל', 'מאי', 'יוני', 'יולי', 'אוגוסט', 'ספטמבר', 'אוקטובר', 'נובמבר', 'דצמבר'];
-    const dateStr = `${hebrewMonths[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
-    const timeStr = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: true });
-    
-    // Create note with quiz details
-    const quizNote = `ליד מאתגר הפסיקה. ציון: ${score}%. התעניין בהטבה: ${benefit}`;
-    
-    // Map benefit to Hebrew course name
-    const benefitMapping = {
-        'shabbat_course_discount': 'הלכות שבת',
-        'issur_heter_course_discount': 'איסור והיתר',
-        'niddah_course_discount': 'הלכות נידה/טהרה',
-        'mamonot_special': 'ממונות (חושן משפט)'
-    };
-    const courseName = benefitMapping[benefit] || benefit;
-    
-    const payload = [{
-        form: {
-            id: "b61ca57",
-            name: "New Form"
-        },
-        fields: {
-            name: {
-                id: "name",
-                type: "text",
-                title: "Name",
-                value: userData.name || "",
-                raw_value: userData.name || "",
-                required: "1"
-            },
-            email: {
-                id: "email",
-                type: "email",
-                title: "Email",
-                value: userData.email || "",
-                raw_value: userData.email || "",
-                required: "1"
-            },
-            field_6f8642e: {
-                id: "field_6f8642e",
-                type: "tel",
-                title: "טלפון",
-                value: userData.phone || "",
-                raw_value: userData.phone || "",
-                required: "1"
-            },
-            field_fb4ae08: {
-                id: "field_fb4ae08",
-                type: "select",
-                title: "בחר מסלול",
-                value: courseName,
-                raw_value: courseName,
-                required: "1"
-            },
-            field_b1e584d: {
-                id: "field_b1e584d",
-                type: "textarea",
-                title: "תוכן ההודעה",
-                value: quizNote,
-                raw_value: quizNote,
-                required: "0"
-            },
-            field_32565c1: {
-                id: "field_32565c1",
-                type: "acceptance",
-                title: "מאשר תוכן",
-                value: "on",
-                raw_value: "on",
-                required: "1"
-            },
-            utm_source: {
-                id: "utm_source",
-                type: "hidden",
-                title: "מקור",
-                value: "",
-                raw_value: "",
-                required: "0"
-            },
-            field_aab9d21: {
-                id: "field_aab9d21",
-                type: "hidden",
-                title: "UTM",
-                value: "",
-                raw_value: "",
-                required: "0"
-            },
-            field_4c63868: {
-                id: "field_4c63868",
-                type: "hidden",
-                title: "מוצר משווק",
-                value: "",
-                raw_value: "",
-                required: "0"
-            }
-        },
-        meta: {
-            date: {
-                title: "תאריך",
-                value: dateStr
-            },
-            time: {
-                title: "זמן",
-                value: timeStr
-            },
-            page_url: {
-                title: "קישור לעמוד",
-                value: window.location.href
-            },
-            user_agent: {
-                title: "פרטי משתמש",
-                value: navigator.userAgent
-            },
-            remote_ip: {
-                title: "IP השולח",
-                value: ""
-            },
-            credit: {
-                title: "מופעל באמצעות",
-                value: "קניין הוראה - אתגר פסיקה"
-            }
-        }
-    }];
-    
-    try {
-        await fetch(webhookURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        });
-        console.log('Data sent to CRM successfully');
-    } catch (error) {
-        console.error('Error sending to CRM:', error);
-    }
-}
 
 function restartQuiz() {
     const otherQuiz = currentQuiz === 'shabbat' ? 'issur_heter' : 'shabbat';

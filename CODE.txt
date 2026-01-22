@@ -1,0 +1,1113 @@
+
+<!DOCTYPE html>
+<html dir="rtl" lang="he-IL">
+<head>
+	<meta charset="UTF-8">
+		<meta name='robots' content='index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1' />
+
+	<!-- This site is optimized with the Yoast SEO plugin v26.5 - https://yoast.com/wordpress/plugins/seo/ -->
+	<title>משחק חנוכה - אושר STAR</title>
+	<link rel="canonical" href="https://star.osherad.co.il/game/" />
+	<meta property="og:locale" content="he_IL" />
+	<meta property="og:type" content="article" />
+	<meta property="og:title" content="משחק חנוכה - אושר STAR" />
+	<meta property="og:description" content="0000 נקודות שם השחקן 24 איזו אות מגיעה אחרי האות ׳ב׳? 15 לשאלה הבאה" />
+	<meta property="og:url" content="https://star.osherad.co.il/game/" />
+	<meta property="og:site_name" content="אושר STAR" />
+	<meta property="article:modified_time" content="2025-11-23T11:04:33+00:00" />
+	<meta name="twitter:card" content="summary_large_image" />
+	<script type="application/ld+json" class="yoast-schema-graph">{"@context":"https://schema.org","@graph":[{"@type":"WebPage","@id":"https://star.osherad.co.il/game/","url":"https://star.osherad.co.il/game/","name":"משחק חנוכה - אושר STAR","isPartOf":{"@id":"https://star.osherad.co.il/#website"},"primaryImageOfPage":{"@id":"https://star.osherad.co.il/game/#primaryimage"},"image":{"@id":"https://star.osherad.co.il/game/#primaryimage"},"thumbnailUrl":"https://star.osherad.co.il/wp-content/uploads/2025/11/redStar.svg","datePublished":"2025-07-14T15:42:15+00:00","dateModified":"2025-11-23T11:04:33+00:00","breadcrumb":{"@id":"https://star.osherad.co.il/game/#breadcrumb"},"inLanguage":"he-IL","potentialAction":[{"@type":"ReadAction","target":["https://star.osherad.co.il/game/"]}]},{"@type":"ImageObject","inLanguage":"he-IL","@id":"https://star.osherad.co.il/game/#primaryimage","url":"https://star.osherad.co.il/wp-content/uploads/2025/11/redStar.svg","contentUrl":"https://star.osherad.co.il/wp-content/uploads/2025/11/redStar.svg","width":40,"height":40},{"@type":"BreadcrumbList","@id":"https://star.osherad.co.il/game/#breadcrumb","itemListElement":[{"@type":"ListItem","position":1,"name":"דף הבית","item":"https://star.osherad.co.il/"},{"@type":"ListItem","position":2,"name":"משחק חנוכה"}]},{"@type":"WebSite","@id":"https://star.osherad.co.il/#website","url":"https://star.osherad.co.il/","name":"אושר STAR","description":"משחק חנוכה של אושר עד לכל המשפחה","publisher":{"@id":"https://star.osherad.co.il/#organization"},"potentialAction":[{"@type":"SearchAction","target":{"@type":"EntryPoint","urlTemplate":"https://star.osherad.co.il/?s={search_term_string}"},"query-input":{"@type":"PropertyValueSpecification","valueRequired":true,"valueName":"search_term_string"}}],"inLanguage":"he-IL"},{"@type":"Organization","@id":"https://star.osherad.co.il/#organization","name":"אושר STAR","url":"https://star.osherad.co.il/","logo":{"@type":"ImageObject","inLanguage":"he-IL","@id":"https://star.osherad.co.il/#/schema/logo/image/","url":"https://star.osherad.co.il/wp-content/uploads/2025/11/logoHome.jpg","contentUrl":"https://star.osherad.co.il/wp-content/uploads/2025/11/logoHome.jpg","width":600,"height":243,"caption":"אושר STAR"},"image":{"@id":"https://star.osherad.co.il/#/schema/logo/image/"}}]}</script>
+	<!-- / Yoast SEO plugin. -->
+
+
+<link rel="alternate" type="application/rss+xml" title="אושר STAR &laquo; פיד‏" href="https://star.osherad.co.il/feed/" />
+<link rel="alternate" type="application/rss+xml" title="אושר STAR &laquo; פיד תגובות‏" href="https://star.osherad.co.il/comments/feed/" />
+<link rel="alternate" title="oEmbed (JSON)" type="application/json+oembed" href="https://star.osherad.co.il/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fstar.osherad.co.il%2Fgame%2F" />
+<link rel="alternate" title="oEmbed (XML)" type="text/xml+oembed" href="https://star.osherad.co.il/wp-json/oembed/1.0/embed?url=https%3A%2F%2Fstar.osherad.co.il%2Fgame%2F&#038;format=xml" />
+<link rel="stylesheet" type="text/css" href="https://use.typekit.net/lxs7rno.css"><style id='wp-img-auto-sizes-contain-inline-css'>
+img:is([sizes=auto i],[sizes^="auto," i]){contain-intrinsic-size:3000px 1500px}
+/*# sourceURL=wp-img-auto-sizes-contain-inline-css */
+</style>
+<style id='wp-emoji-styles-inline-css'>
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+/*# sourceURL=wp-emoji-styles-inline-css */
+</style>
+<link rel='stylesheet' id='wp-block-library-rtl-css' href='https://star.osherad.co.il/wp-includes/css/dist/block-library/style-rtl.min.css?ver=6.9' media='all' />
+<style id='global-styles-inline-css'>
+:root{--wp--preset--aspect-ratio--square: 1;--wp--preset--aspect-ratio--4-3: 4/3;--wp--preset--aspect-ratio--3-4: 3/4;--wp--preset--aspect-ratio--3-2: 3/2;--wp--preset--aspect-ratio--2-3: 2/3;--wp--preset--aspect-ratio--16-9: 16/9;--wp--preset--aspect-ratio--9-16: 9/16;--wp--preset--color--black: #000000;--wp--preset--color--cyan-bluish-gray: #abb8c3;--wp--preset--color--white: #ffffff;--wp--preset--color--pale-pink: #f78da7;--wp--preset--color--vivid-red: #cf2e2e;--wp--preset--color--luminous-vivid-orange: #ff6900;--wp--preset--color--luminous-vivid-amber: #fcb900;--wp--preset--color--light-green-cyan: #7bdcb5;--wp--preset--color--vivid-green-cyan: #00d084;--wp--preset--color--pale-cyan-blue: #8ed1fc;--wp--preset--color--vivid-cyan-blue: #0693e3;--wp--preset--color--vivid-purple: #9b51e0;--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple: linear-gradient(135deg,rgb(6,147,227) 0%,rgb(155,81,224) 100%);--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan: linear-gradient(135deg,rgb(122,220,180) 0%,rgb(0,208,130) 100%);--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange: linear-gradient(135deg,rgb(252,185,0) 0%,rgb(255,105,0) 100%);--wp--preset--gradient--luminous-vivid-orange-to-vivid-red: linear-gradient(135deg,rgb(255,105,0) 0%,rgb(207,46,46) 100%);--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray: linear-gradient(135deg,rgb(238,238,238) 0%,rgb(169,184,195) 100%);--wp--preset--gradient--cool-to-warm-spectrum: linear-gradient(135deg,rgb(74,234,220) 0%,rgb(151,120,209) 20%,rgb(207,42,186) 40%,rgb(238,44,130) 60%,rgb(251,105,98) 80%,rgb(254,248,76) 100%);--wp--preset--gradient--blush-light-purple: linear-gradient(135deg,rgb(255,206,236) 0%,rgb(152,150,240) 100%);--wp--preset--gradient--blush-bordeaux: linear-gradient(135deg,rgb(254,205,165) 0%,rgb(254,45,45) 50%,rgb(107,0,62) 100%);--wp--preset--gradient--luminous-dusk: linear-gradient(135deg,rgb(255,203,112) 0%,rgb(199,81,192) 50%,rgb(65,88,208) 100%);--wp--preset--gradient--pale-ocean: linear-gradient(135deg,rgb(255,245,203) 0%,rgb(182,227,212) 50%,rgb(51,167,181) 100%);--wp--preset--gradient--electric-grass: linear-gradient(135deg,rgb(202,248,128) 0%,rgb(113,206,126) 100%);--wp--preset--gradient--midnight: linear-gradient(135deg,rgb(2,3,129) 0%,rgb(40,116,252) 100%);--wp--preset--font-size--small: 13px;--wp--preset--font-size--medium: 20px;--wp--preset--font-size--large: 36px;--wp--preset--font-size--x-large: 42px;--wp--preset--spacing--20: 0.44rem;--wp--preset--spacing--30: 0.67rem;--wp--preset--spacing--40: 1rem;--wp--preset--spacing--50: 1.5rem;--wp--preset--spacing--60: 2.25rem;--wp--preset--spacing--70: 3.38rem;--wp--preset--spacing--80: 5.06rem;--wp--preset--shadow--natural: 6px 6px 9px rgba(0, 0, 0, 0.2);--wp--preset--shadow--deep: 12px 12px 50px rgba(0, 0, 0, 0.4);--wp--preset--shadow--sharp: 6px 6px 0px rgba(0, 0, 0, 0.2);--wp--preset--shadow--outlined: 6px 6px 0px -3px rgb(255, 255, 255), 6px 6px rgb(0, 0, 0);--wp--preset--shadow--crisp: 6px 6px 0px rgb(0, 0, 0);}:root { --wp--style--global--content-size: 800px;--wp--style--global--wide-size: 1200px; }:where(body) { margin: 0; }.wp-site-blocks > .alignleft { float: left; margin-right: 2em; }.wp-site-blocks > .alignright { float: right; margin-left: 2em; }.wp-site-blocks > .aligncenter { justify-content: center; margin-left: auto; margin-right: auto; }:where(.wp-site-blocks) > * { margin-block-start: 24px; margin-block-end: 0; }:where(.wp-site-blocks) > :first-child { margin-block-start: 0; }:where(.wp-site-blocks) > :last-child { margin-block-end: 0; }:root { --wp--style--block-gap: 24px; }:root :where(.is-layout-flow) > :first-child{margin-block-start: 0;}:root :where(.is-layout-flow) > :last-child{margin-block-end: 0;}:root :where(.is-layout-flow) > *{margin-block-start: 24px;margin-block-end: 0;}:root :where(.is-layout-constrained) > :first-child{margin-block-start: 0;}:root :where(.is-layout-constrained) > :last-child{margin-block-end: 0;}:root :where(.is-layout-constrained) > *{margin-block-start: 24px;margin-block-end: 0;}:root :where(.is-layout-flex){gap: 24px;}:root :where(.is-layout-grid){gap: 24px;}.is-layout-flow > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-flow > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-flow > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignleft{float: left;margin-inline-start: 0;margin-inline-end: 2em;}.is-layout-constrained > .alignright{float: right;margin-inline-start: 2em;margin-inline-end: 0;}.is-layout-constrained > .aligncenter{margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > :where(:not(.alignleft):not(.alignright):not(.alignfull)){max-width: var(--wp--style--global--content-size);margin-left: auto !important;margin-right: auto !important;}.is-layout-constrained > .alignwide{max-width: var(--wp--style--global--wide-size);}body .is-layout-flex{display: flex;}.is-layout-flex{flex-wrap: wrap;align-items: center;}.is-layout-flex > :is(*, div){margin: 0;}body .is-layout-grid{display: grid;}.is-layout-grid > :is(*, div){margin: 0;}body{padding-top: 0px;padding-right: 0px;padding-bottom: 0px;padding-left: 0px;}a:where(:not(.wp-element-button)){text-decoration: underline;}:root :where(.wp-element-button, .wp-block-button__link){background-color: #32373c;border-width: 0;color: #fff;font-family: inherit;font-size: inherit;font-style: inherit;font-weight: inherit;letter-spacing: inherit;line-height: inherit;padding-top: calc(0.667em + 2px);padding-right: calc(1.333em + 2px);padding-bottom: calc(0.667em + 2px);padding-left: calc(1.333em + 2px);text-decoration: none;text-transform: inherit;}.has-black-color{color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-color{color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-color{color: var(--wp--preset--color--white) !important;}.has-pale-pink-color{color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-color{color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-color{color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-color{color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-color{color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-color{color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-color{color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-color{color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-color{color: var(--wp--preset--color--vivid-purple) !important;}.has-black-background-color{background-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-background-color{background-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-background-color{background-color: var(--wp--preset--color--white) !important;}.has-pale-pink-background-color{background-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-background-color{background-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-background-color{background-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-background-color{background-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-background-color{background-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-background-color{background-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-background-color{background-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-background-color{background-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-background-color{background-color: var(--wp--preset--color--vivid-purple) !important;}.has-black-border-color{border-color: var(--wp--preset--color--black) !important;}.has-cyan-bluish-gray-border-color{border-color: var(--wp--preset--color--cyan-bluish-gray) !important;}.has-white-border-color{border-color: var(--wp--preset--color--white) !important;}.has-pale-pink-border-color{border-color: var(--wp--preset--color--pale-pink) !important;}.has-vivid-red-border-color{border-color: var(--wp--preset--color--vivid-red) !important;}.has-luminous-vivid-orange-border-color{border-color: var(--wp--preset--color--luminous-vivid-orange) !important;}.has-luminous-vivid-amber-border-color{border-color: var(--wp--preset--color--luminous-vivid-amber) !important;}.has-light-green-cyan-border-color{border-color: var(--wp--preset--color--light-green-cyan) !important;}.has-vivid-green-cyan-border-color{border-color: var(--wp--preset--color--vivid-green-cyan) !important;}.has-pale-cyan-blue-border-color{border-color: var(--wp--preset--color--pale-cyan-blue) !important;}.has-vivid-cyan-blue-border-color{border-color: var(--wp--preset--color--vivid-cyan-blue) !important;}.has-vivid-purple-border-color{border-color: var(--wp--preset--color--vivid-purple) !important;}.has-vivid-cyan-blue-to-vivid-purple-gradient-background{background: var(--wp--preset--gradient--vivid-cyan-blue-to-vivid-purple) !important;}.has-light-green-cyan-to-vivid-green-cyan-gradient-background{background: var(--wp--preset--gradient--light-green-cyan-to-vivid-green-cyan) !important;}.has-luminous-vivid-amber-to-luminous-vivid-orange-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-amber-to-luminous-vivid-orange) !important;}.has-luminous-vivid-orange-to-vivid-red-gradient-background{background: var(--wp--preset--gradient--luminous-vivid-orange-to-vivid-red) !important;}.has-very-light-gray-to-cyan-bluish-gray-gradient-background{background: var(--wp--preset--gradient--very-light-gray-to-cyan-bluish-gray) !important;}.has-cool-to-warm-spectrum-gradient-background{background: var(--wp--preset--gradient--cool-to-warm-spectrum) !important;}.has-blush-light-purple-gradient-background{background: var(--wp--preset--gradient--blush-light-purple) !important;}.has-blush-bordeaux-gradient-background{background: var(--wp--preset--gradient--blush-bordeaux) !important;}.has-luminous-dusk-gradient-background{background: var(--wp--preset--gradient--luminous-dusk) !important;}.has-pale-ocean-gradient-background{background: var(--wp--preset--gradient--pale-ocean) !important;}.has-electric-grass-gradient-background{background: var(--wp--preset--gradient--electric-grass) !important;}.has-midnight-gradient-background{background: var(--wp--preset--gradient--midnight) !important;}.has-small-font-size{font-size: var(--wp--preset--font-size--small) !important;}.has-medium-font-size{font-size: var(--wp--preset--font-size--medium) !important;}.has-large-font-size{font-size: var(--wp--preset--font-size--large) !important;}.has-x-large-font-size{font-size: var(--wp--preset--font-size--x-large) !important;}
+:root :where(.wp-block-pullquote){font-size: 1.5em;line-height: 1.6;}
+/*# sourceURL=global-styles-inline-css */
+</style>
+<link rel='stylesheet' id='hello-elementor-css' href='https://star.osherad.co.il/wp-content/themes/hello-elementor/assets/css/reset.css?ver=3.4.5' media='all' />
+<link rel='stylesheet' id='hello-elementor-theme-style-css' href='https://star.osherad.co.il/wp-content/themes/hello-elementor/assets/css/theme.css?ver=3.4.5' media='all' />
+<link rel='stylesheet' id='hello-elementor-header-footer-css' href='https://star.osherad.co.il/wp-content/themes/hello-elementor/assets/css/header-footer.css?ver=3.4.5' media='all' />
+<link rel='stylesheet' id='elementor-frontend-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/css/frontend-rtl.min.css?ver=3.33.6' media='all' />
+<link rel='stylesheet' id='elementor-post-8-css' href='https://star.osherad.co.il/wp-content/uploads/elementor/css/post-8.css?ver=1769054891' media='all' />
+<link rel='stylesheet' id='e-popup-css' href='https://star.osherad.co.il/wp-content/plugins/elementor-pro/assets/css/conditionals/popup.min.css?ver=3.30.0' media='all' />
+<link rel='stylesheet' id='widget-share-buttons-css' href='https://star.osherad.co.il/wp-content/plugins/elementor-pro/assets/css/widget-share-buttons-rtl.min.css?ver=3.30.0' media='all' />
+<link rel='stylesheet' id='e-apple-webkit-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/css/conditionals/apple-webkit.min.css?ver=3.33.6' media='all' />
+<link rel='stylesheet' id='elementor-icons-shared-0-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/lib/font-awesome/css/fontawesome.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-solid-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/lib/font-awesome/css/solid.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-brands-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/lib/font-awesome/css/brands.min.css?ver=5.15.3' media='all' />
+<link rel='stylesheet' id='elementor-icons-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/lib/eicons/css/elementor-icons.min.css?ver=5.44.0' media='all' />
+<link rel='stylesheet' id='widget-heading-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/css/widget-heading-rtl.min.css?ver=3.33.6' media='all' />
+<link rel='stylesheet' id='widget-image-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/css/widget-image-rtl.min.css?ver=3.33.6' media='all' />
+<link rel='stylesheet' id='e-animation-grow-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/lib/animations/styles/e-animation-grow.min.css?ver=3.33.6' media='all' />
+<link rel='stylesheet' id='elementor-post-69-css' href='https://star.osherad.co.il/wp-content/uploads/elementor/css/post-69.css?ver=1769054899' media='all' />
+<link rel='stylesheet' id='elementor-post-350-css' href='https://star.osherad.co.il/wp-content/uploads/elementor/css/post-350.css?ver=1769054892' media='all' />
+<link rel='stylesheet' id='elementor-post-224-css' href='https://star.osherad.co.il/wp-content/uploads/elementor/css/post-224.css?ver=1769054892' media='all' />
+<link rel='stylesheet' id='hello-elementor-child-style-css' href='https://star.osherad.co.il/wp-content/themes/hello-theme-child-master/style.css?ver=2.0.0' media='all' />
+<link rel='stylesheet' id='elementor-icons-fa-regular-css' href='https://star.osherad.co.il/wp-content/plugins/elementor/assets/lib/font-awesome/css/regular.min.css?ver=5.15.3' media='all' />
+<script src="https://star.osherad.co.il/wp-includes/js/jquery/jquery.min.js?ver=3.7.1" id="jquery-core-js"></script>
+<script src="https://star.osherad.co.il/wp-includes/js/jquery/jquery-migrate.min.js?ver=3.4.1" id="jquery-migrate-js"></script>
+<link rel="https://api.w.org/" href="https://star.osherad.co.il/wp-json/" /><link rel="alternate" title="JSON" type="application/json" href="https://star.osherad.co.il/wp-json/wp/v2/pages/69" /><link rel="EditURI" type="application/rsd+xml" title="RSD" href="https://star.osherad.co.il/xmlrpc.php?rsd" />
+<meta name="generator" content="WordPress 6.9" />
+<link rel='shortlink' href='https://star.osherad.co.il/?p=69' />
+<meta name="generator" content="Elementor 3.33.6; features: additional_custom_breakpoints; settings: css_print_method-external, google_font-enabled, font_display-swap">
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const gameUrl = '/wp-content/uploads/game/game.json';
+  const gradeOrder = ['א', 'ב', 'ג', 'ד', 'ה', 'ו', 'ז', 'ח'];
+  const gameContainer = document.querySelector('.gameContainer');
+  const gradeEl = gameContainer.querySelector('.grade');
+  const questionEl = gameContainer.querySelector('.question');
+  const answersEl = gameContainer.querySelector('.answers');
+  const timerEl = gameContainer.querySelector('.timer');
+  const rankEl = gameContainer.querySelector('.rank');
+  const muteBtn = document.querySelector('.mute');
+
+  const tickSound = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+  const correctSound = new Audio('/wp-content/uploads/2025/07/correct.mp3');
+  const wrongSound = new Audio('/wp-content/uploads/2025/07/wrong.mp3');
+  const levelUpSound = new Audio('/wp-content/uploads/2025/07/levelUp.mp3');
+  const clappingSound = new Audio('/wp-content/uploads/2025/07/clapping.mp3');
+  const backgroundMusic = new Audio('/wp-content/uploads/2025/07/loopMusic.mp3');
+
+  const sounds = [tickSound, correctSound, wrongSound, levelUpSound, clappingSound, backgroundMusic];
+  let isMuted = false;
+  let userInteracted = false;
+
+  let gameStartTime = null;
+
+  backgroundMusic.volume = 0.3;
+  backgroundMusic.loop = true;
+
+  muteBtn.addEventListener('click', () => {
+    isMuted = !isMuted;
+    sounds.forEach(s => s.muted = isMuted);
+    muteBtn.style.opacity = isMuted ? '0.5' : '1';
+  });
+
+  let questionsByGrade = {};
+  let currentGradeIndex = 0;
+  let currentQuestions = [];
+  let correctInGrade = 0;
+  let askedInGrade = 0;
+  let score = 0;
+  let timerId = null;
+
+  const maxCorrectPerGrade = 6;
+  const maxAskedPerGrade = 10;
+  const questionTime = 15;
+
+  fetch(gameUrl).then(r => r.json()).then(initGame);
+
+  function initGame(data) {
+    rankEl.textContent = '0';
+    data.forEach(q => {
+      (questionsByGrade[q.grade] ||= []).push(q);
+    });
+    gameStartTime = Date.now();
+    if (!isMuted) backgroundMusic.play();
+    startGrade();
+  }
+
+  function showLevelUpMessage(done) {
+    const lvlBox = document.querySelector('.levelupContainer');
+    if (!lvlBox) { done(); return; }
+    const qLines = document.querySelector('.questionLines');
+    const ansBox = document.querySelector('.answers');
+    qLines.style.display = 'none';
+    ansBox.style.display = 'none';
+    lvlBox.innerHTML = '';
+    const name = localStorage.getItem('gamePlayerName') || '';
+    lvlBox.innerHTML = `
+      <div class="levelup-message">${name ? name + ',' : ''} כל הכבוד!</div>
+      <div class="levelup-subline">עלית כיתה!</div>
+      <img class="levelup-image" src="/wp-content/uploads/2025/07/wellDone.svg" alt="well done">
+    `;
+    if (!isMuted) levelUpSound.play();
+    setTimeout(() => {
+      lvlBox.innerHTML = '';
+      qLines.style.display = '';
+      ansBox.style.display = '';
+      done();
+    }, 3000);
+  }
+
+  function startGrade() {
+    const grade = gradeOrder[currentGradeIndex];
+    correctInGrade = 0;
+    askedInGrade = 0;
+    currentQuestions = [...(questionsByGrade[grade] || [])];
+    for (let i = 1; i <= maxCorrectPerGrade; i++) {
+      const el = document.querySelector(`.number${i}`);
+      if (el) el.innerHTML = `<img src="/wp-content/uploads/2025/07/number${i}.svg" alt="${i}">`;
+    }
+    updateGradeDisplay(grade);
+    nextQuestion();
+  }
+
+  function updateGradeDisplay(grade) {
+    gradeEl.textContent = `כיתה ${grade}`;
+  }
+
+  function nextQuestion() {
+    clearInterval(timerId);
+    if (correctInGrade >= maxCorrectPerGrade) {
+      currentGradeIndex++;
+      const available = gradeOrder.filter(g => questionsByGrade[g] && questionsByGrade[g].length);
+      if (currentGradeIndex >= available.length) {
+        localStorage.setItem('gamePlayerScore', score.toString());
+        const durationSec = Math.round((Date.now() - gameStartTime) / 1000);
+        localStorage.setItem('gameDuration', durationSec.toString());
+        if (!isMuted) clappingSound.play();
+        setTimeout(() => window.location.href = '/king/', 2000);
+        return;
+      }
+      showLevelUpMessage(startGrade);
+      return;
+    }
+    if (askedInGrade >= maxAskedPerGrade || currentQuestions.length === 0) {
+      gameOver();
+      return;
+    }
+    const idx = Math.floor(Math.random() * currentQuestions.length);
+    const q = currentQuestions.splice(idx, 1)[0];
+    askedInGrade++;
+    renderQuestion(q);
+    startTimer(() => {
+      if (!isMuted) tickSound.play();
+      nextQuestion();
+    });
+  }
+
+  function renderQuestion(q) {
+    questionEl.textContent = q.question;
+    answersEl.innerHTML = '';
+    q.options.forEach((opt, i) => {
+      const btn = document.createElement('button');
+      btn.className = 'answerBtn';
+      btn.textContent = opt;
+      btn.dataset.correct = q.correctIndex === i ? '1' : '0';
+      btn.addEventListener('click', answerHandler);
+      answersEl.appendChild(btn);
+    });
+  }
+
+  function answerHandler(e) {
+    if (!userInteracted) {
+      userInteracted = true;
+      try { tickSound.play().then(() => { tickSound.pause(); tickSound.currentTime = 0; }); } catch (err) {}
+    }
+    clearInterval(timerId);
+    const isCorrect = e.currentTarget.dataset.correct === '1';
+    document.querySelectorAll('.answerBtn').forEach(b => b.disabled = true);
+    if (isCorrect) {
+      if (!isMuted) correctSound.play();
+      score += 10;
+      correctInGrade++;
+      rankEl.textContent = score.toString();
+      e.currentTarget.style.backgroundColor = '#D8E9D2';
+      e.currentTarget.style.border = '2px solid #41AD49';
+      e.currentTarget.style.color = '#41AD49';
+      const numEl = document.querySelector(`.number${correctInGrade}`);
+      if (numEl) numEl.innerHTML = '<img src="/wp-content/uploads/2025/07/doneIcon.svg" alt="done">';
+    } else {
+      if (!isMuted) wrongSound.play();
+      e.currentTarget.style.backgroundColor = '#F3C1C1';
+      e.currentTarget.style.border = '2px solid #C6191C';
+      e.currentTarget.style.color = '#C6191C';
+    }
+    setTimeout(nextQuestion, 1000);
+  }
+
+  function startTimer(cb) {
+    let t = questionTime;
+    const circle = document.querySelector('.progress');
+    const timeText = document.querySelector('.timeText');
+    const R = 45, C = 2 * Math.PI * R;
+    circle.style.strokeDasharray = C;
+    circle.style.strokeDashoffset = 0;
+    timeText.textContent = t;
+    timerId = setInterval(() => {
+      t--;
+      timeText.textContent = t;
+      circle.style.strokeDashoffset = C - (t / questionTime) * C;
+      if (t <= 0) { clearInterval(timerId); cb(); }
+    }, 1000);
+  }
+
+  function gameOver() {
+    clearInterval(timerId);
+    localStorage.setItem('gamePlayerScore', score.toString());
+    const name = localStorage.getItem('gamePlayerName') || '';
+    localStorage.setItem('gamePlayerName', name);
+    const durationSec = Math.round((Date.now() - gameStartTime) / 1000);
+    localStorage.setItem('gameDuration', durationSec.toString());
+    if (!isMuted) clappingSound.play();
+    setTimeout(() => window.location.href = '/gameover/', 2000);
+  }
+});
+</script>
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-WBC8EHKZV3"></script>
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-TCHXDBE0LR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-WBC8EHKZV3');
+	gtag('config', 'G-TCHXDBE0LR');
+
+</script>
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const name  = localStorage.getItem('gamePlayerName')  || '';
+  const score = localStorage.getItem('gamePlayerScore') || '0';
+
+  const nameEl = document.querySelector('.playerNameGameOver .elementor-heading-title');
+  if (nameEl) nameEl.textContent = `${name} כל הכבוד!`;
+
+  const scoreEl = document.querySelector('.endRank .elementor-heading-title');
+  if (scoreEl) scoreEl.textContent = score;
+});
+</script>
+<!-- Google Tag Manager -->
+<script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+})(window,document,'script','dataLayer','GTM-KLQ4CS6');</script>
+<!-- End Google Tag Manager -->
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const name = localStorage.getItem('gamePlayerName') || '';
+  const score = localStorage.getItem('gamePlayerScore') || '0';
+  const duration = localStorage.getItem('gameDuration') || '0';
+
+  const nameEl = document.querySelector('.playerNameGameOver .elementor-heading-title');
+  if (nameEl) nameEl.textContent = name ? `${name} כל הכבוד!` : '';
+
+  const scoreEl = document.querySelector('.endRank .elementor-heading-title');
+  if (scoreEl) scoreEl.textContent = score;
+
+  if (name && score !== '0') {
+    const formData = new FormData();
+    formData.append('action', 'save_game_score');
+    formData.append('name', name);
+    formData.append('score', score);
+    formData.append('duration', duration);
+
+    fetch('/wp-admin/admin-ajax.php', {
+      method: 'POST',
+      body: formData
+    })
+    .then(() => {
+      console.log('Saved score:', name, score, duration);
+    });
+  }
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+		
+	
+    function ensurePlayerId() {
+        let id = localStorage.getItem('osher_player_id');
+        if (!id) {
+            id = 'osher_' + Math.random().toString(36).substr(2, 10);
+            localStorage.setItem('osher_player_id', id);
+        }
+        return id;
+    }
+
+    const playerId = ensurePlayerId();
+    const playerName = localStorage.getItem('gamePlayerName') || '';
+
+    function getScoreKey(){
+        return 'gameTotalScore_' + playerId;
+    }
+
+    function getDurationKey(){
+        return 'gameTotalDuration_' + playerId;
+    }
+
+    function getScore(){
+        return parseInt(localStorage.getItem(getScoreKey()) || '0', 10);
+    }
+
+    function setScore(v){
+        localStorage.setItem(getScoreKey(), v.toString());
+        localStorage.setItem('gamePlayerScore', v.toString());
+    }
+
+    function getDuration(){
+        return parseInt(localStorage.getItem(getDurationKey()) || '0', 10);
+    }
+
+    function setDuration(v){
+        localStorage.setItem(getDurationKey(), v.toString());
+        localStorage.setItem('gameDuration', v.toString());
+    }
+
+    window.osherGameIdentity = {
+        id: playerId,
+        name: playerName,
+        getScore: getScore,
+        setScore: setScore,
+        getDuration: getDuration,
+        setDuration: setDuration
+    };
+
+});
+
+document.addEventListener('DOMContentLoaded', function() {
+
+    if (window.osherGameLoaded) return;
+    window.osherGameLoaded = true;
+
+    var origPlay = HTMLMediaElement.prototype.play;
+    HTMLMediaElement.prototype.play = function() {
+        try {
+            if (this.src && this.src.indexOf('/wp-content/uploads/2025/07/loopMusic.mp3') !== -1) {
+                if (window.__osherLoopAudio && window.__osherLoopAudio !== this) {
+                    window.__osherLoopAudio.pause();
+                }
+                window.__osherLoopAudio = this;
+            }
+        } catch (e) {}
+        return origPlay.apply(this, arguments);
+    };
+
+    const gameUrl = '/wp-content/uploads/game/game.json';
+    const gameContainer = document.querySelector('.gameContainer');
+    if (!gameContainer) return;
+
+    const questionTitle =
+        gameContainer.querySelector('.questionLines .elementor-heading-title') ||
+        gameContainer.querySelector('.question .elementor-heading-title');
+
+    const answersEl = gameContainer.querySelector('.answers');
+    const rankContainer = gameContainer.querySelector('.rank');
+    const playerNameEl = gameContainer.querySelector('.playerNameHere');
+    const timeLine = gameContainer.querySelector('.timeLine');
+    const muteBtn = gameContainer.querySelector('.mute') || document.querySelector('.mute');
+    const nextBtn = gameContainer.querySelector('.nextQuestion');
+
+    let progressFill = null;
+    let currentQuestionEl = null;
+
+    if (timeLine) {
+        timeLine.innerHTML =
+            '<div class="timeline-wrapper">' +
+            '<div class="timeline-line"><div class="timeline-fill"></div></div>' +
+            '<div class="timeline-current"></div>' +
+            '</div>';
+        progressFill = timeLine.querySelector('.timeline-fill');
+        currentQuestionEl = timeLine.querySelector('.timeline-current');
+    }
+
+    const tickSound       = new Audio('https://actions.google.com/sounds/v1/alarms/beep_short.ogg');
+    const correctSound    = new Audio('/wp-content/uploads/2025/07/correct.mp3');
+    const wrongSound      = new Audio('/wp-content/uploads/2025/07/wrong.mp3');
+    const levelUpSound    = new Audio('/wp-content/uploads/2025/07/levelUp.mp3');
+    const clappingSound   = new Audio('/wp-content/uploads/2025/07/clapping.mp3');
+    const backgroundMusic = new Audio('/wp-content/uploads/2025/07/loopMusic.mp3');
+
+    const sounds = [
+        tickSound, correctSound, wrongSound,
+        levelUpSound, clappingSound, backgroundMusic
+    ];
+
+    let isMuted = false;
+    let userInteracted = false;
+    let gameStartTime = null;
+    let questionsPool = [];
+    let questionsSequence = [];
+    let pointer = 0;
+    let answeredCount = 0;
+    let score = osherGameIdentity.getScore();
+    let timerId = null;
+
+    const totalQuestionsPerGame = 24;
+    const questionTime = 24;
+
+    backgroundMusic.volume = 0.3;
+    backgroundMusic.loop = true;
+
+    if (muteBtn) {
+        muteBtn.addEventListener('click', function() {
+            isMuted = !isMuted;
+            sounds.forEach(s => s.muted = isMuted);
+            muteBtn.style.opacity = isMuted ? '0.5' : '1';
+            if (isMuted) backgroundMusic.pause();
+            else backgroundMusic.play().catch(()=>{});
+        });
+    }
+
+    if (nextBtn) {
+        nextBtn.addEventListener('click', function() {
+            clearInterval(timerId);
+            answeredCount++;
+            pointer++;
+            if (!isMuted) wrongSound.play();
+            updateTimeline();
+            if (answeredCount >= totalQuestionsPerGame) {
+                setTimeout(endGame, 800);
+                return;
+            }
+            setTimeout(showNewQuestion, 800);
+        });
+    }
+
+    const storedName = localStorage.getItem('gamePlayerName') || '';
+    if (playerNameEl && storedName) {
+        playerNameEl.textContent = storedName;
+    }
+
+    function shuffleArray(a) {
+        for (let i = a.length - 1; i > 0; i--) {
+            const j = Math.floor(Math.random() * (i + 1));
+            const t = a[i];
+            a[i] = a[j];
+            a[j] = t;
+        }
+        return a;
+    }
+
+    function getUsedQuestions() {
+        try {
+            return JSON.parse(localStorage.getItem('gameUsedQuestions') || '[]');
+        } catch (e) { return [] }
+    }
+
+    function saveUsedQuestions(a) {
+        localStorage.setItem('gameUsedQuestions', JSON.stringify(a));
+    }
+
+    fetch(gameUrl)
+        .then(r => r.json())
+        .then(initGame);
+
+    function initGame(data) {
+        if (!Array.isArray(data) || !data.length) return;
+
+        questionsPool = data.slice();
+        let used = getUsedQuestions();
+        let unused = questionsPool.filter(q => !used.includes(q.id));
+
+        if (unused.length < totalQuestionsPerGame) {
+            used = [];
+            saveUsedQuestions([]);
+            unused = questionsPool.slice();
+        }
+
+        unused = shuffleArray(unused);
+        questionsSequence = unused.slice();
+
+        const ids = questionsSequence.map(q => q.id);
+        saveUsedQuestions(used.concat(ids));
+
+				pointer = 0;
+				answeredCount = 0;
+				gameStartTime = Date.now();
+
+				osherGameIdentity.setDuration(0);
+
+				score = osherGameIdentity.getScore();
+				updateScoreDisplay(score);
+
+        if (progressFill) progressFill.style.width = '0%';
+        if (currentQuestionEl) {
+            currentQuestionEl.textContent = '1';
+            currentQuestionEl.style.right = '0%';
+        }
+
+        if (!isMuted) backgroundMusic.play().catch(()=>{});
+
+        showNewQuestion();
+    }
+
+    function showNewQuestion() {
+        clearInterval(timerId);
+
+        if (answeredCount >= totalQuestionsPerGame) {
+            endGame();
+            return;
+        }
+
+        if (pointer >= questionsSequence.length) {
+            pointer = 0;
+        }
+
+        const q = questionsSequence[pointer];
+        renderQuestion(q);
+
+        startTimer(() => {
+            pointer++;
+            showNewQuestion();
+        });
+    }
+
+    function renderQuestion(q) {
+        if (questionTitle) questionTitle.textContent = q.question;
+        if (!answersEl) return;
+
+        answersEl.innerHTML = '';
+
+        q.options.forEach(function(opt, i) {
+            const b = document.createElement('button');
+            b.className = 'answerBtn';
+            b.textContent = opt;
+            b.dataset.correct = q.correctIndex === i ? '1' : '0';
+            b.addEventListener('click', answerHandler);
+            answersEl.appendChild(b);
+        });
+    }
+
+    function answerHandler(e) {
+        if (!userInteracted) {
+            userInteracted = true;
+            try {
+                tickSound.play().then(function() {
+                    tickSound.pause();
+                    tickSound.currentTime = 0;
+                });
+            } catch (e) {}
+        }
+
+        clearInterval(timerId);
+
+        const correct = e.currentTarget.dataset.correct === '1';
+
+        gameContainer.querySelectorAll('.answerBtn').forEach(b => b.disabled = true);
+
+        if (correct) {
+            if (!isMuted) correctSound.play();
+            score += 10;
+            osherGameIdentity.setScore(score);
+
+            e.currentTarget.style.backgroundColor = '#D8E9D2';
+            e.currentTarget.style.border = '2px solid #41AD49';
+            e.currentTarget.style.color = '#41AD49';
+
+            updateScoreDisplay(score);
+
+        } else {
+            if (!isMuted) wrongSound.play();
+            e.currentTarget.style.backgroundColor = '#F3C1C1';
+            e.currentTarget.style.border = '2px solid #C6191C';
+            e.currentTarget.style.color = '#C6191C';
+        }
+
+        answeredCount++;
+        pointer++;
+        updateTimeline();
+
+        if (answeredCount >= totalQuestionsPerGame) {
+            setTimeout(endGame, 800);
+            return;
+        }
+
+        setTimeout(showNewQuestion, 800);
+    }
+
+    function updateTimeline() {
+        if (!progressFill || !currentQuestionEl) return;
+        if (answeredCount >= totalQuestionsPerGame) return;
+
+        const pct = (answeredCount / totalQuestionsPerGame) * 100;
+        const num = answeredCount === 0 ? 1 : answeredCount + 1;
+
+        progressFill.style.width = pct + '%';
+        currentQuestionEl.textContent = num;
+
+        if (answeredCount === 0) {
+            currentQuestionEl.style.right = '0%';
+        } else {
+            currentQuestionEl.style.right = pct + '%';
+        }
+    }
+
+    function updateScoreDisplay(v) {
+        if (!rankContainer) return;
+
+        const padded = v.toString().padStart(4, '0');
+        const digits = padded.split('');
+
+        const idx = digits.findIndex(x => x !== '0');
+        let html = '';
+
+        for (let i = 0; i < digits.length; i++) {
+            const ch = digits[i];
+            const zero = idx === -1 || i < idx;
+            const c = zero ? '#ff2a3269' : '#FF2A32';
+            const o = zero ? '0.5' : '1';
+
+            html +=
+                '<span class="rank-digit" style="color:' + c +
+                ';opacity:' + o +
+                ';display:inline-block;min-width:0.6em;text-align:center;">' +
+                ch +
+                '</span>';
+        }
+
+        rankContainer.innerHTML = html;
+    }
+
+    function startTimer(cb) {
+        let t = questionTime;
+        const circle = gameContainer.querySelector('.timer .progress');
+        const timeText = gameContainer.querySelector('.timer .timeText');
+        const R = 45;
+        const C = 2 * Math.PI * R;
+
+        if (circle) {
+            circle.style.strokeDasharray = C;
+            circle.style.strokeDashoffset = 0;
+        }
+
+        if (timeText) timeText.textContent = t;
+
+        timerId = setInterval(() => {
+            t--;
+            if (timeText) timeText.textContent = t;
+            if (circle) {
+                circle.style.strokeDashoffset = C - (t / questionTime) * C;
+            }
+            if (t === 3 && !isMuted) tickSound.play();
+            if (t <= 0) {
+                clearInterval(timerId);
+                cb();
+            }
+        }, 1000);
+    }
+
+		function sendScoreToServer(pid, name, score, duration, phone){
+				var url='/wp-admin/admin-ajax.php';
+				var body = new URLSearchParams();
+				body.append('action','save_game_score');
+				body.append('player_id', pid);
+				body.append('name', name);
+				body.append('phone', phone);
+				body.append('score', score);
+				body.append('duration', duration);
+
+				if (navigator.sendBeacon) {
+						navigator.sendBeacon(url, body);
+				} else {
+						fetch(url, {
+								method: 'POST',
+								headers: {'Content-Type':'application/x-www-form-urlencoded'},
+								body: body.toString(),
+								keepalive: true
+						}).catch(()=>{});
+				}
+		}
+
+		let gameEnded = false;
+
+		function endGame() {
+
+				if (gameEnded) return; 
+				gameEnded = true;
+
+				clearInterval(timerId);
+
+				const durationSec = Math.round((Date.now() - gameStartTime) / 1000);
+
+				const pid   = osherGameIdentity.id;
+				const name  = osherGameIdentity.name;
+				const score = osherGameIdentity.getScore();
+				const phone = localStorage.getItem('gamePlayerPhone') || '';
+
+				sendScoreToServer(pid, name, score, durationSec, phone);
+
+				if (!isMuted) clappingSound.play();
+
+				setTimeout(() => {
+						window.location.href = '/king/';
+				}, 2000);
+		}
+
+});
+
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  var name = localStorage.getItem('gamePlayerName') || '';
+  document.querySelectorAll('.playerNameHere').forEach(function(el) {
+    var heading = el.querySelector('.elementor-heading-title') || el;
+    if (name) {
+      heading.textContent = name;
+    }
+  });
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+
+    var playerId = localStorage.getItem('osher_player_id') || '';
+    var scoreKey = playerId ? 'gameTotalScore_' + playerId : 'gameTotalScore_guest';
+    var score = localStorage.getItem(scoreKey) || '0';
+
+    document.querySelectorAll('.playerScoreHere').forEach(function(el) {
+        var heading = el.querySelector('.elementor-heading-title') || el;
+        heading.textContent = score;
+    });
+
+});
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded',function(){
+  var total=24
+  var current=0
+  var fill=document.querySelector('.timeline-fill')
+  var currentEl=document.querySelector('.timeline-current')
+
+  function updateTimeline(){
+    currentEl.textContent=current
+    var pct=(current/total)*100
+    fill.style.width=pct+'%'
+    currentEl.style.right='calc(100% - '+pct+'%)'
+  }
+
+  window.timelineNext=function(){
+    if(current<total){
+      current++
+      updateTimeline()
+    }
+  }
+
+  updateTimeline()
+})
+</script>
+
+<script>
+document.addEventListener('DOMContentLoaded', function(){
+    if (!localStorage.getItem('playerId')) {
+        var pid = 'pid_' + Math.random().toString(36).substring(2) + Date.now();
+        localStorage.setItem('playerId', pid);
+    }
+});
+</script>
+
+<link rel="icon" href="https://star.osherad.co.il/wp-content/uploads/2025/11/cropped-favicon-32x32.png" sizes="32x32" />
+<link rel="icon" href="https://star.osherad.co.il/wp-content/uploads/2025/11/cropped-favicon-192x192.png" sizes="192x192" />
+<link rel="apple-touch-icon" href="https://star.osherad.co.il/wp-content/uploads/2025/11/cropped-favicon-180x180.png" />
+<meta name="msapplication-TileImage" content="https://star.osherad.co.il/wp-content/uploads/2025/11/cropped-favicon-270x270.png" />
+	<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" /></head>
+<body class="rtl wp-singular page-template page-template-elementor_canvas page page-id-69 wp-custom-logo wp-embed-responsive wp-theme-hello-elementor wp-child-theme-hello-theme-child-master hello-elementor-default elementor-default elementor-template-canvas elementor-kit-8 elementor-page elementor-page-69">
+	<!-- Google Tag Manager (noscript) -->
+<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-KLQ4CS6"
+height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+<!-- End Google Tag Manager (noscript) -->
+		<div data-elementor-type="wp-page" data-elementor-id="69" class="elementor elementor-69" data-elementor-post-type="page">
+				<div class="elementor-element elementor-element-286b5db e-con-full gameContainer e-flex e-con e-parent" data-id="286b5db" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+		<div class="elementor-element elementor-element-7969dd1 e-con-full e-flex e-con e-child" data-id="7969dd1" data-element_type="container">
+		<div class="elementor-element elementor-element-1aceb56 e-con-full e-flex e-con e-child" data-id="1aceb56" data-element_type="container">
+		<div class="elementor-element elementor-element-a4a5e28 e-con-full e-flex e-con e-child" data-id="a4a5e28" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+		<div class="elementor-element elementor-element-9d77ced e-con-full rank e-flex e-con e-child" data-id="9d77ced" data-element_type="container">
+				<div class="elementor-element elementor-element-2031d40 rankNumber elementor-widget elementor-widget-heading" data-id="2031d40" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">0000</h2>				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-342eb05 e-con-full e-flex e-con e-child" data-id="342eb05" data-element_type="container">
+				<div class="elementor-element elementor-element-f1dfab1 elementor-widget elementor-widget-image" data-id="f1dfab1" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img fetchpriority="high" decoding="async" width="800" height="800" src="https://star.osherad.co.il/wp-content/uploads/2025/11/redStar.svg" class="attachment-large size-large wp-image-648" alt="" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-b1946ac elementor-widget elementor-widget-heading" data-id="b1946ac" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">נקודות</h2>				</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-e946925 e-con-full e-flex e-con e-child" data-id="e946925" data-element_type="container">
+				<div class="elementor-element elementor-element-b1fad67 playerNameHere elementor-widget elementor-widget-heading" data-id="b1fad67" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<div class="elementor-heading-title elementor-size-default">שם השחקן</div>				</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-b8970e6 e-con-full e-flex e-con e-child" data-id="b8970e6" data-element_type="container">
+				<div class="elementor-element elementor-element-61f0469 elementor-widget elementor-widget-image" data-id="61f0469" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://star.osherad.co.il">
+							<img decoding="async" width="800" height="369" src="https://star.osherad.co.il/wp-content/uploads/2025/11/osherStar.webp" class="attachment-large size-large wp-image-503" alt="" srcset="https://star.osherad.co.il/wp-content/uploads/2025/11/osherStar.webp 900w, https://star.osherad.co.il/wp-content/uploads/2025/11/osherStar-300x138.webp 300w, https://star.osherad.co.il/wp-content/uploads/2025/11/osherStar-768x354.webp 768w" sizes="(max-width: 800px) 100vw, 800px" />								</a>
+															</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-5654e00 e-con-full e-flex e-con e-child" data-id="5654e00" data-element_type="container">
+				<div class="elementor-element elementor-element-ac90978 mute elementor-widget elementor-widget-image" data-id="ac90978" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img decoding="async" width="800" height="800" src="https://star.osherad.co.il/wp-content/uploads/2025/11/volumeButton.svg" class="attachment-large size-large wp-image-529" alt="" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-56b522c elementor-hidden-mobile elementor-widget elementor-widget-image" data-id="56b522c" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+															<img loading="lazy" decoding="async" width="800" height="800" src="https://star.osherad.co.il/wp-content/uploads/2025/11/questionButton.svg" class="attachment-large size-large wp-image-527" alt="" />															</div>
+				</div>
+				<div class="elementor-element elementor-element-28d1189 elementor-widget elementor-widget-image" data-id="28d1189" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://star.osherad.co.il/share/">
+							<img loading="lazy" decoding="async" width="800" height="800" src="https://star.osherad.co.il/wp-content/uploads/2025/11/shareButton.svg" class="attachment-large size-large wp-image-528" alt="" />								</a>
+															</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-908b4f5 e-con-full e-flex e-con e-child" data-id="908b4f5" data-element_type="container">
+		<div class="elementor-element elementor-element-cc7f339 e-con-full e-flex e-con e-child" data-id="cc7f339" data-element_type="container">
+				<div class="elementor-element elementor-element-8553238 theCurrentPointer elementor-widget elementor-widget-heading" data-id="8553238" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">24</h2>				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-c510d5a e-con-full timeLine e-flex e-con e-child" data-id="c510d5a" data-element_type="container">
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-de0e528 e-con-full e-flex e-con e-child" data-id="de0e528" data-element_type="container">
+		<div class="elementor-element elementor-element-62de419 e-con-full e-flex e-con e-child" data-id="62de419" data-element_type="container">
+		<div class="elementor-element elementor-element-fe2f314 e-con-full questionLines e-flex e-con e-child" data-id="fe2f314" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+				<div class="elementor-element elementor-element-0978430 question elementor-widget elementor-widget-heading" data-id="0978430" data-element_type="widget" data-widget_type="heading.default">
+				<div class="elementor-widget-container">
+					<h2 class="elementor-heading-title elementor-size-default">איזו אות מגיעה אחרי האות ׳ב׳?</h2>				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-db2ddbc e-con-full answers e-flex e-con e-child" data-id="db2ddbc" data-element_type="container">
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-f10c263 e-con-full e-flex e-con e-child" data-id="f10c263" data-element_type="container">
+				<div class="elementor-element elementor-element-77d6aa8 elementor-widget elementor-widget-html" data-id="77d6aa8" data-element_type="widget" data-widget_type="html.default">
+				<div class="elementor-widget-container">
+					<div class="timer">
+  <svg class="timer-circle" viewBox="0 0 120 120">
+    <circle class="bg-dots" cx="60" cy="60" r="52"></circle>
+    <circle class="bg-track" cx="60" cy="60" r="45"></circle>
+    <circle class="progress" cx="60" cy="60" r="45"></circle>
+  </svg>
+  <div class="timeText">15</div>
+</div>				</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-72c108b e-con-full e-flex e-con e-child" data-id="72c108b" data-element_type="container">
+				<div class="elementor-element elementor-element-d89684d elementor-align-left nextQuestion elementor-widget elementor-widget-button" data-id="d89684d" data-element_type="widget" data-widget_type="button.default">
+				<div class="elementor-widget-container">
+									<div class="elementor-button-wrapper">
+					<a class="elementor-button elementor-button-link elementor-size-sm elementor-animation-grow" href="#">
+						<span class="elementor-button-content-wrapper">
+						<span class="elementor-button-icon">
+				<svg xmlns="http://www.w3.org/2000/svg" width="31" height="29" viewBox="0 0 31 29" fill="none"><path d="M30.6802 15.1667L4.13851 15.1667L15.5135 26.5417L14.0835 28.1667L0.000178675 14.0833L14.0835 -7.25463e-07L15.5135 1.625L4.13851 13L30.6802 13L30.6802 15.1667Z" fill="white"></path></svg>			</span>
+									<span class="elementor-button-text">לשאלה הבאה</span>
+					</span>
+					</a>
+				</div>
+								</div>
+				</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-81272d4 e-con-full e-flex e-con e-parent" data-id="81272d4" data-element_type="container" data-settings="{&quot;background_background&quot;:&quot;classic&quot;}">
+		<div class="elementor-element elementor-element-6a32eb5 e-con-full e-flex e-con e-child" data-id="6a32eb5" data-element_type="container">
+				<div class="elementor-element elementor-element-9d8ecee elementor-widget elementor-widget-image" data-id="9d8ecee" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://smart-click.co.il/" target="_blank">
+							<img loading="lazy" decoding="async" width="800" height="116" src="https://star.osherad.co.il/wp-content/uploads/2025/07/smart.svg" class="attachment-large size-large wp-image-163" alt="" />								</a>
+															</div>
+				</div>
+				</div>
+		<div class="elementor-element elementor-element-6d5dcb3 e-con-full e-flex e-con e-child" data-id="6d5dcb3" data-element_type="container">
+				<div class="elementor-element elementor-element-d9a3c65 elementor-widget elementor-widget-image" data-id="d9a3c65" data-element_type="widget" data-widget_type="image.default">
+				<div class="elementor-widget-container">
+																<a href="https://www.barfeld.co.il/" target="_blank">
+							<img loading="lazy" decoding="async" width="137" height="16" src="https://star.osherad.co.il/wp-content/uploads/2025/11/barfeld_white.svg" class="attachment-full size-full wp-image-499" alt="" />								</a>
+															</div>
+				</div>
+				</div>
+				</div>
+				</div>
+		<script type="speculationrules">
+{"prefetch":[{"source":"document","where":{"and":[{"href_matches":"/*"},{"not":{"href_matches":["/wp-*.php","/wp-admin/*","/wp-content/uploads/*","/wp-content/*","/wp-content/plugins/*","/wp-content/themes/hello-theme-child-master/*","/wp-content/themes/hello-elementor/*","/*\\?(.+)"]}},{"not":{"selector_matches":"a[rel~=\"nofollow\"]"}},{"not":{"selector_matches":".no-prefetch, .no-prefetch a"}}]},"eagerness":"conservative"}]}
+</script>
+		<div data-elementor-type="popup" data-elementor-id="350" class="elementor elementor-350 elementor-location-popup" data-elementor-settings="{&quot;a11y_navigation&quot;:&quot;yes&quot;,&quot;triggers&quot;:[],&quot;timing&quot;:[]}" data-elementor-post-type="elementor_library">
+			<div class="elementor-element elementor-element-739f3f8 e-flex e-con-boxed e-con e-parent" data-id="739f3f8" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-20a0ef5 facebook elementor-view-default elementor-widget elementor-widget-icon" data-id="20a0ef5" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-icon-wrapper">
+			<div class="elementor-icon">
+			<i aria-hidden="true" class="fab fa-facebook"></i>			</div>
+		</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-28885ca whatsapp elementor-view-default elementor-widget elementor-widget-icon" data-id="28885ca" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-icon-wrapper">
+			<div class="elementor-icon">
+			<i aria-hidden="true" class="fab fa-whatsapp"></i>			</div>
+		</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-8664b4e telegram elementor-view-default elementor-widget elementor-widget-icon" data-id="8664b4e" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-icon-wrapper">
+			<div class="elementor-icon">
+			<i aria-hidden="true" class="fab fa-telegram"></i>			</div>
+		</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-adbd57d twitter elementor-view-default elementor-widget elementor-widget-icon" data-id="adbd57d" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-icon-wrapper">
+			<div class="elementor-icon">
+			<i aria-hidden="true" class="fab fa-x-twitter"></i>			</div>
+		</div>
+						</div>
+				</div>
+				<div class="elementor-element elementor-element-ed278df email elementor-view-default elementor-widget elementor-widget-icon" data-id="ed278df" data-element_type="widget" data-widget_type="icon.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-icon-wrapper">
+			<div class="elementor-icon">
+			<i aria-hidden="true" class="far fa-envelope-open"></i>			</div>
+		</div>
+						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+				<div data-elementor-type="popup" data-elementor-id="224" class="elementor elementor-224 elementor-location-popup" data-elementor-settings="{&quot;a11y_navigation&quot;:&quot;yes&quot;,&quot;triggers&quot;:[],&quot;timing&quot;:[]}" data-elementor-post-type="elementor_library">
+			<div class="elementor-element elementor-element-0b924e7 e-flex e-con-boxed e-con e-parent" data-id="0b924e7" data-element_type="container">
+					<div class="e-con-inner">
+				<div class="elementor-element elementor-element-0612085 elementor-grid-1 elementor-share-buttons--view-icon-text elementor-share-buttons--skin-gradient elementor-share-buttons--shape-square elementor-share-buttons--color-official elementor-widget elementor-widget-share-buttons" data-id="0612085" data-element_type="widget" data-settings="{&quot;share_url&quot;:{&quot;url&quot;:&quot;https:\/\/star.osherad.co.il&quot;,&quot;is_external&quot;:&quot;&quot;,&quot;nofollow&quot;:&quot;&quot;,&quot;custom_attributes&quot;:&quot;&quot;}}" data-widget_type="share-buttons.default">
+				<div class="elementor-widget-container">
+							<div class="elementor-grid" role="list">
+								<div class="elementor-grid-item" role="listitem">
+						<div class="elementor-share-btn elementor-share-btn_whatsapp" role="button" tabindex="0" aria-label="שיתוף ב whatsapp">
+															<span class="elementor-share-btn__icon">
+								<i class="fab fa-whatsapp" aria-hidden="true"></i>							</span>
+																						<div class="elementor-share-btn__text">
+																			<span class="elementor-share-btn__title">
+										וואצאפ									</span>
+																	</div>
+													</div>
+					</div>
+									<div class="elementor-grid-item" role="listitem">
+						<div class="elementor-share-btn elementor-share-btn_email" role="button" tabindex="0" aria-label="שיתוף ב email">
+															<span class="elementor-share-btn__icon">
+								<i class="fas fa-envelope" aria-hidden="true"></i>							</span>
+																						<div class="elementor-share-btn__text">
+																			<span class="elementor-share-btn__title">
+										מייל									</span>
+																	</div>
+													</div>
+					</div>
+									<div class="elementor-grid-item" role="listitem">
+						<div class="elementor-share-btn elementor-share-btn_x-twitter" role="button" tabindex="0" aria-label="שיתוף ב x-twitter">
+															<span class="elementor-share-btn__icon">
+								<i class="fab fa-x-twitter" aria-hidden="true"></i>							</span>
+																						<div class="elementor-share-btn__text">
+																			<span class="elementor-share-btn__title">
+										X (טוויטר)									</span>
+																	</div>
+													</div>
+					</div>
+									<div class="elementor-grid-item" role="listitem">
+						<div class="elementor-share-btn elementor-share-btn_facebook" role="button" tabindex="0" aria-label="שיתוף ב facebook">
+															<span class="elementor-share-btn__icon">
+								<i class="fab fa-facebook" aria-hidden="true"></i>							</span>
+																						<div class="elementor-share-btn__text">
+																			<span class="elementor-share-btn__title">
+										פייסבוק									</span>
+																	</div>
+													</div>
+					</div>
+									<div class="elementor-grid-item" role="listitem">
+						<div class="elementor-share-btn elementor-share-btn_linkedin" role="button" tabindex="0" aria-label="שיתוף ב linkedin">
+															<span class="elementor-share-btn__icon">
+								<i class="fab fa-linkedin" aria-hidden="true"></i>							</span>
+																						<div class="elementor-share-btn__text">
+																			<span class="elementor-share-btn__title">
+										לינקדאין									</span>
+																	</div>
+													</div>
+					</div>
+									<div class="elementor-grid-item" role="listitem">
+						<div class="elementor-share-btn elementor-share-btn_telegram" role="button" tabindex="0" aria-label="שיתוף ב telegram">
+															<span class="elementor-share-btn__icon">
+								<i class="fab fa-telegram" aria-hidden="true"></i>							</span>
+																						<div class="elementor-share-btn__text">
+																			<span class="elementor-share-btn__title">
+										טלגרם									</span>
+																	</div>
+													</div>
+					</div>
+						</div>
+						</div>
+				</div>
+					</div>
+				</div>
+				</div>
+		<script src="https://star.osherad.co.il/wp-content/themes/hello-elementor/assets/js/hello-frontend.js?ver=3.4.5" id="hello-theme-frontend-js"></script>
+<script src="https://star.osherad.co.il/wp-content/plugins/elementor/assets/js/webpack.runtime.min.js?ver=3.33.6" id="elementor-webpack-runtime-js"></script>
+<script src="https://star.osherad.co.il/wp-content/plugins/elementor/assets/js/frontend-modules.min.js?ver=3.33.6" id="elementor-frontend-modules-js"></script>
+<script src="https://star.osherad.co.il/wp-includes/js/jquery/ui/core.min.js?ver=1.13.3" id="jquery-ui-core-js"></script>
+<script id="elementor-frontend-js-before">
+var elementorFrontendConfig = {"environmentMode":{"edit":false,"wpPreview":false,"isScriptDebug":false},"i18n":{"shareOnFacebook":"\u05e9\u05ea\u05e3 \u05d1\u05e4\u05d9\u05d9\u05e1\u05d1\u05d5\u05e7","shareOnTwitter":"\u05e9\u05ea\u05e3 \u05d1\u05d8\u05d5\u05d5\u05d9\u05d8\u05e8","pinIt":"\u05dc\u05e0\u05e2\u05d5\u05e5 \u05d1\u05e4\u05d9\u05e0\u05d8\u05e8\u05e1\u05d8","download":"\u05d4\u05d5\u05e8\u05d3\u05d4","downloadImage":"\u05d4\u05d5\u05e8\u05d3\u05ea \u05ea\u05de\u05d5\u05e0\u05d4","fullscreen":"\u05de\u05e1\u05da \u05de\u05dc\u05d0","zoom":"\u05de\u05d9\u05e7\u05d5\u05d3","share":"\u05e9\u05ea\u05e3","playVideo":"\u05e0\u05d2\u05df \u05d5\u05d9\u05d3\u05d0\u05d5","previous":"\u05e7\u05d5\u05d3\u05dd","next":"\u05d4\u05d1\u05d0","close":"\u05e1\u05d2\u05d5\u05e8","a11yCarouselPrevSlideMessage":"\u05e9\u05e7\u05d5\u05e4\u05d9\u05ea \u05e7\u05d5\u05d3\u05de\u05ea","a11yCarouselNextSlideMessage":"\u05e9\u05e7\u05d5\u05e4\u05d9\u05ea \u05d4\u05d1\u05d0\u05d4","a11yCarouselFirstSlideMessage":"\u05d6\u05d5\u05d4\u05d9 \u05d4\u05e9\u05e7\u05d5\u05e4\u05d9\u05ea \u05d4\u05e8\u05d0\u05e9\u05d5\u05e0\u05d4","a11yCarouselLastSlideMessage":"\u05d6\u05d5\u05d4\u05d9 \u05d4\u05e9\u05e7\u05d5\u05e4\u05d9\u05ea \u05d4\u05d0\u05d7\u05e8\u05d5\u05e0\u05d4","a11yCarouselPaginationBulletMessage":"\u05dc\u05e2\u05d1\u05d5\u05e8 \u05dc\u05e9\u05e7\u05d5\u05e4\u05d9\u05ea"},"is_rtl":true,"breakpoints":{"xs":0,"sm":480,"md":768,"lg":1025,"xl":1440,"xxl":1600},"responsive":{"breakpoints":{"mobile":{"label":"\u05de\u05d5\u05d1\u05d9\u05d9\u05dc \u05d0\u05e0\u05db\u05d9","value":767,"default_value":767,"direction":"max","is_enabled":true},"mobile_extra":{"label":"\u05de\u05d5\u05d1\u05d9\u05d9\u05dc \u05d0\u05d5\u05e4\u05e7\u05d9","value":880,"default_value":880,"direction":"max","is_enabled":false},"tablet":{"label":"\u05d8\u05d0\u05d1\u05dc\u05d8 \u05d0\u05e0\u05db\u05d9","value":1024,"default_value":1024,"direction":"max","is_enabled":true},"tablet_extra":{"label":"\u05d8\u05d0\u05d1\u05dc\u05d8 \u05d0\u05d5\u05e4\u05e7\u05d9","value":1200,"default_value":1200,"direction":"max","is_enabled":false},"laptop":{"label":"\u05dc\u05e4\u05d8\u05d5\u05e4","value":1366,"default_value":1366,"direction":"max","is_enabled":false},"widescreen":{"label":"\u05de\u05e1\u05da \u05e8\u05d7\u05d1","value":2400,"default_value":2400,"direction":"min","is_enabled":false}},"hasCustomBreakpoints":false},"version":"3.33.6","is_static":false,"experimentalFeatures":{"additional_custom_breakpoints":true,"container":true,"theme_builder_v2":true,"hello-theme-header-footer":true,"nested-elements":true,"home_screen":true,"global_classes_should_enforce_capabilities":true,"e_variables":true,"cloud-library":true,"e_opt_in_v4_page":true,"import-export-customization":true,"mega-menu":true},"urls":{"assets":"https:\/\/star.osherad.co.il\/wp-content\/plugins\/elementor\/assets\/","ajaxurl":"https:\/\/star.osherad.co.il\/wp-admin\/admin-ajax.php","uploadUrl":"https:\/\/star.osherad.co.il\/wp-content\/uploads"},"nonces":{"floatingButtonsClickTracking":"4fb43eeae3"},"swiperClass":"swiper","settings":{"page":[],"editorPreferences":[]},"kit":{"active_breakpoints":["viewport_mobile","viewport_tablet"],"global_image_lightbox":"yes","lightbox_enable_counter":"yes","lightbox_enable_fullscreen":"yes","lightbox_enable_zoom":"yes","lightbox_enable_share":"yes","lightbox_title_src":"title","lightbox_description_src":"description","hello_header_logo_type":"logo","hello_footer_logo_type":"logo"},"post":{"id":69,"title":"%D7%9E%D7%A9%D7%97%D7%A7%20%D7%97%D7%A0%D7%95%D7%9B%D7%94%20-%20%D7%90%D7%95%D7%A9%D7%A8%20STAR","excerpt":"","featuredImage":false}};
+//# sourceURL=elementor-frontend-js-before
+</script>
+<script src="https://star.osherad.co.il/wp-content/plugins/elementor/assets/js/frontend.min.js?ver=3.33.6" id="elementor-frontend-js"></script>
+<script src="https://star.osherad.co.il/wp-content/plugins/elementor-pro/assets/js/webpack-pro.runtime.min.js?ver=3.30.0" id="elementor-pro-webpack-runtime-js"></script>
+<script src="https://star.osherad.co.il/wp-includes/js/dist/hooks.min.js?ver=dd5603f07f9220ed27f1" id="wp-hooks-js"></script>
+<script src="https://star.osherad.co.il/wp-includes/js/dist/i18n.min.js?ver=c26c3dc7bed366793375" id="wp-i18n-js"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'rtl' ] } );
+//# sourceURL=wp-i18n-js-after
+</script>
+<script id="elementor-pro-frontend-js-before">
+var ElementorProFrontendConfig = {"ajaxurl":"https:\/\/star.osherad.co.il\/wp-admin\/admin-ajax.php","nonce":"6cc15bb950","urls":{"assets":"https:\/\/star.osherad.co.il\/wp-content\/plugins\/elementor-pro\/assets\/","rest":"https:\/\/star.osherad.co.il\/wp-json\/"},"settings":{"lazy_load_background_images":false},"popup":{"hasPopUps":true},"shareButtonsNetworks":{"facebook":{"title":"Facebook","has_counter":true},"twitter":{"title":"Twitter"},"linkedin":{"title":"LinkedIn","has_counter":true},"pinterest":{"title":"Pinterest","has_counter":true},"reddit":{"title":"Reddit","has_counter":true},"vk":{"title":"VK","has_counter":true},"odnoklassniki":{"title":"OK","has_counter":true},"tumblr":{"title":"Tumblr"},"digg":{"title":"Digg"},"skype":{"title":"Skype"},"stumbleupon":{"title":"StumbleUpon","has_counter":true},"mix":{"title":"Mix"},"telegram":{"title":"Telegram"},"pocket":{"title":"Pocket","has_counter":true},"xing":{"title":"XING","has_counter":true},"whatsapp":{"title":"WhatsApp"},"email":{"title":"Email"},"print":{"title":"Print"},"x-twitter":{"title":"X"},"threads":{"title":"Threads"}},"facebook_sdk":{"lang":"he_IL","app_id":""},"lottie":{"defaultAnimationUrl":"https:\/\/star.osherad.co.il\/wp-content\/plugins\/elementor-pro\/modules\/lottie\/assets\/animations\/default.json"}};
+//# sourceURL=elementor-pro-frontend-js-before
+</script>
+<script src="https://star.osherad.co.il/wp-content/plugins/elementor-pro/assets/js/frontend.min.js?ver=3.30.0" id="elementor-pro-frontend-js"></script>
+<script src="https://star.osherad.co.il/wp-content/plugins/elementor-pro/assets/js/elements-handlers.min.js?ver=3.30.0" id="pro-elements-handlers-js"></script>
+<script id="wp-emoji-settings" type="application/json">
+{"baseUrl":"https://s.w.org/images/core/emoji/17.0.2/72x72/","ext":".png","svgUrl":"https://s.w.org/images/core/emoji/17.0.2/svg/","svgExt":".svg","source":{"concatemoji":"https://star.osherad.co.il/wp-includes/js/wp-emoji-release.min.js?ver=6.9"}}
+</script>
+<script type="module">
+/*! This file is auto-generated */
+const a=JSON.parse(document.getElementById("wp-emoji-settings").textContent),o=(window._wpemojiSettings=a,"wpEmojiSettingsSupports"),s=["flag","emoji"];function i(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function c(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0);const a=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data);return t.every((e,t)=>e===a[t])}function p(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var n=e.getImageData(16,16,1,1);for(let e=0;e<n.data.length;e++)if(0!==n.data[e])return!1;return!0}function u(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\u1fac8")}return!1}function f(e,t,n,a){let r;const o=(r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):document.createElement("canvas")).getContext("2d",{willReadFrequently:!0}),s=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(e=>{s[e]=t(o,e,n,a)}),s}function r(e){var t=document.createElement("script");t.src=e,t.defer=!0,document.head.appendChild(t)}a.supports={everything:!0,everythingExceptFlag:!0},new Promise(t=>{let n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+f.toString()+"("+[JSON.stringify(s),u.toString(),c.toString(),p.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"});const r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=e=>{i(n=e.data),r.terminate(),t(n)})}catch(e){}i(n=f(s,u,c,p))}t(n)}).then(e=>{for(const n in e)a.supports[n]=e[n],a.supports.everything=a.supports.everything&&a.supports[n],"flag"!==n&&(a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&a.supports[n]);var t;a.supports.everythingExceptFlag=a.supports.everythingExceptFlag&&!a.supports.flag,a.supports.everything||((t=a.source||{}).concatemoji?r(t.concatemoji):t.wpemoji&&t.twemoji&&(r(t.twemoji),r(t.wpemoji)))});
+//# sourceURL=https://star.osherad.co.il/wp-includes/js/wp-emoji-loader.min.js
+</script>
+	<script defer src="https://static.cloudflareinsights.com/beacon.min.js/vcd15cbe7772f49c399c6a5babf22c1241717689176015" integrity="sha512-ZpsOmlRQV6y907TI0dKBHq9Md29nnaEIPlkf84rnaERnq6zvWvPUqr2ft8M1aS28oN72PdrCzSjY4U6VaAw1EQ==" data-cf-beacon='{"version":"2024.11.0","token":"484aedfd6a264a31afe728aa5879add5","r":1,"server_timing":{"name":{"cfCacheStatus":true,"cfEdge":true,"cfExtPri":true,"cfL4":true,"cfOrigin":true,"cfSpeedBrain":true},"location_startswith":null}}' crossorigin="anonymous"></script>
+</body>
+</html>
+
+<!-- Injection By NetFree -->
+<script src="//netfree.link/injection-script/go-payment.js" type="text/javascript" async ></script>
+<script src="//netfree.link/injection-script/popup-card-init.js" type="text/javascript" async ></script>

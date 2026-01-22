@@ -1,0 +1,969 @@
+<!DOCTYPE html>
+<html lang="he" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>קניין הוראה - הפוסק שבך</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.7.1/firebase-firestore-compat.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --gold: #D4B182;
+            --dark-slate: #32373c;
+            --light-cream: #fdfbf8;
+            --gold-dark: #b89968;
+            --gold-light: #e8d4b8;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Assistant', 'Almoni Tzar', sans-serif;
+            color: var(--dark-slate);
+            overflow: hidden;
+            font-size: 20px;
+            background: linear-gradient(rgba(50, 55, 60, 0.88), rgba(50, 55, 60, 0.92)),
+                        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920') center/cover fixed;
+            background-attachment: fixed;
+            height: 100vh;
+        }
+        
+        .full-screen-container {
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+        
+        .content-glass {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            width: 100%;
+            max-width: 1100px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .full-width-content {
+            width: 100%;
+            padding: 1.5rem 5%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+        
+        .full-width-content.scrollable {
+            overflow-y: auto;
+            justify-content: flex-start;
+        }
+        
+        .hero-content {
+            text-align: center;
+            color: white;
+            width: 100%;
+            max-width: none;
+        }
+        
+        .hero-title {
+            font-size: clamp(4rem, 6vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-description {
+            font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            line-height: 1.5;
+            color: white;
+        }
+        
+        .btn-primary {
+            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
+            color: white;
+            padding: 1.8rem 3rem;
+            border-radius: 15px;
+            border: none;
+            font-weight: 700;
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 6px 20px rgba(212, 177, 130, 0.5);
+            display: block;
+            text-decoration: none;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 70px;
+        }
+        
+        .btn-primary:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 177, 130, 0.7);
+        }
+        
+        .btn-secondary {
+            background: rgba(50, 55, 60, 0.85);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 1.2rem 2.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            font-weight: 600;
+            font-size: clamp(1.2rem, 1.5vw, 1.8rem);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-secondary:hover {
+            background: #454a50;
+            transform: translateY(-2px);
+        }
+        
+        .progress-circles {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 0;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.3) 100%);
+            z-index: 0;
+        }
+        
+        .progress-circle {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            font-size: 1.5rem;
+            transition: all 0.3s ease;
+            position: relative;
+            color: white;
+            z-index: 1;
+            flex: 1;
+            max-width: 60px;
+            margin: 0 auto;
+        }
+        
+        .progress-circle.active {
+            background: var(--gold);
+            color: white;
+            box-shadow: 0 0 0 4px rgba(212, 177, 130, 0.3);
+            animation: pulse 2s infinite;
+            transform: scale(1.15);
+        }
+        
+        .progress-circle.correct {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .progress-circle.wrong {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .progress-circle.timeout {
+            background: #94a3b8;
+            color: white;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { box-shadow: 0 0 0 4px rgba(212, 177, 130, 0.3); }
+            50% { box-shadow: 0 0 0 8px rgba(212, 177, 130, 0.1); }
+        }
+        
+        .question-header {
+            text-align: center;
+            font-size: clamp(1.5rem, 2vw, 2.5rem);
+            color: var(--gold);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(212, 177, 130, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--gold);
+            flex-shrink: 0;
+        }
+        
+        .question-container {
+            display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+            min-height: 0;
+        }
+        
+        .question-text {
+            font-size: clamp(2.5rem, 4vw, 5rem);
+            font-weight: 700;
+            line-height: 1.3;
+            flex: 1;
+            color: white;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
+            transition: font-size 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: right;
+            direction: rtl;
+            align-self: flex-start;
+        }
+        
+        .question-text.typing::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            margin-right: 5px;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .question-text.intro {
+            font-size: clamp(4rem, 8vw, 8rem);
+            text-align: right;
+            direction: rtl;
+        }
+        
+        .question-container.intro {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        
+        .timer-display {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 0.5rem;
+            flex-shrink: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .timer-display.hidden-intro {
+            opacity: 0;
+            pointer-events: none;
+        }
+        
+        .timer-circle {
+            position: relative;
+            width: 120px;
+            height: 120px;
+        }
+        
+        .timer-circle svg {
+            transform: rotate(-90deg);
+        }
+        
+        .timer-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 8;
+        }
+        
+        .timer-progress {
+            fill: none;
+            stroke-width: 8;
+            stroke-linecap: round;
+            transition: stroke-dasharray 1s linear, stroke 0.3s ease;
+        }
+        
+        .timer-progress.normal {
+            stroke: var(--gold);
+        }
+        
+        .timer-progress.warning {
+            stroke: #f59e0b;
+        }
+        
+        .timer-progress.danger {
+            stroke: #ef4444;
+            animation: pulse-timer 1s infinite;
+        }
+        
+        @keyframes pulse-timer {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.6; }
+        }
+        
+        .timer-number {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 3rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .timer-label {
+            font-size: 1.5rem;
+            color: white;
+            font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .answer-option {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            padding: 1.5rem 2.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(1.5rem, 2vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.8rem;
+            text-align: right;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            width: 100%;
+            display: block;
+        }
+        
+        .answer-option.appear {
+            animation: slideInAnswer 0.5s ease forwards;
+        }
+        
+        @keyframes slideInAnswer {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .answer-option:hover {
+            border-color: var(--gold);
+            background: rgba(212, 177, 130, 0.4);
+            transform: translateX(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(212, 177, 130, 0.4);
+        }
+        
+        .answer-option.selected {
+            background: rgba(212, 177, 130, 0.5);
+            border-color: var(--gold);
+            border-width: 5px;
+            box-shadow: 0 0 30px rgba(212, 177, 130, 0.6);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .feedback-message {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 3rem 5rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
+            z-index: 1000;
+            animation: fadeInScale 0.4s ease;
+            text-align: center;
+        }
+        
+        .feedback-message.correct {
+            border: 4px solid #22c55e;
+        }
+        
+        .feedback-message.wrong {
+            border: 4px solid #f59e0b;
+        }
+        
+        .feedback-message.timeout {
+            border: 4px solid var(--gold);
+        }
+        
+        .feedback-message.partial {
+            border: 4px solid #f59e0b;
+        }
+        
+        @keyframes fadeInScale {
+            from {
+                opacity: 0;
+                transform: translate(-50%, -50%) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
+        
+        .confetti {
+            position: fixed;
+            width: 10px;
+            height: 10px;
+            background: var(--gold);
+            animation: confetti-fall 1s ease-out forwards;
+            pointer-events: none;
+            z-index: 999;
+        }
+        
+        @keyframes confetti-fall {
+            to {
+                transform: translateY(100vh) rotate(360deg);
+                opacity: 0;
+            }
+        }
+        
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+        
+        .shake {
+            animation: shake 0.4s ease;
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, rgba(212, 177, 130, 0.15), rgba(212, 177, 130, 0.25));
+            border: 2px solid var(--gold-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
+        }
+        
+        .info-box * {
+            color: white !important;
+        }
+        
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 0 3px rgba(212, 177, 130, 0.2);
+        }
+        
+        .version-badge {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .quiz-type-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(212, 177, 130, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .already-completed-message {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.15));
+            border: 3px solid #ef4444;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .already-completed-message h2 {
+            color: #dc2626;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .already-completed-message p {
+            font-size: 1.5rem;
+            color: var(--dark-slate);
+            line-height: 1.6;
+        }
+        
+        /* Donut Chart Styles */
+        .stats-chart-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 3px solid rgba(212, 177, 130, 0.6);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .donut-chart {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+        
+        .donut-chart svg {
+            transform: rotate(-90deg);
+        }
+        
+        .donut-chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .donut-chart-percentage {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--gold);
+            line-height: 1;
+        }
+        
+        .donut-chart-label {
+            font-size: 0.9rem;
+            color: white;
+            opacity: 0.9;
+            margin-top: 0.3rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="version-badge">גירסה 14 - Partial Answers</div>
+    <div id="quiz-type-badge" class="quiz-type-badge hidden"></div>
+    
+    <!-- Screen 1: Lobby -->
+    <div id="screen-lobby" class="full-screen-container">
+        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding: 2rem 5%;">
+            <!-- Left Side: Text Content -->
+            <div>
+                <h1 style="font-size: clamp(3.5rem, 5vw, 6rem); font-weight: 900; margin-bottom: 1.5rem; color: white; line-height: 1.1; text-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    איך היית פוסק?!
+                </h1>
+                <h2 style="font-size: clamp(2.5rem, 3.5vw, 4rem); font-weight: bold; margin-bottom: 2rem; color: var(--gold); line-height: 1.2;">
+                    תתחיל להכריע!
+                </h2>
+                <p style="font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.5; margin-bottom: 2.5rem; color: white;">
+                    אתגר פסיקה מעשית, המבוסס על שאלות מעשיות אמיתיות שמגיעות מבתי הוראה בפועל. בוא נראה איך אתה פוסק בשטח - בזמן אמת, תחת לחץ.
+                </p>
+                <div style="background: rgba(212, 177, 130, 0.2); backdrop-filter: blur(15px); border: 2px solid var(--gold); border-radius: 15px; padding: 1.8rem; margin-bottom: 2rem;">
+                    <p style="font-size: clamp(1.3rem, 1.7vw, 1.7rem); color: white; font-weight: bold; line-height: 1.4; margin-bottom: 0.8rem;">
+                        המכריעים נכון - נכנסים להגרלות על הטבות יקרות ערך
+                    </p>
+                    <p style="font-size: clamp(1.2rem, 1.6vw, 1.6rem); color: var(--gold); font-weight: bold; line-height: 1.4; margin: 0;">
+                        כשהעומד בהצלחה במקום הראשון - יזכה להשתתפות חינם בקורס - כולל שובר מתנה ב'גולדיס' לענג את השבת בפאר והדר.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                    <button onclick="window.open('#', '_blank')" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
+                        תקנון ההגרלה
+                    </button>
+                    <button onclick="window.open('#', '_blank')" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
+                        מקומות ראשונים
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Side: Action Buttons -->
+            <div>
+                <p style="font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.5; margin-bottom: 1.5rem; color: white; text-align: center; font-weight: 600;">
+                    בחר את התחום ההלכתי שבו תרצה להתמודד עם שאלות מהשטח:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <button onclick="startQuiz('shabbat')" class="btn-primary" style="font-size: clamp(1.5rem, 2vw, 2rem); padding: 1.8rem;">
+                        שאלות מעשיות בהלכות שבת
+                    </button>
+                    <button onclick="startQuiz('issur_heter')" class="btn-primary" style="font-size: clamp(1.5rem, 2vw, 2rem); padding: 1.8rem;">
+                        שאלות מעשיות באיסור והיתר
+                    </button>
+                </div>
+                <p style="color: rgba(255, 255, 255, 0.85); font-size: clamp(1.1rem, 1.4vw, 1.4rem); margin-top: 1.5rem; text-align: center; opacity: 0.95;">
+                    ניתן להתמודד בשני התחומים ולהכפיל את סיכויי הזכייה
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 1.5: Instructions -->
+    <div id="screen-instructions" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 30px; padding: 3rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+                <h2 style="font-size: clamp(2.5rem, 3.5vw, 3.5rem); font-weight: bold; margin-bottom: 2rem; color: var(--gold); text-align: center;">
+                    הנכם מועברים לאתגר ההלכה
+                </h2>
+                
+                <div style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); line-height: 1.8; color: var(--dark-slate); margin-bottom: 2rem;">
+                    <p style="margin-bottom: 1.5rem;">
+                        לפניכם תוצג שאלה, כשמיד אחריה יוצגו התשובות לבחירה.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem; font-weight: 600; color: #d97706;">
+                        שימו לב: יתכנו תשובות נכונות, אך חלקיות. עליכם לבחור את התשובה הנכונה ביותר.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        בחירה בתשובה חלקית שאיננה מוגדרת כתשובה המושלמת - תזכה אתכם בציון חלקי.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        ניתן לבחור בכפתור 'אני צריך לעיין' - פעולה זו תשמור את המבחן, ותאפשר לכם לחזור אליו בשלב מאוחר יותר.
+                    </p>
+                    
+                    <p style="font-weight: 600;">
+                        כדי שתשובותיכם ישמרו גם אם המערכת תיסגר, או כדי לאפשר בחירה ב'צריך עיון' - מומלץ לבצע הרשמה מראש.
+                    </p>
+                </div>
+                
+                <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 2.5rem;">
+                    <button onclick="showRegistration()" class="btn-secondary" style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); padding: 1.2rem 2.5rem;">
+                        להרשמה
+                    </button>
+                    <button onclick="startQuestions()" class="btn-primary" style="font-size: clamp(1.3rem, 1.6vw, 1.6rem); padding: 1.2rem 3rem;">
+                        לתחילת האתגר
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 2: Question Interface -->
+    <div id="screen-question" class="full-screen-container hidden">
+        <div class="full-width-content fade-in">
+            <!-- Question Header -->
+            <div class="question-header">
+                השאלה שהגיעה לשולחן בית ההוראה
+            </div>
+            
+            <!-- Progress Circles -->
+            <div id="progress-circles" class="progress-circles">
+                <div class="progress-line"></div>
+                <!-- Will be populated dynamically -->
+            </div>
+            
+            <!-- Question with Timer -->
+            <div class="question-container">
+                <!-- Question Text -->
+                <div id="question-text" class="question-text">
+                    <!-- Question will be loaded here -->
+                </div>
+                
+                <!-- Timer on the right -->
+                <div class="timer-display">
+                    <span class="timer-label">זמן נותר</span>
+                    <div class="timer-circle">
+                        <svg width="120" height="120">
+                            <circle class="timer-bg" cx="60" cy="60" r="52"></circle>
+                            <circle id="timer-progress" class="timer-progress normal" cx="60" cy="60" r="52" 
+                                    style="stroke-dasharray: 326.7 326.7;"></circle>
+                        </svg>
+                        <div id="timer-number" class="timer-number">30</div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Answer Options -->
+            <div id="answers-container">
+                <!-- Answers will be loaded here -->
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+                <button onclick="showNeedReview()" class="btn-secondary" style="flex: 1;">
+                    צריך עיון (גם מורה הוראה פותח ספר לפעמים)
+                </button>
+                <button onclick="nextQuestion()" class="btn-secondary" style="flex: 1;">
+                    שאלה הבאה ←
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 3: Need Review Popup -->
+    <div id="screen-need-review" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden" style="z-index: 1000;">
+        <div class="content-glass fade-in" style="max-width: 600px;">
+            <h2 class="text-4xl font-bold mb-4 text-center text-gold">
+                "מתונים היו בדין"
+            </h2>
+            
+            <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
+                אנחנו מעריכים את הזהירות שלך. פוסק אמיתי יודע מתי צריך לעיין במקורות לפני הכרעה.
+            </p>
+            
+            <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
+                כדי שתוכל לעיין בנחת ולחזור לפסוק כשאתה בטוח, שמרנו לך את המקום.
+                הכנס פרטים לקבלת קישור אישי להמשך אתגר הפסיקה בדיוק מהנקודה הזו.
+            </p>
+            
+            <form id="pause-form" class="space-y-4">
+                <div>
+                    <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">שם:</label>
+                    <input type="text" id="pause-name" required class="form-input">
+                </div>
+                
+                <div>
+                    <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">וואטסאפ/מייל:</label>
+                    <input type="text" id="pause-contact" required class="form-input">
+                </div>
+                
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
+                        שלחו לי לינק להמשך המבחן
+                    </button>
+                    <button type="button" onclick="closeNeedReview()" class="btn-secondary">
+                        ביטול
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Screen 4: Lead Collection -->
+    <div id="screen-lead-collection" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding: 2rem 5%; height: 100vh;">
+            <!-- Left Side: Text Content -->
+            <div>
+                <h2 style="font-size: clamp(2.5rem, 4vw, 4rem); font-weight: bold; margin-bottom: 1.5rem; color: var(--gold); line-height: 1.2;">
+                    ההכרעה שלך התקבלה!
+                </h2>
+                
+                <p style="margin-bottom: 1.5rem; line-height: 1.5; font-size: clamp(1.3rem, 1.8vw, 1.8rem); color: white;">
+                    ההכרעות שלך נקלטו במערכת ועובדו מול תשובות ופסיקות של מאות מופלגי תורה והלכה אחרים.
+                </p>
+                
+                <div class="info-box">
+                    <p class="font-bold mb-3" style="color: var(--gold); font-size: clamp(1.3rem, 1.6vw, 1.6rem);">
+                        מעוניין לדעת מה הציון שלך?
+                    </p>
+                    <p class="mb-2" style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; font-weight: 600;">
+                        מהי איכות הפסיקה שלך ברגע האמת?
+                    </p>
+                    <p class="mb-3" style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; font-weight: 600;">
+                        וכמה מתוך הציבור יודעים את התשובות לשאלות שאתה יודע?
+                    </p>
+                    <p style="font-size: clamp(1.4rem, 1.8vw, 1.8rem); color: var(--gold); font-weight: bold; line-height: 1.5;">
+                        מלא את הפרטים כדי שנוכל לעבד אותם ולהציג לך ניתוח מפורט ומרתק!
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Right Side: Form -->
+            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 2rem;">
+                <form id="lead-form" class="space-y-4">
+                    <div>
+                        <label class="block font-medium mb-2" style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">שם מלא:</label>
+                        <input type="text" id="lead-name" required class="form-input">
+                    </div>
+                    
+                    <div>
+                        <label class="block font-medium mb-2" style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">טלפון נייד:</label>
+                        <input type="tel" id="lead-phone" required class="form-input" placeholder="050-1234567">
+                    </div>
+                    
+                    <div>
+                        <label class="block font-medium mb-2" style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">מייל:</label>
+                        <input type="email" id="lead-email" required class="form-input" placeholder="example@email.com">
+                    </div>
+                    
+                    <div style="margin-top: 1rem;">
+                        <label class="flex items-start gap-2 cursor-pointer">
+                            <input type="checkbox" id="marketing-consent" style="margin-top: 0.3rem; width: 20px; height: 20px; cursor: pointer;">
+                            <span style="font-size: clamp(1rem, 1.3vw, 1.3rem); color: white; line-height: 1.4;">
+                                אני מאשר לקבל עדכונים ודיוור מ'קניין הוראה'
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%; font-size: clamp(1.4rem, 1.8vw, 1.8rem); padding: 1.3rem;">
+                        חשוף את הפסיקות שלי ◀
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 5: Already Completed -->
+    <div id="screen-already-completed" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="max-width: 900px; margin: 0 auto;">
+            <div class="already-completed-message">
+<h2>כבר ביצעת את המבחן</h2>
+                <p style="margin-bottom: 1rem;">
+                    הפרטים שהזנת כבר רשומים במערכת שלנו.
+                </p>
+                <p style="margin-bottom: 1.5rem;">
+                    כל משתתף יכול להיבחן פעם אחת בלבד בכל תחום כדי לשמור על הוגנות ההגרלה.
+                </p>
+                <p style="font-weight: bold; color: var(--gold); font-size: 1.6rem;">
+                    תוצאותיך כבר נשמרו ואתה משתתף בהגרלה!
+                </p>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button onclick="location.reload()" class="btn-secondary">
+                    חזור לדף הבית
+                </button>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 6: Results & Rewards -->
+    <div id="screen-results" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding: 2rem 5%; height: 100vh;">
+            <!-- Left Side: Score & Stats -->
+            <div>
+                <!-- Score Display -->
+                <div style="background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light)); border-radius: 25px; padding: 2rem; text-align: center; margin-bottom: 1.5rem; color: white; box-shadow: 0 10px 40px rgba(212, 177, 130, 0.4);">
+                    <div style="font-size: clamp(4rem, 6vw, 6rem); font-weight: bold; margin-bottom: 0.5rem; line-height: 1;" id="final-score">85%</div>
+                    <div style="font-size: clamp(1.2rem, 1.6vw, 1.6rem); font-weight: 600; opacity: 0.95;">הציון שלך</div>
+                </div>
+                
+                <!-- Results Header -->
+                <div id="results-header" class="text-center" style="margin-bottom: 1.5rem;">
+                    <!-- Will be populated based on score -->
+                </div>
+                
+                <!-- Social Proof Stats with Chart -->
+                <div class="stats-chart-container">
+                    <!-- Donut Chart -->
+                    <div class="donut-chart">
+                        <svg width="180" height="180">
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="20"/>
+                            <circle id="chart-success" cx="90" cy="90" r="70" fill="none" stroke="#86efac" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"/>
+                            <circle id="chart-struggle" cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"/>
+                        </svg>
+                        <div class="donut-chart-center">
+                            <div class="donut-chart-percentage" id="chart-percentage">64%</div>
+                            <div class="donut-chart-label">התלבטו</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Text -->
+                    <div id="social-stats" style="color: white;">
+                        <!-- Will be populated with stats -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side: Benefit Selection -->
+            <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <div>
+                    <h3 style="font-size: clamp(1.8rem, 2.3vw, 2.3rem); font-weight: bold; margin-bottom: 1rem; color: var(--gold); line-height: 1.3;">
+                        בחר את ההטבה שלך:
+                    </h3>
+                    
+                    <p style="margin-bottom: 1rem; line-height: 1.4; font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">
+                        בנוסף לפרסים בהם יזכו המגיעים למקומות הראשונים - כמי שהגיע עד הלום תוכל להשתתף בהגרלת הטבת הצטרפות לאחד ממסלולי הלימוד והשימוש חכמים של 'קניין הוראה' בשווי של מעל 500 שקלים.
+                    </p>
+                    <p style="margin-bottom: 1.5rem; line-height: 1.4; font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white; font-weight: 600;">
+                        באיזה נושא היית רוצה לחזק את כוח ההכרעה שלך ולהגשים את השאיפה הרוחנית שלך?
+                    </p>
+                </div>
+                
+                <form id="benefit-form" style="display: flex; flex-direction: column; gap: 1rem; flex: 1; justify-content: center;">
+                    <label class="flex items-center p-4 border-3 rounded-lg cursor-pointer transition-all" style="border: 3px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); min-height: 70px;">
+                        <input type="radio" name="benefit" value="shabbat_course_discount" required style="margin-left: 0.8rem; width: 20px; height: 20px;">
+                        <span style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.3; font-weight: 600;">הלכות שבת - הטבה ע"ס 550 ₪</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-3 rounded-lg cursor-pointer transition-all" style="border: 3px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); min-height: 70px;">
+                        <input type="radio" name="benefit" value="issur_heter_course_discount" required style="margin-left: 0.8rem; width: 20px; height: 20px;">
+                        <span style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.3; font-weight: 600;">איסור והיתר - הטבה ע"ס 550 ₪</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-3 rounded-lg cursor-pointer transition-all" style="border: 3px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); min-height: 70px;">
+                        <input type="radio" name="benefit" value="niddah_course_discount" required style="margin-left: 0.8rem; width: 20px; height: 20px;">
+                        <span style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.3; font-weight: 600;">הלכות נידה/טהרה - הטבה ע"ס 550 ₪</span>
+                    </label>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; font-size: clamp(1.3rem, 1.7vw, 1.7rem); padding: 1.5rem;">
+                        אשר בחירה ושמור
+                    </button>
+                </form>
+                
+                <!-- Final Actions -->
+                <div id="final-actions" class="hidden" style="margin-top: 1.2rem;">
+                    <div style="background: rgba(34, 197, 94, 0.2); border: 3px solid #22c55e; border-radius: 15px; padding: 1rem; text-align: center; margin-bottom: 1rem; backdrop-filter: blur(10px);">
+                        <p style="font-weight: 600; font-size: clamp(1.1rem, 1.3vw, 1.3rem); color: #86efac;">
+                            הפרטים שלך עודכנו. נציג יחזור אליך למימוש ההטבה.
+                        </p>
+                    </div>
+                    
+                    <button onclick="restartQuiz()" class="btn-secondary" style="width: 100%; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+                        רוצה להכפיל סיכויים? היבחן עכשיו בנושא השני!
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="app-v3.js"></script>
+</body>
+</html>
