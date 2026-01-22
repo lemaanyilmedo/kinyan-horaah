@@ -1,6 +1,6 @@
 const CSV_URLS = {
-    shabbat: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTms4MIHYC7w0sRgy0I_4hg1967D_snpA9BUcT2NTwuZRxbRb_mzkZ6kScFXLfJGbT_t3cDXTPBxomc/pub?output=tsv',
-    issur_heter: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTms4MIHYC7w0sRgy0I_4hg1967D_snpA9BUcT2NTwuZRxbRb_mzkZ6kScFXLfJGbT_t3cDXTPBxomc/pub?output=tsv'
+    shabbat: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTms4MIHYC7w0sRgy0I_4hg1967D_snpA9BUcT2NTwuZRxbRb_mzkZ6kScFXLfJGbT_t3cDXTPBxomc/pub?gid=0&single=true&output=tsv',
+    issur_heter: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTms4MIHYC7w0sRgy0I_4hg1967D_snpA9BUcT2NTwuZRxbRb_mzkZ6kScFXLfJGbT_t3cDXTPBxomc/pub?gid=1643191626&single=true&output=tsv'
 };
 
 const QUESTIONS_TO_SHOW = 10;
@@ -109,12 +109,14 @@ async function loadQuizData(quizType) {
             csvCache[quizType] = quizData;
             console.log('Questions loaded from CSV successfully');
         } else {
-            quizData = getDefaultQuizData(quizType);
-            console.log('Using default questions (CSV URL not configured)');
+            alert('שגיאה: URL של הגליון לא מוגדר כראוי.');
+            throw new Error('CSV URL not configured');
         }
     } catch (error) {
-        console.error('Error loading CSV, using default questions:', error);
-        quizData = getDefaultQuizData(quizType);
+        console.error('Error loading CSV:', error);
+        alert('שגיאה בטעינת השאלות מהגליון. אנא בדוק את החיבור לאינטרנט ונסה שוב.');
+        showScreen('screen-lobby');
+        throw error;
     }
 }
 
@@ -138,9 +140,14 @@ function parseCSV(csvText, quizType) {
     // Select random questions from the bank
     const selectedQuestions = selectRandomQuestions(allQuestions, QUESTIONS_TO_SHOW);
     
+    if (selectedQuestions.length === 0) {
+        alert('שגיאה: לא נמצאו שאלות בגליון. אנא וודא שהגליון מכיל לפחות שאלה אחת בפורמט הנכון.');
+        throw new Error('No questions found in spreadsheet');
+    }
+    
     return {
         title: quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
-        questions: selectedQuestions.length > 0 ? selectedQuestions : getDefaultQuizData(quizType).questions
+        questions: selectedQuestions
     };
 }
 
