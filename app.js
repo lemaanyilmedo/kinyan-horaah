@@ -182,6 +182,7 @@ function parseCSVLine(line) {
         
         if (char === '"') {
             inQuotes = !inQuotes;
+            // Don't add the quote character itself
         } else if (char === delimiter && !inQuotes) {
             result.push(current.trim());
             current = '';
@@ -336,6 +337,8 @@ async function createNewAttempt() {
 }
 
 async function showQuestion() {
+    console.log('showQuestion called for question index:', currentQuestionIndex);
+    
     if (currentQuestionIndex >= quizData.questions.length) {
         stopTimer();
         showScreen('screen-lead-collection');
@@ -343,6 +346,8 @@ async function showQuestion() {
     }
     
     const question = quizData.questions[currentQuestionIndex];
+    console.log('Question data:', question);
+    
     const questionTextEl = document.getElementById('question-text');
     const questionContainer = document.querySelector('.question-container');
     const timerDisplay = document.querySelector('.timer-display');
@@ -381,6 +386,7 @@ async function showQuestion() {
     await sleep(600);
     
     // Phase 3: Show answers one by one
+    console.log('Creating answer buttons, options:', question.options);
     question.options.forEach((option, index) => {
         const button = document.createElement('button');
         button.className = 'answer-option';
