@@ -11,21 +11,6 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Assistant:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <style>
-        .version-badge {
-            position: fixed;
-            top: 10px;
-            left: 10px;
-            background: var(--gold);
-            color: white;
-            padding: 5px 12px;
-            border-radius: 20px;
-            font-size: 14px;
-            font-weight: bold;
-            z-index: 9999;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-        }
-    </style>
-    <style>
         :root {
             --gold: #D4B182;
             --dark-slate: #32373c;
@@ -42,105 +27,117 @@
         
         body {
             font-family: 'Assistant', 'Almoni Tzar', sans-serif;
-            background: var(--light-cream);
             color: var(--dark-slate);
-            overflow-x: hidden;
+            overflow: hidden;
             font-size: 20px;
+            background: linear-gradient(rgba(50, 55, 60, 0.88), rgba(50, 55, 60, 0.92)),
+                        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920') center/cover fixed;
+            background-attachment: fixed;
+            height: 100vh;
         }
         
-        .hero-album {
-            min-height: 100vh;
-            background: linear-gradient(rgba(50, 55, 60, 0.85), rgba(50, 55, 60, 0.85)),
-                        url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=1920') center/cover fixed;
+        .full-screen-container {
+            height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            position: relative;
-        }
-        
-        .glass-form {
-            background: rgba(255, 255, 255, 0.1);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            border-radius: 20px;
-            padding: 2.5rem;
-            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
-        }
-        
-        .gold-divider {
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));
-            padding: 4rem 2rem;
-            text-align: center;
-            position: relative;
+            padding: 0;
+            width: 100%;
             overflow: hidden;
         }
         
-        .gold-divider::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
+        .content-glass {
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 30px;
+            padding: 3rem;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
             width: 100%;
-            height: 100%;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.3), transparent);
-            animation: shimmer 3s infinite;
+            max-width: 1100px;
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
         
-        @keyframes shimmer {
-            0% { left: -100%; }
-            100% { left: 100%; }
+        .full-width-content {
+            width: 100%;
+            padding: 1.5rem 5%;
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
         }
         
-        .lift-card {
-            background: white;
-            border-radius: 16px;
-            padding: 2rem;
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            border: 2px solid transparent;
+        .full-width-content.scrollable {
+            overflow-y: auto;
+            justify-content: flex-start;
         }
         
-        .lift-card:hover {
-            transform: translateY(-12px);
-            box-shadow: 0 20px 40px rgba(212, 177, 130, 0.3);
-            border-color: var(--gold);
+        .hero-content {
+            text-align: center;
+            color: white;
+            width: 100%;
+            max-width: none;
         }
         
-        .icon-outline {
-            width: 64px;
-            height: 64px;
-            stroke: var(--gold);
-            stroke-width: 1.1;
-            fill: none;
+        .hero-title {
+            font-size: clamp(4rem, 6vw, 6rem);
+            font-weight: 800;
+            margin-bottom: 1rem;
+            line-height: 1.1;
+            text-shadow: 3px 3px 6px rgba(0, 0, 0, 0.5);
+            color: white;
+        }
+        
+        .hero-subtitle {
+            font-size: clamp(2.5rem, 3.5vw, 3.5rem);
+            font-weight: 700;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .hero-description {
+            font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+            margin-bottom: 1.5rem;
+            opacity: 0.95;
+            line-height: 1.5;
+            color: white;
         }
         
         .btn-primary {
             background: linear-gradient(135deg, var(--gold-dark), var(--gold));
             color: white;
-            padding: 1.25rem 3rem;
-            border-radius: 12px;
+            padding: 1.8rem 3rem;
+            border-radius: 15px;
             border: none;
             font-weight: 700;
-            font-size: 1.5rem;
+            font-size: clamp(1.5rem, 2vw, 2rem);
             cursor: pointer;
             transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(212, 177, 130, 0.4);
+            box-shadow: 0 6px 20px rgba(212, 177, 130, 0.5);
+            display: block;
+            text-decoration: none;
+            width: 100%;
+            max-width: 600px;
+            margin: 0 auto;
+            min-height: 70px;
         }
         
         .btn-primary:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(212, 177, 130, 0.6);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 25px rgba(212, 177, 130, 0.7);
         }
         
         .btn-secondary {
-            background: var(--dark-slate);
+            background: rgba(50, 55, 60, 0.85);
+            backdrop-filter: blur(10px);
             color: white;
-            padding: 1.25rem 3rem;
-            border-radius: 12px;
-            border: none;
+            padding: 1.2rem 2.5rem;
+            border-radius: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.3);
             font-weight: 600;
-            font-size: 1.35rem;
+            font-size: clamp(1.2rem, 1.5vw, 1.8rem);
             cursor: pointer;
             transition: all 0.3s ease;
         }
@@ -150,161 +147,67 @@
             transform: translateY(-2px);
         }
         
-        .answer-option {
-            background: white;
-            border: 2px solid #e5e7eb;
-            padding: 1.75rem 2rem;
-            border-radius: 12px;
-            cursor: pointer;
-            transition: all 0.3s ease;
-            font-size: 1.5rem;
-            line-height: 1.6;
-        }
-        
-        .answer-option:hover {
-            border-color: var(--gold);
-            background: var(--light-cream);
-            transform: translateX(-4px);
-        }
-        
-        .answer-option.selected {
-            background: linear-gradient(135deg, rgba(212, 177, 130, 0.15), rgba(212, 177, 130, 0.25));
-            border-color: var(--gold);
-            border-width: 3px;
-        }
-        
-        .carousel {
-            overflow: hidden;
-            position: relative;
-            background: var(--dark-slate);
-            padding: 3rem 0;
-        }
-        
-        .carousel-track {
+        .progress-circles {
             display: flex;
-            animation: scroll 20s linear infinite;
-        }
-        
-        .carousel-item {
-            min-width: 300px;
-            height: 200px;
-            margin: 0 1rem;
-            border-radius: 12px;
-            background-size: cover;
-            background-position: center;
-        }
-        
-        @keyframes scroll {
-            0% { transform: translateX(0); }
-            100% { transform: translateX(-50%); }
-        }
-        
-        .progress-bar {
-            height: 8px;
-            background: var(--gold);
-            border-radius: 4px;
-            transition: width 0.5s ease;
-        }
-        
-        .hidden {
-            display: none !important;
-        }
-        
-        .fade-in {
-            animation: fadeIn 0.6s ease-in;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .text-gold {
-            color: var(--gold);
-        }
-        
-        .bg-gold {
-            background-color: var(--gold);
-        }
-        
-        .border-gold {
-            border-color: var(--gold);
-        }
-        
-        .loading-spinner {
-            border: 4px solid rgba(212, 177, 130, 0.2);
-            border-top: 4px solid var(--gold);
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            animation: spin 1s linear infinite;
-        }
-        
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-        
-        .quiz-sidebar {
-            position: sticky;
-            top: 2rem;
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-            border: 2px solid var(--gold);
-        }
-        
-        .product-image-container {
-            width: 100%;
-            height: 280px;
-            background: var(--light-cream);
-            border-radius: 16px;
-            overflow: hidden;
-            margin-bottom: 2rem;
-            border: 3px solid var(--gold);
-            display: flex;
-            align-items: center;
             justify-content: center;
-        }
-        
-        .product-image-container img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-        
-        .progress-tracker {
-            margin-top: 2rem;
-        }
-        
-        .progress-step {
-            display: flex;
             align-items: center;
+            gap: 0;
+            margin: 1.5rem 0;
+            position: relative;
+        }
+        
+        .progress-line {
+            position: absolute;
+            top: 50%;
+            left: 10%;
+            right: 10%;
+            height: 3px;
+            background: linear-gradient(to left, rgba(255, 255, 255, 0.3) 0%, rgba(255, 255, 255, 0.3) 100%);
+            z-index: 0;
+        }
+        
+        .progress-circle {
+            width: 60px;
+            height: 60px;
             border-radius: 50%;
-            background: #e5e7eb;
-            color: var(--dark-slate);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            border: 2px solid rgba(255, 255, 255, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
             font-weight: bold;
-            font-size: 1.3rem;
-            margin-left: 1rem;
+            font-size: 1.5rem;
             transition: all 0.3s ease;
             position: relative;
-            z-index: 1;
-        }
-        
-        .progress-step.completed .progress-number {
-            background: linear-gradient(135deg, var(--gold-dark), var(--gold));
             color: white;
+            z-index: 1;
+            flex: 1;
+            max-width: 60px;
+            margin: 0 auto;
         }
         
-        .progress-step.active .progress-number {
+        .progress-circle.active {
             background: var(--gold);
             color: white;
             box-shadow: 0 0 0 4px rgba(212, 177, 130, 0.3);
             animation: pulse 2s infinite;
+            transform: scale(1.15);
+        }
+        
+        .progress-circle.correct {
+            background: #22c55e;
+            color: white;
+        }
+        
+        .progress-circle.wrong {
+            background: #f59e0b;
+            color: white;
+        }
+        
+        .progress-circle.timeout {
+            background: #94a3b8;
+            color: white;
         }
         
         @keyframes pulse {
@@ -312,82 +215,81 @@
             50% { box-shadow: 0 0 0 8px rgba(212, 177, 130, 0.1); }
         }
         
-        .progress-step.completed .progress-pie-number {
-            color: #22c55e;
-        }
-        
-        .progress-step.active .progress-pie-number {
+        .question-header {
+            text-align: center;
+            font-size: clamp(1.5rem, 2vw, 2.5rem);
             color: var(--gold);
-            font-weight: 800;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            padding: 1rem 2rem;
+            background: rgba(212, 177, 130, 0.2);
+            backdrop-filter: blur(10px);
+            border-bottom: 3px solid var(--gold);
+            flex-shrink: 0;
         }
         
-        /* Pie Chart Progress */
-        .progress-pie {
-            width: 70px;
-            height: 70px;
-            position: relative;
-        }
-        
-        .progress-pie svg {
-            transform: rotate(-90deg);
-        }
-        
-        .progress-pie-bg {
-            fill: none;
-            stroke: #e5e7eb;
-            stroke-width: 7;
-        }
-        
-        .progress-pie-fill {
-            fill: none;
-            stroke-width: 7;
-            stroke-linecap: round;
-            transition: stroke-dasharray 0.6s ease, stroke 0.3s ease;
-        }
-        
-        .progress-pie-fill.empty {
-            stroke: #e5e7eb;
-            stroke-dasharray: 0 100;
-        }
-        
-        .progress-pie-fill.partial {
-            stroke: #f59e0b;
-            stroke-dasharray: 33 100;
-        }
-        
-        .progress-pie-fill.complete {
-            stroke: #22c55e;
-            stroke-dasharray: 100 100;
-        }
-        
-        .progress-pie-fill.perfect {
-            stroke: #22c55e;
-            stroke-dasharray: 100 100;
-            filter: drop-shadow(0 0 6px rgba(34, 197, 94, 0.5));
-        }
-        
-        .progress-pie-number {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            font-weight: bold;
-            font-size: 1.4rem;
-            color: var(--dark-slate);
-        }
-        
-        /* Timer */
-        .question-timer {
+        .question-container {
             display: flex;
+            align-items: flex-start;
+            gap: 2rem;
+            margin-bottom: 1.5rem;
+            flex-shrink: 0;
+            min-height: 0;
+        }
+        
+        .question-text {
+            font-size: clamp(2.5rem, 4vw, 5rem);
+            font-weight: 700;
+            line-height: 1.3;
+            flex: 1;
+            color: white;
+            text-shadow: 3px 3px 8px rgba(0, 0, 0, 0.7);
+            transition: font-size 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+            text-align: right;
+            direction: rtl;
+            align-self: flex-start;
+        }
+        
+        .question-text.typing::after {
+            content: '|';
+            animation: blink 0.7s infinite;
+            margin-right: 5px;
+        }
+        
+        @keyframes blink {
+            0%, 50% { opacity: 1; }
+            51%, 100% { opacity: 0; }
+        }
+        
+        .question-text.intro {
+            font-size: clamp(4rem, 8vw, 8rem);
+            text-align: right;
+            direction: rtl;
+        }
+        
+        .question-container.intro {
+            justify-content: flex-start;
+            align-items: flex-start;
+        }
+        
+        .timer-display {
+            display: flex;
+            flex-direction: column;
             align-items: center;
-            justify-content: center;
-            margin-bottom: 2rem;
+            gap: 0.5rem;
+            flex-shrink: 0;
+            transition: opacity 0.5s ease;
+        }
+        
+        .timer-display.hidden-intro {
+            opacity: 0;
+            pointer-events: none;
         }
         
         .timer-circle {
             position: relative;
-            width: 80px;
-            height: 80px;
+            width: 120px;
+            height: 120px;
         }
         
         .timer-circle svg {
@@ -396,13 +298,13 @@
         
         .timer-bg {
             fill: none;
-            stroke: #e5e7eb;
-            stroke-width: 6;
+            stroke: rgba(255, 255, 255, 0.3);
+            stroke-width: 8;
         }
         
         .timer-progress {
             fill: none;
-            stroke-width: 6;
+            stroke-width: 8;
             stroke-linecap: round;
             transition: stroke-dasharray 1s linear, stroke 0.3s ease;
         }
@@ -430,43 +332,107 @@
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            font-size: 2rem;
+            font-size: 3rem;
             font-weight: bold;
-            color: var(--dark-slate);
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
         }
         
         .timer-label {
-            margin-right: 1rem;
-            font-size: 1.1rem;
-            color: var(--dark-slate);
+            font-size: 1.5rem;
+            color: white;
             font-weight: 600;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
         
-        /* Feedback Messages */
+        .answer-option {
+            background: rgba(255, 255, 255, 0.35);
+            backdrop-filter: blur(10px);
+            border: 3px solid rgba(255, 255, 255, 0.5);
+            padding: 1.5rem 2.5rem;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: clamp(1.5rem, 2vw, 2.5rem);
+            font-weight: 600;
+            line-height: 1.3;
+            margin-bottom: 0.8rem;
+            text-align: right;
+            color: white;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transform: translateY(30px);
+            width: 100%;
+            display: block;
+        }
+        
+        .answer-option.appear {
+            animation: slideInAnswer 0.5s ease forwards;
+        }
+        
+        @keyframes slideInAnswer {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .answer-option:hover {
+            border-color: var(--gold);
+            background: rgba(212, 177, 130, 0.4);
+            transform: translateX(-8px) scale(1.02);
+            box-shadow: 0 8px 25px rgba(212, 177, 130, 0.4);
+        }
+        
+        .answer-option.selected {
+            background: rgba(212, 177, 130, 0.5);
+            border-color: var(--gold);
+            border-width: 5px;
+            box-shadow: 0 0 30px rgba(212, 177, 130, 0.6);
+        }
+        
+        .hidden {
+            display: none !important;
+        }
+        
+        .fade-in {
+            animation: fadeIn 0.6s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
         .feedback-message {
             position: fixed;
             top: 50%;
             left: 50%;
             transform: translate(-50%, -50%);
-            background: white;
-            padding: 2rem 3rem;
-            border-radius: 20px;
-            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(20px);
+            padding: 3rem 5rem;
+            border-radius: 30px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
             z-index: 1000;
             animation: fadeInScale 0.4s ease;
             text-align: center;
         }
         
         .feedback-message.correct {
-            border: 3px solid #22c55e;
+            border: 4px solid #22c55e;
         }
         
         .feedback-message.wrong {
-            border: 3px solid #f59e0b;
+            border: 4px solid #f59e0b;
         }
         
         .feedback-message.timeout {
-            border: 3px solid var(--gold);
+            border: 4px solid var(--gold);
+        }
+        
+        .feedback-message.partial {
+            border: 4px solid #f59e0b;
         }
         
         @keyframes fadeInScale {
@@ -480,7 +446,6 @@
             }
         }
         
-        /* Confetti Effect */
         .confetti {
             position: fixed;
             width: 10px;
@@ -498,7 +463,6 @@
             }
         }
         
-        /* Shake Animation for Wrong Answer */
         @keyframes shake {
             0%, 100% { transform: translateX(0); }
             25% { transform: translateX(-10px); }
@@ -509,159 +473,284 @@
             animation: shake 0.4s ease;
         }
         
-        /* Slide Transition */
-        .slide-out-left {
-            animation: slideOutLeft 0.4s ease forwards;
+        .info-box {
+            background: linear-gradient(135deg, rgba(212, 177, 130, 0.15), rgba(212, 177, 130, 0.25));
+            border: 2px solid var(--gold-light);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin: 1.5rem 0;
         }
         
-        .slide-in-right {
-            animation: slideInRight 0.4s ease forwards;
+        .info-box * {
+            color: white !important;
         }
         
-        @keyframes slideOutLeft {
-            from { transform: translateX(0); opacity: 1; }
-            to { transform: translateX(-100%); opacity: 0; }
+        .form-input {
+            width: 100%;
+            padding: 1rem 1.5rem;
+            border: 2px solid var(--gold);
+            border-radius: 10px;
+            font-size: 1.2rem;
+            transition: all 0.3s ease;
         }
         
-        @keyframes slideInRight {
-            from { transform: translateX(100%); opacity: 0; }
-            to { transform: translateX(0); opacity: 1; }
+        .form-input:focus {
+            outline: none;
+            border-color: var(--gold-dark);
+            box-shadow: 0 0 0 3px rgba(212, 177, 130, 0.2);
+        }
+        
+        .version-badge {
+            position: fixed;
+            top: 10px;
+            left: 10px;
+            background: var(--gold);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+        }
+        
+        .quiz-type-badge {
+            position: fixed;
+            top: 10px;
+            right: 10px;
+            background: rgba(212, 177, 130, 0.9);
+            backdrop-filter: blur(10px);
+            color: white;
+            padding: 12px 24px;
+            border-radius: 25px;
+            font-size: 1.3rem;
+            font-weight: bold;
+            z-index: 9999;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+        }
+        
+        .already-completed-message {
+            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.15));
+            border: 3px solid #ef4444;
+            border-radius: 20px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .already-completed-message h2 {
+            color: #dc2626;
+            font-size: 2.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .already-completed-message p {
+            font-size: 1.5rem;
+            color: var(--dark-slate);
+            line-height: 1.6;
+        }
+        
+        /* Donut Chart Styles */
+        .stats-chart-container {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 3px solid rgba(212, 177, 130, 0.6);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .donut-chart {
+            position: relative;
+            width: 180px;
+            height: 180px;
+        }
+        
+        .donut-chart svg {
+            transform: rotate(-90deg);
+        }
+        
+        .donut-chart-center {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            text-align: center;
+        }
+        
+        .donut-chart-percentage {
+            font-size: 2.5rem;
+            font-weight: bold;
+            color: var(--gold);
+            line-height: 1;
+        }
+        
+        .donut-chart-label {
+            font-size: 0.9rem;
+            color: white;
+            opacity: 0.9;
+            margin-top: 0.3rem;
         }
     </style>
 </head>
 <body>
-    <!-- Version Badge -->
-    <div class="version-badge">גירסה 10</div>
+    <div class="version-badge">גירסה 14 - Partial Answers</div>
+    <div id="quiz-type-badge" class="quiz-type-badge hidden"></div>
     
-    <!-- Screen 1: Hero Album -->
-    <div id="screen-lobby" class="hero-album">
-        <div class="container mx-auto px-4">
-            <div class="grid md:grid-cols-2 gap-8 items-center">
-                <!-- Right: Marketing Copy -->
-                <div class="text-white fade-in">
-                    <h1 class="text-7xl md:text-8xl font-bold mb-6" style="line-height: 1.2;">
-                        וואס וועסטו מכריע?
-                    </h1>
-                    <h2 class="text-5xl md:text-6xl mb-8 text-gold">
-                        אתגר פסיקה מעשית
-                    </h2>
-                    <p class="text-2xl md:text-3xl mb-6 leading-relaxed opacity-90">
-                        שאלות מעשיות אמיתיות שמגיעות מבתי הוראה בפועל.<br>
-                        בוא נראה איך אתה פוסק בשטח - בזמן אמת, תחת לחץ.
+    <!-- Screen 1: Lobby -->
+    <div id="screen-lobby" class="full-screen-container">
+        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: center; padding: 2rem 5%;">
+            <!-- Left Side: Text Content -->
+            <div>
+                <h1 style="font-size: clamp(3.5rem, 5vw, 6rem); font-weight: 900; margin-bottom: 1.5rem; color: white; line-height: 1.1; text-shadow: 0 4px 20px rgba(0,0,0,0.3);">
+                    איך היית פוסק?!
+                </h1>
+                <h2 style="font-size: clamp(2.5rem, 3.5vw, 4rem); font-weight: bold; margin-bottom: 2rem; color: var(--gold); line-height: 1.2;">
+                    תתחיל להכריע!
+                </h2>
+                <p style="font-size: clamp(1.4rem, 2vw, 2rem); line-height: 1.5; margin-bottom: 2.5rem; color: white;">
+                    אתגר פסיקה מעשית, המבוסס על שאלות מעשיות אמיתיות שמגיעות מבתי הוראה בפועל. בוא נראה איך אתה פוסק בשטח - בזמן אמת, תחת לחץ.
+                </p>
+                <div style="background: rgba(212, 177, 130, 0.2); backdrop-filter: blur(15px); border: 2px solid var(--gold); border-radius: 15px; padding: 1.8rem; margin-bottom: 2rem;">
+                    <p style="font-size: clamp(1.3rem, 1.7vw, 1.7rem); color: white; font-weight: bold; line-height: 1.4; margin-bottom: 0.8rem;">
+                        המכריעים נכון - נכנסים להגרלות על הטבות יקרות ערך
                     </p>
-                    <div class="bg-white bg-opacity-10 backdrop-blur-sm rounded-lg p-6 mb-8 border border-white border-opacity-20">
-                        <p class="text-2xl mb-4">
-                            בחר את התחום ההלכתי שבו תרצה להתמודד עם שאלות מהשטח.
-                        </p>
-                        <p class="text-gold font-bold text-2xl">
-                            הכרע נכון, וזכה בהטבות יקרות ערך ללימודי הוראה + הגרלה על שבת 'גולדיס' מפוארת.
-                        </p>
-                    </div>
+                    <p style="font-size: clamp(1.2rem, 1.6vw, 1.6rem); color: var(--gold); font-weight: bold; line-height: 1.4; margin: 0;">
+                        כשהעומד בהצלחה במקום הראשון - יזכה להשתתפות חינם בקורס - כולל שובר מתנה ב'גולדיס' לענג את השבת בפאר והדר.
+                    </p>
+                </div>
+                <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 1.5rem;">
+                    <button onclick="window.open('#', '_blank')" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
+                        תקנון ההגרלה
+                    </button>
+                    <button onclick="window.open('#', '_blank')" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
+                        מקומות ראשונים
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Right Side: Action Buttons -->
+            <div>
+                <p style="font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.5; margin-bottom: 1.5rem; color: white; text-align: center; font-weight: 600;">
+                    בחר את התחום ההלכתי שבו תרצה להתמודד עם שאלות מהשטח:
+                </p>
+                <div style="display: flex; flex-direction: column; gap: 1.5rem;">
+                    <button onclick="startQuiz('shabbat')" class="btn-primary" style="font-size: clamp(1.5rem, 2vw, 2rem); padding: 1.8rem;">
+                        שאלות מעשיות בהלכות שבת
+                    </button>
+                    <button onclick="startQuiz('issur_heter')" class="btn-primary" style="font-size: clamp(1.5rem, 2vw, 2rem); padding: 1.8rem;">
+                        שאלות מעשיות באיסור והיתר
+                    </button>
+                </div>
+                <p style="color: rgba(255, 255, 255, 0.85); font-size: clamp(1.1rem, 1.4vw, 1.4rem); margin-top: 1.5rem; text-align: center; opacity: 0.95;">
+                    ניתן להתמודד בשני התחומים ולהכפיל את סיכויי הזכייה
+                </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 1.5: Instructions -->
+    <div id="screen-instructions" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="max-width: 1000px; margin: 0 auto; display: flex; flex-direction: column; justify-content: center;">
+            <div style="background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(20px); border-radius: 30px; padding: 3rem; box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);">
+                <h2 style="font-size: clamp(2.5rem, 3.5vw, 3.5rem); font-weight: bold; margin-bottom: 2rem; color: var(--gold); text-align: center;">
+                    הנכם מועברים לאתגר ההלכה
+                </h2>
+                
+                <div style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); line-height: 1.8; color: var(--dark-slate); margin-bottom: 2rem;">
+                    <p style="margin-bottom: 1.5rem;">
+                        לפניכם תוצג שאלה, כשמיד אחריה יוצגו התשובות לבחירה.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem; font-weight: 600; color: #d97706;">
+                        שימו לב: יתכנו תשובות נכונות, אך חלקיות. עליכם לבחור את התשובה הנכונה ביותר.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        בחירה בתשובה חלקית שאיננה מוגדרת כתשובה המושלמת - תזכה אתכם בציון חלקי.
+                    </p>
+                    
+                    <p style="margin-bottom: 1.5rem;">
+                        ניתן לבחור בכפתור 'אני צריך לעיין' - פעולה זו תשמור את המבחן, ותאפשר לכם לחזור אליו בשלב מאוחר יותר.
+                    </p>
+                    
+                    <p style="font-weight: 600;">
+                        כדי שתשובותיכם ישמרו גם אם המערכת תיסגר, או כדי לאפשר בחירה ב'צריך עיון' - מומלץ לבצע הרשמה מראש.
+                    </p>
                 </div>
                 
-                <!-- Left: Glass Form -->
-                <div class="glass-form fade-in">
-                    <h3 class="text-4xl font-bold text-white mb-6 text-center">בחר תחום לאתגר פסיקה</h3>
-                    <div class="space-y-4">
-                        <button onclick="startQuiz('shabbat')" class="btn-primary w-full text-center">
-                            🕯️ שאלות מעשיות בהלכות שבת
-                        </button>
-                        <button onclick="startQuiz('issur_heter')" class="btn-primary w-full text-center">
-                            🥩 שאלות מעשיות באיסור והיתר
-                        </button>
-                    </div>
-                    <p class="text-white text-xl mt-6 text-center opacity-80">
-                        ניתן להתמודד בשני התחומים ולהכפיל את סיכויי הזכייה
-                    </p>
+                <div style="display: flex; gap: 2rem; justify-content: center; margin-top: 2.5rem;">
+                    <button onclick="showRegistration()" class="btn-secondary" style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); padding: 1.2rem 2.5rem;">
+                        להרשמה
+                    </button>
+                    <button onclick="startQuestions()" class="btn-primary" style="font-size: clamp(1.3rem, 1.6vw, 1.6rem); padding: 1.2rem 3rem;">
+                        לתחילת האתגר
+                    </button>
                 </div>
             </div>
         </div>
     </div>
     
-    <!-- Slogan Divider -->
-    <div class="gold-divider">
-        <h2 class="text-6xl md:text-7xl font-bold text-white" style="text-shadow: 2px 2px 4px rgba(0,0,0,0.3);">
-            מהשטח, לפסיקה, למעשה!
-        </h2>
-    </div>
-
     <!-- Screen 2: Question Interface -->
-    <div id="screen-question" class="hidden" style="background: var(--light-cream); min-height: 100vh; padding: 3rem 0;">
-        <div class="container mx-auto px-4" style="max-width: 1400px;">
-            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                <!-- Main Content - Left Side -->
-                <div class="lg:col-span-2">
-                    <div class="lift-card fade-in">
-                        <!-- Status Bar -->
-                        <div class="mb-6 pb-4" style="border-bottom: 2px solid var(--gold);">
-                            <div class="flex justify-between items-center" style="color: var(--dark-slate);">
-                                <span id="question-counter" class="font-bold text-3xl">שאלה 1 מתוך 5</span>
-                                <span id="quiz-topic" class="font-medium text-gold text-2xl">נושא: הלכות שבת</span>
-                            </div>
-                            <div class="mt-4 bg-gray-200 rounded-full" style="height: 12px;">
-                                <div id="progress-bar" class="progress-bar" style="width: 20%"></div>
-                            </div>
-                        </div>
-                        
-                        <!-- Timer -->
-                        <div class="question-timer">
-                            <span class="timer-label">זמן נותר:</span>
-                            <div class="timer-circle">
-                                <svg width="80" height="80">
-                                    <circle class="timer-bg" cx="40" cy="40" r="34"></circle>
-                                    <circle id="timer-progress" class="timer-progress normal" cx="40" cy="40" r="34" 
-                                            style="stroke-dasharray: 213.6 213.6;"></circle>
-                                </svg>
-                                <div id="timer-number" class="timer-number">30</div>
-                            </div>
-                        </div>
-                        
-                        <!-- Question Area -->
-                        <div class="mb-8">
-                            <div id="question-text" class="text-3xl md:text-4xl font-semibold leading-relaxed mb-8" style="color: var(--dark-slate);">
-                                <!-- Question will be loaded here -->
-                            </div>
-                        </div>
-                        
-                        <!-- Answer Options -->
-                        <div id="answers-container" class="space-y-5 mb-6">
-                            <!-- Answers will be loaded here -->
-                        </div>
-                        
-                        <!-- Special Button -->
-                        <div class="mt-8 pt-6" style="border-top: 1px solid #e5e7eb;">
-                            <button onclick="showNeedReview()" class="btn-secondary w-full">
-                                📚 צריך עיון (גם מורה הוראה פותח ספר לפעמים)
-                            </button>
-                        </div>
-                    </div>
+    <div id="screen-question" class="full-screen-container hidden">
+        <div class="full-width-content fade-in">
+            <!-- Question Header -->
+            <div class="question-header">
+                השאלה שהגיעה לשולחן בית ההוראה
+            </div>
+            
+            <!-- Progress Circles -->
+            <div id="progress-circles" class="progress-circles">
+                <div class="progress-line"></div>
+                <!-- Will be populated dynamically -->
+            </div>
+            
+            <!-- Question with Timer -->
+            <div class="question-container">
+                <!-- Question Text -->
+                <div id="question-text" class="question-text">
+                    <!-- Question will be loaded here -->
                 </div>
                 
-                <!-- Sidebar - Right Side -->
-                <div class="lg:col-span-1">
-                    <div class="quiz-sidebar fade-in">
-                        <!-- Product Image -->
-                        <div class="product-image-container">
-                            <img id="product-image" src="https://images.unsplash.com/photo-1584308972272-9e4e7685e80f?w=400" alt="מוצר" style="display: block;">
-                            <div id="product-placeholder" style="display: none; color: var(--gold); font-size: 4rem;">📦</div>
-                        </div>
-                        
-                        <!-- Progress Tracker -->
-                        <div class="progress-tracker">
-                            <h3 class="text-2xl font-bold mb-4 text-gold text-center">התקדמות בפסיקה</h3>
-                            <div id="progress-steps" style="display: flex; flex-wrap: wrap; gap: 1rem; justify-content: center;">
-                                <!-- Will be populated dynamically -->
-                            </div>
-                        </div>
+                <!-- Timer on the right -->
+                <div class="timer-display">
+                    <span class="timer-label">זמן נותר</span>
+                    <div class="timer-circle">
+                        <svg width="120" height="120">
+                            <circle class="timer-bg" cx="60" cy="60" r="52"></circle>
+                            <circle id="timer-progress" class="timer-progress normal" cx="60" cy="60" r="52" 
+                                    style="stroke-dasharray: 326.7 326.7;"></circle>
+                        </svg>
+                        <div id="timer-number" class="timer-number">30</div>
                     </div>
                 </div>
             </div>
+            
+            <!-- Answer Options -->
+            <div id="answers-container">
+                <!-- Answers will be loaded here -->
+            </div>
+            
+            <!-- Action Buttons -->
+            <div style="display: flex; gap: 2rem; margin-top: 2rem;">
+                <button onclick="showNeedReview()" class="btn-secondary" style="flex: 1;">
+                    צריך עיון (גם מורה הוראה פותח ספר לפעמים)
+                </button>
+                <button onclick="nextQuestion()" class="btn-secondary" style="flex: 1;">
+                    שאלה הבאה ←
+                </button>
+            </div>
         </div>
     </div>
-
+    
     <!-- Screen 3: Need Review Popup -->
     <div id="screen-need-review" class="fixed inset-0 bg-black bg-opacity-70 flex items-center justify-center p-4 hidden" style="z-index: 1000;">
-        <div class="bg-white rounded-2xl shadow-2xl p-8 max-w-md w-full fade-in">
+        <div class="content-glass fade-in" style="max-width: 600px;">
             <h2 class="text-4xl font-bold mb-4 text-center text-gold">
                 "מתונים היו בדין"
             </h2>
@@ -678,186 +767,203 @@
             <form id="pause-form" class="space-y-4">
                 <div>
                     <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">שם:</label>
-                    <input type="text" id="pause-name" required
-                           class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);">
+                    <input type="text" id="pause-name" required class="form-input">
                 </div>
                 
                 <div>
                     <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">וואטסאפ/מייל:</label>
-                    <input type="text" id="pause-contact" required
-                           class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);">
+                    <input type="text" id="pause-contact" required class="form-input">
                 </div>
                 
-                <div class="flex gap-3">
-                    <button type="submit" class="flex-1 btn-primary">
+                <div style="display: flex; gap: 1rem;">
+                    <button type="submit" class="btn-primary" style="flex: 1;">
                         שלחו לי לינק להמשך המבחן
                     </button>
-                    <button type="button" onclick="closeNeedReview()" class="px-6 py-3 border-2 rounded-lg text-lg" style="border-color: var(--dark-slate);">
+                    <button type="button" onclick="closeNeedReview()" class="btn-secondary">
                         ביטול
                     </button>
                 </div>
             </form>
         </div>
     </div>
-
+    
     <!-- Screen 4: Lead Collection -->
-    <div id="screen-lead-collection" class="hidden" style="background: var(--light-cream); min-height: 100vh; padding: 3rem 0;">
-        <div class="container mx-auto px-4 max-w-2xl">
-            <div class="lift-card fade-in">
-                <h2 class="text-4xl md:text-5xl font-bold mb-4 text-center text-gold">
-                    הפסיקות שלך נקלטו.
+    <div id="screen-lead-collection" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding: 2rem 5%; height: 100vh;">
+            <!-- Left Side: Text Content -->
+            <div>
+                <h2 style="font-size: clamp(2.5rem, 4vw, 4rem); font-weight: bold; margin-bottom: 1.5rem; color: var(--gold); line-height: 1.2;">
+                    ההכרעה שלך התקבלה!
                 </h2>
                 
-                <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
-                    ההכרעות שלך נקלטו במערכת ועובדו מול פסיקות של מאות מורי הוראה אחרים.
+                <p style="margin-bottom: 1.5rem; line-height: 1.5; font-size: clamp(1.3rem, 1.8vw, 1.8rem); color: white;">
+                    ההכרעות שלך נקלטו במערכת ועובדו מול תשובות ופסיקות של מאות מופלגי תורה והלכה אחרים.
                 </p>
                 
-                <div class="rounded-lg p-6 mb-8" style="background: linear-gradient(135deg, rgba(212, 177, 130, 0.1), rgba(212, 177, 130, 0.2));">
-                    <p class="font-bold mb-3 text-gold text-xl">
-                        לפני שנחשוף את התוצאות:
+                <div class="info-box">
+                    <p class="font-bold mb-3" style="color: var(--gold); font-size: clamp(1.3rem, 1.6vw, 1.6rem);">
+                        מעוניין לדעת מה הציון שלך?
                     </p>
-                    <p class="mb-2 text-lg" style="color: var(--dark-slate);">
-                        מלא את הפרטים כדי שנוכל:
+                    <p class="mb-2" style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; font-weight: 600;">
+                        מהי איכות הפסיקה שלך ברגע האמת?
                     </p>
-                    <ul class="list-disc list-inside space-y-1 mr-4 text-lg" style="color: var(--dark-slate);">
-                        <li>להציג לך ניתוח מפורט של הפסיקות שלך.</li>
-                        <li>לשלוח לך את דף המקורות והפסיקה המלאה למעשה.</li>
-                        <li>ליצור קשר למימוש ההטבות והזכייה בהגרלה.</li>
-                    </ul>
+                    <p class="mb-3" style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; font-weight: 600;">
+                        וכמה מתוך הציבור יודעים את התשובות לשאלות שאתה יודע?
+                    </p>
+                    <p style="font-size: clamp(1.4rem, 1.8vw, 1.8rem); color: var(--gold); font-weight: bold; line-height: 1.5;">
+                        מלא את הפרטים כדי שנוכל לעבד אותם ולהציג לך ניתוח מפורט ומרתק!
+                    </p>
                 </div>
-                
+            </div>
+            
+            <!-- Right Side: Form -->
+            <div style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 20px; padding: 2rem;">
                 <form id="lead-form" class="space-y-4">
                     <div>
-                        <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">שם מלא:</label>
-                        <input type="text" id="lead-name" required
-                               class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);">
+                        <label class="block font-medium mb-2" style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">שם מלא:</label>
+                        <input type="text" id="lead-name" required class="form-input">
                     </div>
                     
                     <div>
-                        <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">טלפון נייד:</label>
-                        <input type="tel" id="lead-phone" required
-                               class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);"
-                               placeholder="050-1234567">
+                        <label class="block font-medium mb-2" style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">טלפון נייד:</label>
+                        <input type="tel" id="lead-phone" required class="form-input" placeholder="050-1234567">
                     </div>
                     
                     <div>
-                        <label class="block font-medium mb-2 text-lg" style="color: var(--dark-slate);">מייל:</label>
-                        <input type="email" id="lead-email" required
-                               class="w-full px-4 py-3 border-2 rounded-lg text-xl" style="border-color: var(--gold);"
-                               placeholder="example@email.com">
+                        <label class="block font-medium mb-2" style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">מייל:</label>
+                        <input type="email" id="lead-email" required class="form-input" placeholder="example@email.com">
                     </div>
                     
-                    <button type="submit" class="w-full btn-primary">
+                    <div style="margin-top: 1rem;">
+                        <label class="flex items-start gap-2 cursor-pointer">
+                            <input type="checkbox" id="marketing-consent" style="margin-top: 0.3rem; width: 20px; height: 20px; cursor: pointer;">
+                            <span style="font-size: clamp(1rem, 1.3vw, 1.3rem); color: white; line-height: 1.4;">
+                                אני מאשר לקבל עדכונים ודיוור מ'קניין הוראה'
+                            </span>
+                        </label>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%; font-size: clamp(1.4rem, 1.8vw, 1.8rem); padding: 1.3rem;">
                         חשוף את הפסיקות שלי ◀
                     </button>
                 </form>
             </div>
         </div>
     </div>
-
-    <!-- Screen 5: Results & Rewards -->
-    <div id="screen-results" class="hidden" style="background: var(--light-cream); min-height: 100vh; padding: 3rem 0;">
-        <div class="container mx-auto px-4 max-w-3xl">
-            <div class="lift-card fade-in">
-                <!-- Results Header -->
-                <div id="results-header" class="text-center mb-8">
-                    <!-- Will be populated based on score -->
-                </div>
-                
-                <!-- Score Display -->
-                <div class="rounded-xl p-8 text-white text-center mb-8" style="background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light));">
-                    <div class="text-6xl font-bold mb-2" id="final-score">85%</div>
-                    <div class="text-xl font-semibold">הציון שלך</div>
-                </div>
-                
-                <!-- Social Proof Stats -->
-                <div id="social-stats" class="rounded-lg p-6 mb-8" style="background: linear-gradient(135deg, rgba(212, 177, 130, 0.1), rgba(212, 177, 130, 0.15));">
-                    <!-- Will be populated with stats -->
-                </div>
-                
-                <!-- Benefit Selection -->
-                <div class="mb-8">
-                    <h3 class="text-3xl font-bold mb-4 text-center text-gold">
-                        "שכר לימוד הליכה" – בחר את ההטבה שלך:
-                    </h3>
-                    
-                    <p class="mb-6 leading-relaxed text-xl" style="color: var(--dark-slate);">
-                        בנוסף להגרלה, זכית בהטבה מובטחת להצטרפות לאחד ממסלולי הכשרת המורים שלנו.
-                        באיזה נושא אתה מרגיש שאתה רוצה להתחזק ולהפוך למורה הוראה?
-                    </p>
-                    
-                    <form id="benefit-form" class="space-y-3">
-                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
-                            <input type="radio" name="benefit" value="shabbat_course_discount" required class="ml-3">
-                            <span class="text-xl" style="color: var(--dark-slate);">הלכות שבת - הטבה ע"ס 400 ₪ לקורס הקרוב</span>
-                        </label>
-                        
-                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
-                            <input type="radio" name="benefit" value="issur_heter_course_discount" required class="ml-3">
-                            <span class="text-xl" style="color: var(--dark-slate);">איסור והיתר - הטבה ע"ס 400 ₪ לקורס הקרוב</span>
-                        </label>
-                        
-                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
-                            <input type="radio" name="benefit" value="niddah_course_discount" required class="ml-3">
-                            <span class="text-xl" style="color: var(--dark-slate);">הלכות נידה/טהרה - הטבה ע"ס 500 ₪</span>
-                        </label>
-                        
-                        <label class="flex items-center p-4 border-2 rounded-lg cursor-pointer transition-all" style="border-color: #e5e7eb;">
-                            <input type="radio" name="benefit" value="mamonot_special" required class="ml-3">
-                            <span class="text-xl" style="color: var(--dark-slate);">ממונות (חושן משפט) - הטבה מיוחדת</span>
-                        </label>
-                        
-                        <button type="submit" class="w-full btn-primary mt-6">
-                            אשר בחירה ושמור
-                        </button>
-                    </form>
-                </div>
-                
-                <!-- Final Actions -->
-                <div id="final-actions" class="hidden">
-                    <div class="rounded-lg p-6 mb-6 text-center" style="background: linear-gradient(135deg, rgba(34, 197, 94, 0.1), rgba(34, 197, 94, 0.2)); border: 2px solid #22c55e;">
-                        <p class="font-medium text-xl" style="color: #15803d;">
-                            ✅ הפרטים שלך עודכנו. נציג יחזור אליך למימוש ההטבה.
-                        </p>
-                    </div>
-                    
-                    <div class="space-y-3">
-                        <button onclick="downloadPDF()" class="w-full btn-primary hidden">
-                            📥 הורד את קובץ התשובות והמקורות (PDF)
-                        </button>
-                        
-                        <button onclick="restartQuiz()" class="w-full btn-secondary">
-                            🔄 רוצה להכפיל סיכויים? היבחן עכשיו בנושא השני!
-                        </button>
-                    </div>
-                </div>
+    
+    <!-- Screen 5: Already Completed -->
+    <div id="screen-already-completed" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="max-width: 900px; margin: 0 auto;">
+            <div class="already-completed-message">
+<h2>כבר ביצעת את המבחן</h2>
+                <p style="margin-bottom: 1rem;">
+                    הפרטים שהזנת כבר רשומים במערכת שלנו.
+                </p>
+                <p style="margin-bottom: 1.5rem;">
+                    כל משתתף יכול להיבחן פעם אחת בלבד בכל תחום כדי לשמור על הוגנות ההגרלה.
+                </p>
+                <p style="font-weight: bold; color: var(--gold); font-size: 1.6rem;">
+                    תוצאותיך כבר נשמרו ואתה משתתף בהגרלה!
+                </p>
+            </div>
+            <div style="text-align: center; margin-top: 2rem;">
+                <button onclick="location.reload()" class="btn-secondary">
+                    חזור לדף הבית
+                </button>
             </div>
         </div>
     </div>
     
-    <!-- Carousel Section -->
-    <div class="carousel">
-        <div class="carousel-track">
-            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400');"></div>
-            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400');"></div>
-            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?w=400');"></div>
-            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400');"></div>
-            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1481627834876-b7833e8f5570?w=400');"></div>
-            <div class="carousel-item" style="background-image: url('https://images.unsplash.com/photo-1456513080510-7bf3a84b82f8?w=400');"></div>
+    <!-- Screen 6: Results & Rewards -->
+    <div id="screen-results" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding: 2rem 5%; height: 100vh;">
+            <!-- Left Side: Score & Stats -->
+            <div>
+                <!-- Score Display -->
+                <div style="background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light)); border-radius: 25px; padding: 2rem; text-align: center; margin-bottom: 1.5rem; color: white; box-shadow: 0 10px 40px rgba(212, 177, 130, 0.4);">
+                    <div style="font-size: clamp(4rem, 6vw, 6rem); font-weight: bold; margin-bottom: 0.5rem; line-height: 1;" id="final-score">85%</div>
+                    <div style="font-size: clamp(1.2rem, 1.6vw, 1.6rem); font-weight: 600; opacity: 0.95;">הציון שלך</div>
+                </div>
+                
+                <!-- Results Header -->
+                <div id="results-header" class="text-center" style="margin-bottom: 1.5rem;">
+                    <!-- Will be populated based on score -->
+                </div>
+                
+                <!-- Social Proof Stats with Chart -->
+                <div class="stats-chart-container">
+                    <!-- Donut Chart -->
+                    <div class="donut-chart">
+                        <svg width="180" height="180">
+                            <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="20"/>
+                            <circle id="chart-success" cx="90" cy="90" r="70" fill="none" stroke="#86efac" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"/>
+                            <circle id="chart-struggle" cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"/>
+                        </svg>
+                        <div class="donut-chart-center">
+                            <div class="donut-chart-percentage" id="chart-percentage">64%</div>
+                            <div class="donut-chart-label">התלבטו</div>
+                        </div>
+                    </div>
+                    
+                    <!-- Stats Text -->
+                    <div id="social-stats" style="color: white;">
+                        <!-- Will be populated with stats -->
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Right Side: Benefit Selection -->
+            <div style="display: flex; flex-direction: column; justify-content: space-between; height: 100%;">
+                <div>
+                    <h3 style="font-size: clamp(1.8rem, 2.3vw, 2.3rem); font-weight: bold; margin-bottom: 1rem; color: var(--gold); line-height: 1.3;">
+                        בחר את ההטבה שלך:
+                    </h3>
+                    
+                    <p style="margin-bottom: 1rem; line-height: 1.4; font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white;">
+                        בנוסף לפרסים בהם יזכו המגיעים למקומות הראשונים - כמי שהגיע עד הלום תוכל להשתתף בהגרלת הטבת הצטרפות לאחד ממסלולי הלימוד והשימוש חכמים של 'קניין הוראה' בשווי של מעל 500 שקלים.
+                    </p>
+                    <p style="margin-bottom: 1.5rem; line-height: 1.4; font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white; font-weight: 600;">
+                        באיזה נושא היית רוצה לחזק את כוח ההכרעה שלך ולהגשים את השאיפה הרוחנית שלך?
+                    </p>
+                </div>
+                
+                <form id="benefit-form" style="display: flex; flex-direction: column; gap: 1rem; flex: 1; justify-content: center;">
+                    <label class="flex items-center p-4 border-3 rounded-lg cursor-pointer transition-all" style="border: 3px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); min-height: 70px;">
+                        <input type="radio" name="benefit" value="shabbat_course_discount" required style="margin-left: 0.8rem; width: 20px; height: 20px;">
+                        <span style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.3; font-weight: 600;">הלכות שבת - הטבה ע"ס 550 ₪</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-3 rounded-lg cursor-pointer transition-all" style="border: 3px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); min-height: 70px;">
+                        <input type="radio" name="benefit" value="issur_heter_course_discount" required style="margin-left: 0.8rem; width: 20px; height: 20px;">
+                        <span style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.3; font-weight: 600;">איסור והיתר - הטבה ע"ס 550 ₪</span>
+                    </label>
+                    
+                    <label class="flex items-center p-4 border-3 rounded-lg cursor-pointer transition-all" style="border: 3px solid rgba(255, 255, 255, 0.4); background: rgba(255, 255, 255, 0.1); min-height: 70px;">
+                        <input type="radio" name="benefit" value="niddah_course_discount" required style="margin-left: 0.8rem; width: 20px; height: 20px;">
+                        <span style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.3; font-weight: 600;">הלכות נידה/טהרה - הטבה ע"ס 550 ₪</span>
+                    </label>
+                    
+                    <button type="submit" class="btn-primary" style="width: 100%; margin-top: 1rem; font-size: clamp(1.3rem, 1.7vw, 1.7rem); padding: 1.5rem;">
+                        אשר בחירה ושמור
+                    </button>
+                </form>
+                
+                <!-- Final Actions -->
+                <div id="final-actions" class="hidden" style="margin-top: 1.2rem;">
+                    <div style="background: rgba(34, 197, 94, 0.2); border: 3px solid #22c55e; border-radius: 15px; padding: 1rem; text-align: center; margin-bottom: 1rem; backdrop-filter: blur(10px);">
+                        <p style="font-weight: 600; font-size: clamp(1.1rem, 1.3vw, 1.3rem); color: #86efac;">
+                            הפרטים שלך עודכנו. נציג יחזור אליך למימוש ההטבה.
+                        </p>
+                    </div>
+                    
+                    <button onclick="restartQuiz()" class="btn-secondary" style="width: 100%; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+                        רוצה להכפיל סיכויים? היבחן עכשיו בנושא השני!
+                    </button>
+                </div>
+            </div>
         </div>
     </div>
 
-    <!-- PDF Export Container (hidden) -->
-    <div id="pdf-content" class="hidden" style="padding: 40px; background: white;">
-        <div style="text-align: center; margin-bottom: 30px;">
-            <h1 style="color: var(--gold); font-size: 36px; margin-bottom: 10px;">קניין הוראה</h1>
-            <h2 style="color: var(--dark-slate); font-size: 24px;">תוצאות המבחן ומקורות</h2>
-        </div>
-        <div id="pdf-user-info" style="margin-bottom: 30px;"></div>
-        <div id="pdf-score" style="margin-bottom: 30px;"></div>
-        <div id="pdf-questions" style="margin-top: 30px;"></div>
-    </div>
-
-    <script src="app.js"></script>
+    <script src="app-v3.js"></script>
 </body>
 </html>
