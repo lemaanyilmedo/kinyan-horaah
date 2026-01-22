@@ -990,10 +990,134 @@ document.getElementById('benefit-form').addEventListener('submit', async (e) => 
     }
     
     await sendToCRM(selectedBenefit);
+    await downloadPDF();
     
     document.getElementById('benefit-form').classList.add('hidden');
     document.getElementById('final-actions').classList.remove('hidden');
 });
+
+async function downloadPDF() {
+    try {
+        const score = calculateScore();
+        const quizTitle = currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
+        
+        let questionsHTML = '';
+        quizData.questions.forEach((q, index) => {
+            const userAnswer = userAnswers[`q${index}`];
+            const isCorrect = userAnswer === q.correctIndex;
+            const isPartial = q.partialIndex >= 0 && userAnswer === q.partialIndex;
+            const statusIcon = isCorrect ? '✓' : (isPartial ? '◐' : '✗');
+            const statusColor = isCorrect ? '#22c55e' : (isPartial ? '#f59e0b' : '#ef4444');
+            const statusText = isCorrect ? 'נכון' : (isPartial ? 'חלקי' : 'שגוי');
+            
+            questionsHTML += `
+                <div style="margin-bottom: 25px; padding: 20px; background: #fdfbf8; border-right: 5px solid ${statusColor}; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
+                    <div style="display: flex; align-items: center; margin-bottom: 12px;">
+                        <span style="font-size: 28px; color: ${statusColor}; margin-left: 10px;">${statusIcon}</span>
+                        <h4 style="color: #32373c; font-size: 20px; margin: 0; font-weight: 700;">שאלה ${index + 1} - ${statusText}</h4>
+                    </div>
+                    <p style="color: #32373c; font-size: 17px; line-height: 1.7; margin-bottom: 18px; font-weight: 500;">${q.question}</p>
+                    
+                    <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 10px;">
+                        <p style="color: #32373c; margin: 0 0 8px 0; font-size: 16px;"><strong style="color: #D4B182;">התשובה שלך:</strong> ${q.options[userAnswer] || 'לא נענתה'}</p>
+                        <p style="color: #22c55e; margin: 0; font-size: 16px;"><strong style="color: #D4B182;">התשובה הנכונה:</strong> ${q.options[q.correctIndex]}</p>
+                        ${isPartial ? `<p style="color: #f59e0b; margin: 8px 0 0 0; font-size: 16px;"><strong style="color: #D4B182;">תשובה חלקית:</strong> ${q.options[q.partialIndex]}</p>` : ''}
+                    </div>
+                    
+                    <div style="margin-top: 15px; padding: 18px; background: linear-gradient(135deg, rgba(212, 177, 130, 0.08), rgba(212, 177, 130, 0.15)); border-radius: 8px; border: 1px solid rgba(212, 177, 130, 0.3);">
+                        <p style="color: #32373c; font-size: 15px; line-height: 1.6; margin: 0;"><strong style="color: #b89968;">💡 הסבר:</strong> ${q.explanation}</p>
+                    </div>
+                </div>
+            `;
+        });
+        
+        const htmlEmail = `
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>תוצאות אתגר הפסיקה - קניין הוראה</title>
+</head>
+<body style="margin: 0; padding: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background: linear-gradient(135deg, #fdfbf8 0%, #f5f0e8 100%); direction: rtl;">
+    <div style="max-width: 650px; margin: 0 auto; padding: 30px 20px;">
+        <div style="background: linear-gradient(135deg, #b89968, #D4B182, #e8d4b8); padding: 40px 30px; border-radius: 20px 20px 0 0; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1);">
+            <h1 style="color: white; font-size: 42px; margin: 0 0 10px 0; font-weight: 800; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">קניין הוראה</h1>
+            <p style="color: white; font-size: 22px; margin: 0; font-weight: 600; opacity: 0.95;">תוצאות אתגר הפסיקה שלך</p>
+        </div>
+        
+        <div style="background: white; padding: 35px 30px; border-radius: 0 0 20px 20px; box-shadow: 0 4px 20px rgba(0,0,0,0.1);">
+            <div style="border-bottom: 3px solid #D4B182; padding-bottom: 20px; margin-bottom: 25px;">
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">שם:</strong> ${userData.name}</p>
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">טלפון:</strong> ${userData.phone}</p>
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">מייל:</strong> ${userData.email}</p>
+                <p style="font-size: 19px; color: #32373c; margin: 8px 0;"><strong style="color: #b89968;">נושא:</strong> ${quizTitle}</p>
+            </div>
+            
+            <div style="background: linear-gradient(135deg, #b89968, #D4B182); padding: 35px; border-radius: 15px; text-align: center; margin-bottom: 30px; box-shadow: 0 6px 20px rgba(212, 177, 130, 0.4);">
+                <div style="color: white; font-size: 64px; font-weight: 800; margin: 0 0 8px 0; text-shadow: 2px 2px 4px rgba(0,0,0,0.2);">${score}%</div>
+                <p style="color: white; font-size: 24px; margin: 0; font-weight: 600; opacity: 0.95;">הציון שלך</p>
+            </div>
+            
+            <div style="margin-bottom: 25px; text-align: center;">
+                <h2 style="color: #D4B182; font-size: 32px; margin: 0 0 10px 0; font-weight: 700;">📚 שאלות ותשובות</h2>
+                <p style="color: #32373c; font-size: 17px; margin: 0; opacity: 0.8;">סקירה מפורטת של הפסיקות שלך</p>
+            </div>
+            
+            ${questionsHTML}
+            
+            <div style="margin-top: 35px; padding-top: 25px; border-top: 2px solid #e8d4b8; text-align: center;">
+                <p style="color: #b89968; font-size: 18px; margin: 0 0 15px 0; font-weight: 600;">🌟 מעוניין להעמיק בלימוד הוראה?</p>
+                <p style="color: #32373c; font-size: 16px; line-height: 1.6; margin: 0;">צור קשר עם נציגינו למימוש ההטבה שבחרת והצטרפות למסלולי ההכשרה שלנו.</p>
+            </div>
+        </div>
+        
+        <div style="text-align: center; margin-top: 25px; padding: 20px;">
+            <p style="color: #b89968; font-size: 15px; margin: 0; opacity: 0.8;">© קניין הוראה - הפוסק שבך</p>
+        </div>
+    </div>
+</body>
+</html>
+        `;
+        
+        const emailWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
+        
+        const payload = {
+            "to": userData.email,
+            "subject": `תוצאות אתגר הפסיקה שלך - ${quizTitle} - קניין הוראה`,
+            "html": htmlEmail
+        };
+        
+        console.log('📤 Sending HTML email to webhook...');
+        console.log('Webhook URL:', emailWebhookURL);
+        console.log('Recipient:', userData.email);
+        console.log('Subject:', payload.subject);
+        
+        await fetch(emailWebhookURL, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        })
+        .then(response => {
+            console.log('📬 Webhook response status:', response.status);
+            console.log('📬 Webhook response OK:', response.ok);
+            return response.text();
+        })
+        .then(data => {
+            console.log('✅ Webhook response data:', data);
+            console.log('✅ HTML email sent successfully!');
+        })
+        .catch(error => {
+            console.error('❌ Error sending email:', error);
+            console.error('Error details:', error.message);
+        });
+        
+    } catch (error) {
+        console.error('Error in downloadPDF:', error);
+    }
+}
 
 async function sendToCRM(benefit) {
     const webhookURL = 'https://hook.eu2.make.com/xlel1ekv0qh3q3hgcwhvyv45jbwen7jy';
