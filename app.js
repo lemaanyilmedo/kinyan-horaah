@@ -552,19 +552,19 @@ function handleTimeout() {
 function showFeedbackMessage(answerStatus) {
     const messages = {
         correct: [
-            'וואו!',
-            'וואו! מדויק!',
-            'וואו! נכון ממש!'
+            'מעניין...',
+            'הבנתי את הכיוון שלך',
+            'אוקיי, רשמתי'
         ],
         partial: [
-            'כמעט! תשובה חלקית',
-            'יפה! יש בזה ממש',
-            'נכון חלקית!'
+            'מעניין...',
+            'הבנתי את הכיוון שלך',
+            'אוקיי, רשמתי'
         ],
         wrong: [
-            'אממ... אתה בטוח?!',
-            'המממ... אתה בטוח?!',
-            'אממ... לא בטוח...'
+            'מעניין...',
+            'הבנתי את הכיוון שלך',
+            'אוקיי, רשמתי'
         ]
     };
     
@@ -580,8 +580,8 @@ function showFeedbackMessage(answerStatus) {
     const message = document.createElement('div');
     message.className = `feedback-message ${answerStatus}`;
     message.innerHTML = `
-        <p style="font-size: 3.5rem; color: ${colors[answerStatus]}; font-weight: bold; margin-bottom: 1rem;">${randomMessage}</p>
-        <p style="font-size: 1.5rem; color: var(--dark-slate);">${answerStatus === 'correct' ? 'עוברים לשאלה הבאה' : answerStatus === 'partial' ? 'קיבלת 50% מהניקוד' : 'בוא נראה את השאלה הבאה'}</p>
+        <p style="font-size: 3.5rem; color: var(--gold); font-weight: bold; margin-bottom: 1rem;">${randomMessage}</p>
+        <p style="font-size: 1.5rem; color: var(--dark-slate);">עוברים לשאלה הבאה</p>
     `;
     document.body.appendChild(message);
     
@@ -630,16 +630,6 @@ async function selectAnswer(answerIndex) {
     });
     
     showFeedbackMessage(answerStatus);
-    
-    if (answerStatus === 'correct') {
-        createConfetti();
-    } else if (answerStatus === 'partial') {
-        // Partial answer - show moderate feedback
-    } else {
-        const answersContainer = document.getElementById('answers-container');
-        answersContainer.classList.add('shake');
-        setTimeout(() => answersContainer.classList.remove('shake'), 400);
-    }
     
     await updateAttemptInDB();
     updateProgressCircles();
