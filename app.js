@@ -819,6 +819,9 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     
     await updateGlobalStats(score);
     
+    // Send to CRM webhook with user data
+    await sendToCRM('quiz_completed');
+    
     showResults(score);
 });
 
@@ -997,17 +1000,20 @@ async function sendToCRM(benefit) {
     const dateStr = `${hebrewMonths[now.getMonth()]} ${now.getDate()}, ${now.getFullYear()}`;
     const timeStr = now.toLocaleTimeString('he-IL', { hour: '2-digit', minute: '2-digit', hour12: true });
     
-    // Create note with quiz details
-    const quizNote = `ליד מאתגר הפסיקה. ציון: ${score}%. התעניין בהטבה: ${benefit}`;
-    
     // Map benefit to Hebrew course name
     const benefitMapping = {
         'shabbat_course_discount': 'הלכות שבת',
         'issur_heter_course_discount': 'איסור והיתר',
         'niddah_course_discount': 'הלכות נידה/טהרה',
-        'mamonot_special': 'ממונות (חושן משפט)'
+        'mamonot_special': 'ממונות (חושן משפט)',
+        'quiz_completed': 'השלים מבחן - טרם בחר הטבה'
     };
     const courseName = benefitMapping[benefit] || benefit;
+    
+    // Create note with quiz details
+    const quizNote = benefit === 'quiz_completed' 
+        ? `ליד מאתגר הפסיקה. ציון: ${score}%. השלים מבחן - טרם בחר הטבה`
+        : `ליד מאתגר הפסיקה. ציון: ${score}%. התעניין בהטבה: ${benefit}`;
     
     const payload = [{
         form: {

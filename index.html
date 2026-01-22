@@ -531,15 +531,18 @@
         }
         
         .already-completed-message {
-            background: linear-gradient(135deg, rgba(239, 68, 68, 0.1), rgba(239, 68, 68, 0.15));
-            border: 3px solid #ef4444;
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 2px solid rgba(212, 177, 130, 0.3);
             border-radius: 20px;
-            padding: 2rem;
+            padding: 3rem;
             text-align: center;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
         }
         
         .already-completed-message h2 {
-            color: #dc2626;
+            color: var(--gold);
             font-size: 2.5rem;
             font-weight: bold;
             margin-bottom: 1rem;
@@ -549,6 +552,7 @@
             font-size: 1.5rem;
             color: var(--dark-slate);
             line-height: 1.6;
+            margin: 0;
         }
         
         /* Donut Chart Styles */
