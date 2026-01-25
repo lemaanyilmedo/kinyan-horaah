@@ -137,12 +137,26 @@ function parseCSV(csvText, quizType) {
     for (let i = 1; i < lines.length; i++) {
         const parts = parseCSVLine(lines[i]);
         if (parts.length >= 7) {
+            const correctIdx = parseInt(parts[4]);
+            const partialIdx = parseInt(parts[5]);
+            
+            // Validate that we have valid data
+            if (!parts[0] || !parts[1] || !parts[2] || !parts[3]) {
+                console.warn(`Skipping line ${i}: Missing question or options`);
+                continue;
+            }
+            
+            if (isNaN(correctIdx) || correctIdx < 1 || correctIdx > 3) {
+                console.warn(`Skipping line ${i}: Invalid correctIndex: ${parts[4]}`);
+                continue;
+            }
+            
             allQuestions.push({
                 question: parts[0],
                 options: [parts[1], parts[2], parts[3]],
-                correctIndex: parseInt(parts[4]) - 1,
-                partialIndex: parseInt(parts[5]) - 1,
-                explanation: parts[6]
+                correctIndex: correctIdx - 1,
+                partialIndex: isNaN(partialIdx) ? -1 : partialIdx - 1,
+                explanation: parts[6] || ''
             });
         }
     }
@@ -1698,6 +1712,11 @@ async function revealFullReport() {
     
     // Generate and send detailed report
     await downloadPDF();
+}
+
+function showRegistration() {
+    // Navigate to registration/contact page
+    window.open('https://kinyanhoraah.com/contact', '_blank');
 }
 
 function restartQuiz() {
