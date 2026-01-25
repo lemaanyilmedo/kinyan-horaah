@@ -363,20 +363,11 @@ async function createNewAttempt() {
 async function showQuestion() {
     console.log('showQuestion called for question index:', currentQuestionIndex);
     
-    // Prevent concurrent executions
-    if (isAnswerLocked) {
-        console.log('Question transition already in progress, aborting');
-        return;
-    }
-    
     if (currentQuestionIndex >= quizData.questions.length) {
         stopTimer();
         showScreen('screen-lead-collection');
         return;
     }
-    
-    // Lock immediately to prevent race conditions
-    isAnswerLocked = true;
     
     const question = quizData.questions[currentQuestionIndex];
     console.log('Question data:', question);
