@@ -51,6 +51,7 @@ let csvCache = {};
 let questionTimer = null;
 let timeRemaining = 30;
 let questionAnswerStatus = {};
+let isAnswerLocked = false;
 
 function showScreen(screenId) {
     const screens = ['screen-lobby', 'screen-question', 'screen-lead-collection', 'screen-results', 'screen-already-completed'];
@@ -72,6 +73,10 @@ async function startQuiz(quizType) {
     currentQuestionIndex = 0;
     userAnswers = {};
     questionAnswerStatus = {};
+    isAnswerLocked = false;
+    
+    // Clear cache to ensure fresh shuffle each time
+    csvCache = {};
     
     // Show quiz type badge
     const quizTypeBadge = document.getElementById('quiz-type-badge');
@@ -386,6 +391,9 @@ async function showQuestion() {
     await sleep(600);
     
     // Phase 3: Show answers one by one
+    // Unlock answers for new question
+    isAnswerLocked = false;
+    
     console.log('Creating answer buttons, options:', question.options);
     question.options.forEach((option, index) => {
         const button = document.createElement('button');
@@ -611,6 +619,15 @@ function createConfetti() {
 }
 
 async function selectAnswer(answerIndex) {
+    // Prevent multiple selections
+    if (isAnswerLocked) {
+        console.log('Answer already locked, ignoring click');
+        return;
+    }
+    
+    // Lock immediately to prevent double-clicks
+    isAnswerLocked = true;
+    
     stopTimer();
     
     userAnswers[`q${currentQuestionIndex}`] = answerIndex;
@@ -630,6 +647,10 @@ async function selectAnswer(answerIndex) {
     const buttons = document.querySelectorAll('.answer-option');
     buttons.forEach((btn, idx) => {
         btn.classList.remove('selected');
+        btn.disabled = true; // Disable all buttons
+        btn.style.cursor = 'not-allowed';
+        btn.style.opacity = '0.7';
+        
         if (idx === answerIndex) {
             btn.classList.add('selected');
         }
@@ -859,27 +880,60 @@ async function updateGlobalStats(score) {
         const statsRef = db.collection('stats').doc('global_stats');
         const fieldName = currentQuiz === 'shabbat' ? 'total_shabbat_takers' : 'total_issur_heter_takers';
         const avgFieldName = currentQuiz === 'shabbat' ? 'avg_score_shabbat' : 'avg_score_issur_heter';
+        const highScorersField = currentQuiz === 'shabbat' ? 'high_scorers_shabbat' : 'high_scorers_issur_heter';
+        const questionErrorsField = currentQuiz === 'shabbat' ? 'question_errors_shabbat' : 'question_errors_issur_heter';
+        
+        // Calculate which questions user got wrong
+        const wrongQuestions = {};
+        for (let i = 0; i < quizData.questions.length; i++) {
+            const userAnswer = userAnswers[`q${i}`];
+            const question = quizData.questions[i];
+            const correctAnswer = question.correctIndex;
+            
+            if (userAnswer !== correctAnswer) {
+                wrongQuestions[`q${i}`] = true;
+            }
+        }
         
         await db.runTransaction(async (transaction) => {
             const statsDoc = await transaction.get(statsRef);
             
             if (!statsDoc.exists) {
-                transaction.set(statsRef, {
+                const initialData = {
                     [fieldName]: 1,
                     [avgFieldName]: score,
-                    hard_question_errors: 0
+                    [highScorersField]: score >= 80 ? 1 : 0,
+                    [questionErrorsField]: {}
+                };
+                
+                // Initialize question errors
+                Object.keys(wrongQuestions).forEach(qKey => {
+                    initialData[questionErrorsField][qKey] = 1;
                 });
+                
+                transaction.set(statsRef, initialData);
             } else {
                 const data = statsDoc.data();
                 const currentTotal = data[fieldName] || 0;
                 const currentAvg = data[avgFieldName] || 0;
+                const currentHighScorers = data[highScorersField] || 0;
+                const currentQuestionErrors = data[questionErrorsField] || {};
                 
                 const newTotal = currentTotal + 1;
                 const newAvg = ((currentAvg * currentTotal) + score) / newTotal;
+                const newHighScorers = score >= 80 ? currentHighScorers + 1 : currentHighScorers;
+                
+                // Update question errors
+                const updatedQuestionErrors = { ...currentQuestionErrors };
+                Object.keys(wrongQuestions).forEach(qKey => {
+                    updatedQuestionErrors[qKey] = (updatedQuestionErrors[qKey] || 0) + 1;
+                });
                 
                 transaction.update(statsRef, {
                     [fieldName]: newTotal,
-                    [avgFieldName]: Math.round(newAvg)
+                    [avgFieldName]: Math.round(newAvg),
+                    [highScorersField]: newHighScorers,
+                    [questionErrorsField]: updatedQuestionErrors
                 });
             }
         });
@@ -894,16 +948,76 @@ async function showResults(score) {
     const resultsHeader = document.getElementById('results-header');
     const socialStats = document.getElementById('social-stats');
     
+    // Fetch real stats from Firebase
+    let totalTakers = 0;
+    let avgScore = 0;
+    let highScorersPercent = 15;
+    let overlapPercent = 64;
+    
+    if (firebaseEnabled && db) {
+        try {
+            const statsRef = db.collection('stats').doc('global_stats');
+            const statsDoc = await statsRef.get();
+            
+            if (statsDoc.exists) {
+                const data = statsDoc.data();
+                const fieldName = currentQuiz === 'shabbat' ? 'total_shabbat_takers' : 'total_issur_heter_takers';
+                const avgFieldName = currentQuiz === 'shabbat' ? 'avg_score_shabbat' : 'avg_score_issur_heter';
+                const highScorersField = currentQuiz === 'shabbat' ? 'high_scorers_shabbat' : 'high_scorers_issur_heter';
+                const questionErrorsField = currentQuiz === 'shabbat' ? 'question_errors_shabbat' : 'question_errors_issur_heter';
+                
+                totalTakers = data[fieldName] || 0;
+                avgScore = data[avgFieldName] || 0;
+                const highScorers = data[highScorersField] || 0;
+                const questionErrors = data[questionErrorsField] || {};
+                
+                // Calculate high scorers percentage
+                if (totalTakers > 0) {
+                    highScorersPercent = Math.round((highScorers / totalTakers) * 100);
+                }
+                
+                // Calculate overlap percentage - how many struggled with same questions
+                if (totalTakers > 10) { // Only if we have enough data
+                    const userWrongQuestions = [];
+                    for (let i = 0; i < quizData.questions.length; i++) {
+                        const userAnswer = userAnswers[`q${i}`];
+                        const question = quizData.questions[i];
+                        const correctAnswer = question.correctIndex;
+                        
+                        if (userAnswer !== correctAnswer) {
+                            userWrongQuestions.push(`q${i}`);
+                        }
+                    }
+                    
+                    // Calculate average overlap for questions user got wrong
+                    if (userWrongQuestions.length > 0) {
+                        let totalOverlap = 0;
+                        userWrongQuestions.forEach(qKey => {
+                            const errorCount = questionErrors[qKey] || 0;
+                            const overlapForQuestion = (errorCount / totalTakers) * 100;
+                            totalOverlap += overlapForQuestion;
+                        });
+                        overlapPercent = Math.round(totalOverlap / userWrongQuestions.length);
+                    } else {
+                        // User got everything right, show low overlap
+                        overlapPercent = 10;
+                    }
+                }
+            }
+        } catch (error) {
+            console.error('Error fetching stats:', error);
+            // Fall back to default values
+        }
+    }
+    
     // Calculate percentages for chart
     let strugglePercent, successPercent;
     if (score >= 80) {
-        // Top performers: 15% succeeded, 85% struggled
-        strugglePercent = 85;
-        successPercent = 15;
+        strugglePercent = 100 - highScorersPercent;
+        successPercent = highScorersPercent;
     } else {
-        // Lower scores: 64% struggled, 36% succeeded
-        strugglePercent = 64;
-        successPercent = 36;
+        strugglePercent = overlapPercent;
+        successPercent = 100 - overlapPercent;
     }
     
     // Update chart
@@ -916,12 +1030,16 @@ async function showResults(score) {
             </h2>
         `;
         
+        const statsText = totalTakers > 0 
+            ? `מתוך ${totalTakers} משתתפים | הציון הממוצע: ${avgScore}%`
+            : 'עדיין אוספים נתונים...';
+        
         socialStats.innerHTML = `
             <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                <strong style="color: var(--gold);">📊 הנתונים:</strong> עד כה השתתפו 247 מורי הוראה | הציון הממוצע: 73%
+                <strong style="color: var(--gold);">📊 הנתונים:</strong> ${statsText}
             </p>
             <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                🎯 <strong>אתה בטופ 15% הפוסקים!</strong> בעוד 85% מהנבחנים התקשו להכריע בשאלות המעשיות, אתה ידעת לכוון לאמיתה של תורה.
+                🎯 <strong>אתה בטופ ${highScorersPercent}% הפוסקים!</strong> בעוד ${100 - highScorersPercent}% מהנבחנים התקשו להכריע בשאלות המעשיות, אתה ידעת לכוון לאמיתה של תורה.
             </p>
             <p style="font-weight: bold; color: #86efac; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
                 ✅ נכנסת אוטומטית להגרלת הענק על שבת 'גולדיס' קומפלט!
@@ -934,9 +1052,16 @@ async function showResults(score) {
             </h2>
         `;
         
+        const statsText = totalTakers > 0 
+            ? `מתוך ${totalTakers} משתתפים | הציון הממוצע: ${avgScore}%`
+            : 'עדיין אוספים נתונים...';
+        
         socialStats.innerHTML = `
             <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                <strong style="color: var(--gold);">📊 הנתונים:</strong> 64% מהנבחנים התלבטו בדיוק באותן נקודות מעשיות כמוך.
+                <strong style="color: var(--gold);">📊 הנתונים:</strong> ${statsText}
+            </p>
+            <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
+                ${overlapPercent}% מהנבחנים התלבטו בדיוק באותן נקודות מעשיות כמוך.
             </p>
             <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
                 זה לא מעיד על חוסר ידע, אלא על האתגר הגדול שבמעבר מ"לימוד התיאוריה" ל"פסיקה למעשה". בדיוק בגלל זה הוקמה קניין הוראה - שמחוללת מהפך אצל מאות תלמידים שכבר יודעים להכריע!
