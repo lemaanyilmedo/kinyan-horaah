@@ -779,18 +779,23 @@ function nextQuestion() {
 document.getElementById('pause-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
-    const name = document.getElementById('pause-name').value;
-    const contact = document.getElementById('pause-contact').value;
+    const firstName = document.getElementById('pause-first-name').value;
+    const lastName = document.getElementById('pause-last-name').value;
+    const phone = document.getElementById('pause-phone').value;
+    const email = document.getElementById('pause-email').value;
     
-    userData.name = name;
-    userData.phone = contact;
+    userData.name = `${firstName} ${lastName}`;
+    userData.phone = phone;
+    userData.email = email;
     
     await saveUserData();
     
     if (firebaseEnabled && db && currentAttemptId && !currentAttemptId.startsWith('local_')) {
         try {
             await db.collection('attempts').doc(currentAttemptId).update({
-                user_phone: contact,
+                user_phone: phone,
+                user_email: email,
+                user_name: userData.name,
                 status: 'paused',
                 updated_at: firebase.firestore.FieldValue.serverTimestamp()
             });
@@ -799,9 +804,9 @@ document.getElementById('pause-form').addEventListener('submit', async (e) => {
         }
     }
     
-    const resumeLink = `${window.location.origin}${window.location.pathname}?resume=true&phone=${encodeURIComponent(contact)}&quiz=${currentQuiz}`;
+    const resumeLink = `${window.location.origin}${window.location.pathname}?resume=true&phone=${encodeURIComponent(phone)}&quiz=${currentQuiz}`;
     
-    alert(`הקישור נשמר!\n\nהקישור שלך להמשך המבחן:\n${resumeLink}\n\nהקישור נשלח גם למייל/וואטסאפ שהזנת.`);
+    alert(`הקישור נשמר!\n\nהקישור שלך להמשך המבחן:\n${resumeLink}\n\nהקישור נשלח גם למייל שהזנת.`);
     
     closeNeedReview();
 });
@@ -1185,28 +1190,7 @@ function updateDonutChart(strugglePercent, successPercent) {
     chartSuccess.setAttribute('stroke-dashoffset', `-${successOffset}`);
 }
 
-document.getElementById('benefit-form').addEventListener('submit', async (e) => {
-    e.preventDefault();
-    
-    const selectedBenefit = document.querySelector('input[name="benefit"]:checked').value;
-    
-    if (firebaseEnabled && db && currentAttemptId && !currentAttemptId.startsWith('local_')) {
-        try {
-            await db.collection('attempts').doc(currentAttemptId).update({
-                selected_benefit: selectedBenefit,
-                updated_at: firebase.firestore.FieldValue.serverTimestamp()
-            });
-        } catch (error) {
-            console.error('Error saving benefit:', error);
-        }
-    }
-    
-    await sendToCRM(selectedBenefit);
-    await downloadPDF();
-    
-    document.getElementById('benefit-form').classList.add('hidden');
-    document.getElementById('final-actions').classList.remove('hidden');
-});
+// Benefit form removed - selection now happens in intermediate-results screen via revealFullReport()
 
 async function downloadPDF() {
     try {
@@ -1710,11 +1694,6 @@ async function revealFullReport() {
     
     // Generate and send detailed report
     await downloadPDF();
-}
-
-function showRegistration() {
-    // Navigate to registration/contact page
-    window.open('https://kinyanhoraah.com/contact', '_blank');
 }
 
 function restartQuiz() {
