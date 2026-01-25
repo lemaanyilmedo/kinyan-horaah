@@ -37,25 +37,6 @@ try {
     firebaseEnabled = false;
 }
 
-// Capture UTM parameters on page load
-function captureUTMParameters() {
-    const urlParams = new URLSearchParams(window.location.search);
-    
-    utmData.utm_source = urlParams.get('utm_source') || '';
-    utmData.utm_medium = urlParams.get('utm_medium') || '';
-    utmData.utm_campaign = urlParams.get('utm_campaign') || '';
-    utmData.utm_term = urlParams.get('utm_term') || '';
-    utmData.utm_content = urlParams.get('utm_content') || '';
-    utmData.utm_id = urlParams.get('utm_id') || '';
-    utmData.gclid = urlParams.get('gclid') || '';
-    utmData.fbclid = urlParams.get('fbclid') || '';
-    
-    console.log('UTM Parameters captured:', utmData);
-}
-
-// Call on page load
-captureUTMParameters();
-
 let currentQuiz = null;
 let currentQuestionIndex = 0;
 let userAnswers = {};
@@ -76,6 +57,25 @@ let utmData = {
     gclid: null,
     fbclid: null
 };
+
+// Capture UTM parameters on page load
+function captureUTMParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    utmData.utm_source = urlParams.get('utm_source') || '';
+    utmData.utm_medium = urlParams.get('utm_medium') || '';
+    utmData.utm_campaign = urlParams.get('utm_campaign') || '';
+    utmData.utm_term = urlParams.get('utm_term') || '';
+    utmData.utm_content = urlParams.get('utm_content') || '';
+    utmData.utm_id = urlParams.get('utm_id') || '';
+    utmData.gclid = urlParams.get('gclid') || '';
+    utmData.fbclid = urlParams.get('fbclid') || '';
+    
+    console.log('UTM Parameters captured:', utmData);
+}
+
+// Call on page load
+captureUTMParameters();
 let csvCache = {};
 let questionTimer = null;
 let timeRemaining = 30;
