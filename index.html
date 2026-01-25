@@ -647,13 +647,14 @@
         }
         
         .spinner-gold {
-            width: 80px;
-            height: 80px;
-            border: 8px solid rgba(212, 177, 130, 0.3);
-            border-top: 8px solid var(--gold);
+            width: 64px;
+            height: 64px;
+            border: 3px solid rgba(212, 177, 130, 0.15);
+            border-top: 3px solid var(--gold);
             border-radius: 50%;
-            animation: spin 1s linear infinite;
+            animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
             margin: 0 auto 2rem;
+            box-shadow: 0 4px 12px rgba(212, 177, 130, 0.2);
         }
         
         @keyframes spin {
@@ -840,91 +841,167 @@
         
         /* Leaderboard Styles */
         .leaderboard-entry {
-            background: rgba(255, 255, 255, 0.15);
+            background: rgba(255, 255, 255, 0.08);
             backdrop-filter: blur(10px);
-            border: 2px solid rgba(212, 177, 130, 0.4);
-            border-radius: 15px;
-            padding: 1.5rem;
-            margin-bottom: 1rem;
+            border: 1px solid rgba(212, 177, 130, 0.2);
+            border-radius: 16px;
+            padding: 1.8rem 2rem;
+            margin-bottom: 0.8rem;
             display: grid;
-            grid-template-columns: 80px 1fr 100px;
+            grid-template-columns: 70px 1fr 110px;
             align-items: center;
-            gap: 1.5rem;
-            transition: all 0.3s ease;
+            gap: 2rem;
+            transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            animation: slideInLeaderboard 0.5s ease forwards;
         }
         
+        @keyframes slideInLeaderboard {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .leaderboard-entry:nth-child(1) { animation-delay: 0.05s; }
+        .leaderboard-entry:nth-child(2) { animation-delay: 0.1s; }
+        .leaderboard-entry:nth-child(3) { animation-delay: 0.15s; }
+        .leaderboard-entry:nth-child(4) { animation-delay: 0.2s; }
+        .leaderboard-entry:nth-child(5) { animation-delay: 0.25s; }
+        .leaderboard-entry:nth-child(6) { animation-delay: 0.3s; }
+        .leaderboard-entry:nth-child(7) { animation-delay: 0.35s; }
+        .leaderboard-entry:nth-child(8) { animation-delay: 0.4s; }
+        .leaderboard-entry:nth-child(9) { animation-delay: 0.45s; }
+        .leaderboard-entry:nth-child(10) { animation-delay: 0.5s; }
+        
         .leaderboard-entry:hover {
-            background: rgba(212, 177, 130, 0.25);
-            border-color: var(--gold);
-            transform: translateX(-5px);
+            background: rgba(212, 177, 130, 0.15);
+            border-color: rgba(212, 177, 130, 0.4);
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
         }
         
         .leaderboard-entry.top-1 {
-            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(212, 177, 130, 0.3));
-            border: 3px solid #FFD700;
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+            background: rgba(255, 215, 0, 0.12);
+            border: 2px solid rgba(255, 215, 0, 0.4);
+            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+        }
+        
+        .leaderboard-entry.top-1:hover {
+            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
         }
         
         .leaderboard-entry.top-2 {
-            background: linear-gradient(135deg, rgba(192, 192, 192, 0.3), rgba(212, 177, 130, 0.25));
-            border: 3px solid #C0C0C0;
+            background: rgba(192, 192, 192, 0.12);
+            border: 2px solid rgba(192, 192, 192, 0.4);
         }
         
         .leaderboard-entry.top-3 {
-            background: linear-gradient(135deg, rgba(205, 127, 50, 0.3), rgba(212, 177, 130, 0.25));
-            border: 3px solid #CD7F32;
+            background: rgba(205, 127, 50, 0.12);
+            border: 2px solid rgba(205, 127, 50, 0.4);
         }
         
         .leaderboard-rank {
-            font-size: 2.5rem;
-            font-weight: 900;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            font-weight: 700;
             text-align: center;
-            color: var(--gold);
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            color: rgba(255, 255, 255, 0.7);
+            min-width: 70px;
         }
         
-        .leaderboard-entry.top-1 .leaderboard-rank {
-            color: #FFD700;
-            font-size: 3rem;
+        .leaderboard-rank svg {
+            width: 48px;
+            height: 48px;
+            filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.3));
         }
         
-        .leaderboard-entry.top-2 .leaderboard-rank {
-            color: #C0C0C0;
-        }
-        
-        .leaderboard-entry.top-3 .leaderboard-rank {
-            color: #CD7F32;
+        .leaderboard-entry.top-1 .leaderboard-rank svg {
+            width: 56px;
+            height: 56px;
         }
         
         .leaderboard-name {
+            font-size: 1.4rem;
+            font-weight: 600;
+            color: white;
+            text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+            letter-spacing: 0.01em;
+        }
+        
+        .leaderboard-entry.top-1 .leaderboard-name {
             font-size: 1.5rem;
             font-weight: 700;
-            color: white;
-            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
         
         .leaderboard-score {
-            font-size: 2rem;
-            font-weight: 900;
+            font-size: 1.8rem;
+            font-weight: 800;
             color: var(--gold);
             text-align: center;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+            letter-spacing: -0.02em;
         }
         
         .leaderboard-entry.top-1 .leaderboard-score {
             color: #FFD700;
+            font-size: 2rem;
         }
         
         .leaderboard-entry.top-2 .leaderboard-score {
-            color: #C0C0C0;
+            color: #E8E8E8;
         }
         
         .leaderboard-entry.top-3 .leaderboard-score {
             color: #CD7F32;
         }
         
+        .trophy-icon {
+            display: inline-block;
+            margin: 0 0.5rem;
+        }
+        
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
+            /* Leaderboard Mobile Styles */
+            .leaderboard-entry {
+                grid-template-columns: 50px 1fr 80px;
+                gap: 1rem;
+                padding: 1.2rem 1rem;
+            }
+            
+            .leaderboard-rank svg {
+                width: 36px;
+                height: 36px;
+            }
+            
+            .leaderboard-entry.top-1 .leaderboard-rank svg {
+                width: 42px;
+                height: 42px;
+            }
+            
+            .leaderboard-name {
+                font-size: 1.1rem;
+            }
+            
+            .leaderboard-entry.top-1 .leaderboard-name {
+                font-size: 1.2rem;
+            }
+            
+            .leaderboard-score {
+                font-size: 1.4rem;
+            }
+            
+            .leaderboard-entry.top-1 .leaderboard-score {
+                font-size: 1.6rem;
+            }
+            
             /* Lobby Screen - Two columns to single column */
             #screen-lobby .full-width-content {
                 display: flex !important;
@@ -1018,7 +1095,7 @@
     </style>
 </head>
 <body>
-    <div class="version-badge">גירסה 20</div>
+    <div class="version-badge">גירסה 23</div>
     <div id="quiz-type-badge" class="quiz-type-badge hidden"></div>
     
     <!-- Screen 1: Lobby -->
@@ -1072,17 +1149,29 @@
         <div class="full-width-content scrollable fade-in" style="padding: 2rem 5%; max-width: 1200px; margin: 0 auto;">
             <!-- Header -->
             <div style="text-align: center; margin-bottom: 3rem;">
-                <h1 style="font-size: clamp(3rem, 5vw, 5rem); font-weight: 900; color: var(--gold); margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
-                    🏆 לוח הכבוד 🏆
-                </h1>
-                <p style="font-size: clamp(1.3rem, 1.8vw, 1.8rem); color: white; line-height: 1.5;">
-                    עשרת מופלגי ההלכה המובילים באתגר הפסיקה
+                <div style="display: flex; align-items: center; justify-content: center; gap: 1rem; margin-bottom: 1.5rem;">
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));">
+                        <path d="M32 8L36 20H48L38 28L42 40L32 32L22 40L26 28L16 20H28L32 8Z" fill="#D4B182" stroke="#b89968" stroke-width="2" stroke-linejoin="round"/>
+                        <rect x="28" y="38" width="8" height="18" rx="1" fill="#D4B182" stroke="#b89968" stroke-width="2"/>
+                        <rect x="20" y="54" width="24" height="6" rx="2" fill="#D4B182" stroke="#b89968" stroke-width="2"/>
+                    </svg>
+                    <h1 style="font-size: clamp(3rem, 5vw, 5rem); font-weight: 900; color: var(--gold); margin: 0; text-shadow: 0 4px 12px rgba(0, 0, 0, 0.4); letter-spacing: -0.02em;">
+                        לוח הכבוד
+                    </h1>
+                    <svg width="64" height="64" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.3));">
+                        <path d="M32 8L36 20H48L38 28L42 40L32 32L22 40L26 28L16 20H28L32 8Z" fill="#D4B182" stroke="#b89968" stroke-width="2" stroke-linejoin="round"/>
+                        <rect x="28" y="38" width="8" height="18" rx="1" fill="#D4B182" stroke="#b89968" stroke-width="2"/>
+                        <rect x="20" y="54" width="24" height="6" rx="2" fill="#D4B182" stroke="#b89968" stroke-width="2"/>
+                    </svg>
+                </div>
+                <p style="font-size: clamp(1.3rem, 1.8vw, 1.8rem); color: rgba(255, 255, 255, 0.9); line-height: 1.5; font-weight: 500;">
+                    המובילים באתגר הפסיקה המעשית
                 </p>
             </div>
             
             
             <!-- Leaderboard Container -->
-            <div id="leaderboard-container" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 3px solid rgba(212, 177, 130, 0.6); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
+            <div id="leaderboard-container" style="background: rgba(255, 255, 255, 0.06); backdrop-filter: blur(20px); border: 1px solid rgba(212, 177, 130, 0.3); border-radius: 24px; padding: 2.5rem; margin-bottom: 2rem;">
                 <!-- Loading State -->
                 <div id="leaderboard-loading" style="text-align: center; padding: 3rem;">
                     <div class="spinner-gold" style="margin: 0 auto 1.5rem;"></div>
@@ -1102,7 +1191,10 @@
             
             <!-- Back Button -->
             <div style="text-align: center;">
-                <button onclick="showScreen('screen-lobby')" class="btn-primary" style="max-width: 400px; font-size: clamp(1.2rem, 1.5vw, 1.5rem);">
+                <button onclick="showScreen('screen-lobby')" class="btn-secondary" style="max-width: 400px; font-size: clamp(1.2rem, 1.5vw, 1.5rem); display: inline-flex; align-items: center; justify-content: center; gap: 0.8rem;">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M19 12H5M12 19l-7-7 7-7"/>
+                    </svg>
                     חזרה למסך הראשי
                 </button>
             </div>
@@ -1419,54 +1511,50 @@
     
     <!-- Screen 6: Results & Rewards -->
     <div id="screen-results" class="full-screen-container hidden">
-        <div class="full-width-content fade-in" style="display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; align-items: center; padding: 2rem 5%; height: 100vh;">
-            <!-- Left Side: Score & Stats -->
-            <div>
-                <!-- Score Display -->
-                <div style="background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light)); border-radius: 25px; padding: 2rem; text-align: center; margin-bottom: 1.5rem; color: white; box-shadow: 0 10px 40px rgba(212, 177, 130, 0.4);">
-                    <div style="font-size: clamp(4rem, 6vw, 6rem); font-weight: bold; margin-bottom: 0.5rem; line-height: 1;" id="final-score">85%</div>
-                    <div style="font-size: clamp(1.2rem, 1.6vw, 1.6rem); font-weight: 600; opacity: 0.95;">הציון שלך</div>
-                </div>
-                
-                <!-- Results Header -->
-                <div id="results-header" class="text-center" style="margin-bottom: 1.5rem;">
-                    <!-- Will be populated based on score -->
-                </div>
-                
-                <!-- Social Proof Stats with Chart -->
-                <div class="stats-chart-container">
-                    <!-- Donut Chart -->
-                    <div class="donut-chart">
-                        <svg width="180" height="180">
-                            <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="20"/>
-                            <circle id="chart-success" cx="90" cy="90" r="70" fill="none" stroke="#86efac" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"/>
-                            <circle id="chart-struggle" cx="90" cy="90" r="70" fill="none" stroke="#fbbf24" stroke-width="20" stroke-dasharray="0 440" stroke-linecap="round"/>
-                        </svg>
-                        <div class="donut-chart-center">
-                            <div class="donut-chart-percentage" id="chart-percentage">64%</div>
-                            <div class="donut-chart-label">התלבטו</div>
-                        </div>
-                    </div>
-                    
-                    <!-- Stats Text -->
-                    <div id="social-stats" style="color: white;">
-                        <!-- Will be populated with stats -->
+        <div class="full-width-content scrollable fade-in" style="padding: 3rem 5%; max-width: 1000px; margin: 0 auto;">
+            
+            <!-- Score Display - Hero Section -->
+            <div style="background: linear-gradient(135deg, var(--gold-dark), var(--gold), var(--gold-light)); border-radius: 30px; padding: 3rem 2rem; text-align: center; margin-bottom: 2.5rem; color: white; box-shadow: 0 15px 50px rgba(212, 177, 130, 0.5);">
+                <div style="font-size: clamp(5rem, 8vw, 8rem); font-weight: 900; margin-bottom: 0.5rem; line-height: 1;" id="final-score">85%</div>
+                <div style="font-size: clamp(1.5rem, 2vw, 2rem); font-weight: 600; opacity: 0.95; letter-spacing: 1px;">הציון שלך</div>
+            </div>
+            
+            <!-- Results Header -->
+            <div id="results-header" class="text-center" style="margin-bottom: 2.5rem;">
+                <!-- Will be populated based on score -->
+            </div>
+            
+            <!-- Donut Chart Section -->
+            <div style="display: flex; justify-content: center; margin-bottom: 2.5rem;">
+                <div class="donut-chart" style="transform: scale(1.2);">
+                    <svg width="200" height="200">
+                        <circle cx="100" cy="100" r="80" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="24"/>
+                        <circle id="chart-success" cx="100" cy="100" r="80" fill="none" stroke="#86efac" stroke-width="24" stroke-dasharray="0 502" stroke-linecap="round"/>
+                        <circle id="chart-struggle" cx="100" cy="100" r="80" fill="none" stroke="#fbbf24" stroke-width="24" stroke-dasharray="0 502" stroke-linecap="round"/>
+                    </svg>
+                    <div class="donut-chart-center">
+                        <div class="donut-chart-percentage" id="chart-percentage" style="font-size: clamp(2rem, 3vw, 3rem);">64%</div>
+                        <div class="donut-chart-label" style="font-size: clamp(1rem, 1.3vw, 1.3rem);">התלבטו</div>
                     </div>
                 </div>
             </div>
             
-            <!-- Right Side: Actions -->
-            <div style="display: flex; flex-direction: column; justify-content: center; gap: 2rem;">
-                <div style="background: rgba(212, 177, 130, 0.2); border: 3px solid var(--gold); border-radius: 20px; padding: 2rem; text-align: center;">
-                    <h3 style="font-size: clamp(1.8rem, 2.3vw, 2.3rem); font-weight: bold; margin-bottom: 1rem; color: var(--gold);">
-                        הדוח המלא נשלח למייל!
-                    </h3>
-                    <p style="font-size: clamp(1.2rem, 1.5vw, 1.5rem); color: white; line-height: 1.6;">
-                        דוח מפורט עם כל התשובות, ההסברים וההשוואות נשלח לכתובת המייל שהזנת.
-                    </p>
-                </div>
-                
+            <!-- Stats Text Section -->
+            <div id="social-stats" style="background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(10px); border: 2px solid rgba(212, 177, 130, 0.3); border-radius: 20px; padding: 2rem; margin-bottom: 2.5rem; color: white; text-align: center;">
+                <!-- Will be populated with stats -->
             </div>
+            
+            <!-- Email Confirmation Box -->
+            <div style="background: linear-gradient(135deg, rgba(212, 177, 130, 0.25), rgba(212, 177, 130, 0.15)); border: 3px solid var(--gold); border-radius: 25px; padding: 2.5rem; text-align: center; box-shadow: 0 10px 40px rgba(212, 177, 130, 0.3);">
+                <div style="font-size: clamp(2.5rem, 4vw, 4rem); margin-bottom: 1rem;">📧</div>
+                <h3 style="font-size: clamp(2rem, 2.8vw, 2.8rem); font-weight: bold; margin-bottom: 1.2rem; color: var(--gold); line-height: 1.3;">
+                    הדוח המלא נשלח למייל!
+                </h3>
+                <p style="font-size: clamp(1.3rem, 1.7vw, 1.7rem); color: white; line-height: 1.7; opacity: 0.95;">
+                    דוח מפורט עם כל התשובות, ההסברים וההשוואות נשלח לכתובת המייל שהזנת.
+                </p>
+            </div>
+            
         </div>
     </div>
 

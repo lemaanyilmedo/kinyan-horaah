@@ -409,7 +409,8 @@ function typeText(element, text, speed = 60) {
         
         const interval = setInterval(() => {
             if (index < text.length) {
-                element.textContent += text[index];
+                // Use substring to preserve Hebrew character encoding
+                element.textContent = text.substring(0, index + 1);
                 index++;
             } else {
                 clearInterval(interval);

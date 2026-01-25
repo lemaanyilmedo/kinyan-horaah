@@ -1285,17 +1285,19 @@ async function showResults(score) {
         `;
         
         const statsText = totalTakers > 0 
-            ? `מתוך כלל המשיבים שענו עד כה - נכון לרגע זה | הציון הממוצע: ${avgScore}%`
+            ? `הציון הממוצע של כלל המשיבים עד לרגע זה הוא ${avgScore}%`
             : 'עדיין אוספים נתונים...';
         
         socialStats.innerHTML = `
-            <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                <strong style="color: var(--gold);">📊 הנתונים:</strong> ${statsText}
+            <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
+                <strong style="color: var(--gold); font-size: clamp(1.4rem, 1.8vw, 1.8rem);">📊 הנתונים:</strong><br>
+                ${statsText}
             </p>
-            <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                🎯 <strong>אתה בטופ ${highScorersPercent}% הפוסקים!</strong> בעוד ${100 - highScorersPercent}% מהנבחנים התקשו להכריע בשאלות המעשיות, אתה ידעת לכוון לאמיתה של תורה.
+            <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
+                🎯 <strong style="color: var(--gold);">אתה בטופ ${highScorersPercent}% הפוסקים!</strong><br>
+                בעוד ${100 - highScorersPercent}% מהנבחנים התקשו להכריע בשאלות המעשיות, אתה ידעת לכוון לאמיתה של תורה.
             </p>
-            <p style="font-weight: bold; color: #86efac; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+            <p style="font-weight: bold; color: #86efac; font-size: clamp(1.4rem, 1.8vw, 1.8rem); margin-top: 1.5rem;">
                 ✅ נכנסת אוטומטית להגרלת הענק על שבת 'גולדיס' קומפלט!
             </p>
         `;
@@ -1307,20 +1309,21 @@ async function showResults(score) {
         `;
         
         const statsText = totalTakers > 0 
-            ? `מתוך כלל המשיבים שענו עד כה - נכון לרגע זה | הציון הממוצע: ${avgScore}%`
+            ? `הציון הממוצע של כלל המשיבים עד לרגע זה הוא ${avgScore}%`
             : 'עדיין אוספים נתונים...';
         
         socialStats.innerHTML = `
-            <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                <strong style="color: var(--gold);">📊 הנתונים:</strong> ${statsText}
+            <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
+                <strong style="color: var(--gold); font-size: clamp(1.4rem, 1.8vw, 1.8rem);">📊 הנתונים:</strong><br>
+                ${statsText}
             </p>
-            <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
+            <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
                 ${overlapPercent}% מהנבחנים התלבטו בדיוק באותן נקודות מעשיות כמוך.
             </p>
-            <p style="margin-bottom: 0.8rem; color: white; font-size: clamp(1.1rem, 1.4vw, 1.4rem); line-height: 1.4;">
-                זה לא מעיד על חוסר ידע, אלא על האתגר הגדול שבמעבר מ"לימוד התיאוריה" ל"פסיקה למעשה". בדיוק בגלל זה הוקמה קניין הוראה - שמחוללת מהפך אצל מאות תלמידים שכבר יודעים להכריע!
+            <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.7;">
+                זה לא מעיד על חוסר ידע, אלא על <strong style="color: var(--gold);">האתגר הגדול שבמעבר מ"לימוד התיאוריה" ל"פסיקה למעשה"</strong>. בדיוק בגלל זה הוקמה קניין הוראה - שמחוללת מהפך אצל מאות תלמידים שכבר יודעים להכריע!
             </p>
-            ${score > 0 ? `<p style="font-weight: bold; color: #93c5fd; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+            ${score > 0 ? `<p style="font-weight: bold; color: #93c5fd; font-size: clamp(1.4rem, 1.8vw, 1.8rem); margin-top: 1.5rem;">
                 ✅ צברת ניקוד המזכה אותך בהשתתפות בהגרלה על מלגות לימודים!
             </p>` : ''}
         `;
@@ -1338,8 +1341,8 @@ function updateDonutChart(strugglePercent, successPercent) {
     chartPercentageEl.textContent = `${strugglePercent}%`;
     
     // Calculate stroke-dasharray for donut chart
-    // Circle circumference = 2 * π * r = 2 * π * 70 = 439.8
-    const circumference = 2 * Math.PI * 70;
+    // Circle circumference = 2 * π * r = 2 * π * 80 = 502.4
+    const circumference = 2 * Math.PI * 80;
     
     // Struggle segment (yellow)
     const struggleLength = (strugglePercent / 100) * circumference;
@@ -1901,7 +1904,7 @@ async function showIntermediateResults(score) {
             <div class="param-text">
                 <h4>הציון שלך מול הממוצע</h4>
                 <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
-                <p>הציון הממוצע של ${totalTakers > 0 ? totalTakers : 'המשיבים'} הוא ${avgScore}%</p>
+                <p>הציון הממוצע של כלל המשיבים עד לרגע זה הוא ${avgScore}%</p>
                 <p>${score >= avgScore ? 'אתה מעל הממוצע! 🎯' : 'יש מקום לשיפור, אבל רבים נמצאים באותו מקום 💪'}</p>
             </div>
         </div>
@@ -2152,6 +2155,33 @@ function displayLeaderboard(data) {
         return;
     }
     
+    // SVG Icons for medals
+    const crownSVG = `
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M32 12L36 24L48 20L42 32L54 36L42 40L48 52L36 48L32 60L28 48L16 52L22 40L10 36L22 32L16 20L28 24L32 12Z" 
+                  fill="#FFD700" stroke="#FFA500" stroke-width="2" stroke-linejoin="round"/>
+            <circle cx="32" cy="32" r="8" fill="#FFA500" opacity="0.3"/>
+        </svg>
+    `;
+    
+    const silverMedalSVG = `
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="38" r="18" fill="#E8E8E8" stroke="#C0C0C0" stroke-width="2.5"/>
+            <circle cx="32" cy="38" r="13" fill="none" stroke="#C0C0C0" stroke-width="2"/>
+            <path d="M24 14L28 30L32 14L36 30L40 14" stroke="#C0C0C0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <text x="32" y="43" text-anchor="middle" font-size="14" font-weight="bold" fill="#999">2</text>
+        </svg>
+    `;
+    
+    const bronzeMedalSVG = `
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <circle cx="32" cy="38" r="18" fill="#CD7F32" stroke="#8B4513" stroke-width="2.5"/>
+            <circle cx="32" cy="38" r="13" fill="none" stroke="#8B4513" stroke-width="2"/>
+            <path d="M24 14L28 30L32 14L36 30L40 14" stroke="#8B4513" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+            <text x="32" y="43" text-anchor="middle" font-size="14" font-weight="bold" fill="#5D3A1A">3</text>
+        </svg>
+    `;
+    
     data.forEach((entry, index) => {
         const rank = index + 1;
         const entryDiv = document.createElement('div');
@@ -2166,11 +2196,17 @@ function displayLeaderboard(data) {
             entryDiv.classList.add('top-3');
         }
         
-        // Rank with medal emoji for top 3
-        let rankDisplay = rank;
-        if (rank === 1) rankDisplay = '🥇';
-        else if (rank === 2) rankDisplay = '🥈';
-        else if (rank === 3) rankDisplay = '🥉';
+        // Rank display with SVG icons for top 3
+        let rankDisplay;
+        if (rank === 1) {
+            rankDisplay = crownSVG;
+        } else if (rank === 2) {
+            rankDisplay = silverMedalSVG;
+        } else if (rank === 3) {
+            rankDisplay = bronzeMedalSVG;
+        } else {
+            rankDisplay = `<span style="font-size: 1.8rem; font-weight: 700; color: rgba(255, 255, 255, 0.6);">${rank}</span>`;
+        }
         
         // Format name with הרב and שליט"א if not anonymous
         const displayName = entry.name === 'משתמש אנונימי' 
