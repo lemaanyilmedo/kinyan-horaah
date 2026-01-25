@@ -37,6 +37,25 @@ try {
     firebaseEnabled = false;
 }
 
+// Capture UTM parameters on page load
+function captureUTMParameters() {
+    const urlParams = new URLSearchParams(window.location.search);
+    
+    utmData.utm_source = urlParams.get('utm_source') || '';
+    utmData.utm_medium = urlParams.get('utm_medium') || '';
+    utmData.utm_campaign = urlParams.get('utm_campaign') || '';
+    utmData.utm_term = urlParams.get('utm_term') || '';
+    utmData.utm_content = urlParams.get('utm_content') || '';
+    utmData.utm_id = urlParams.get('utm_id') || '';
+    utmData.gclid = urlParams.get('gclid') || '';
+    utmData.fbclid = urlParams.get('fbclid') || '';
+    
+    console.log('UTM Parameters captured:', utmData);
+}
+
+// Call on page load
+captureUTMParameters();
+
 let currentQuiz = null;
 let currentQuestionIndex = 0;
 let userAnswers = {};
@@ -46,6 +65,16 @@ let userData = {
     phone: null,
     name: null,
     email: null
+};
+let utmData = {
+    utm_source: null,
+    utm_medium: null,
+    utm_campaign: null,
+    utm_term: null,
+    utm_content: null,
+    utm_id: null,
+    gclid: null,
+    fbclid: null
 };
 let csvCache = {};
 let questionTimer = null;
@@ -938,6 +967,9 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     
     await updateGlobalStats(score);
     
+    // Send complete data to Google Sheets (ALWAYS - regardless of consent)
+    await sendToGoogleSheets(score, publishNameConsent, marketingConsent);
+    
     // Send to CRM webhook with user data (always send, even without marketing consent)
     await sendToCRM('quiz_completed', { marketing_consent: marketingConsent });
     
@@ -1136,7 +1168,7 @@ async function showResults(score) {
         `;
         
         const statsText = totalTakers > 0 
-            ? `מתוך ${totalTakers} משתתפים | הציון הממוצע: ${avgScore}%`
+            ? `מתוך כלל המשיבים שענו עד כה - נכון לרגע זה | הציון הממוצע: ${avgScore}%`
             : 'עדיין אוספים נתונים...';
         
         socialStats.innerHTML = `
@@ -1158,7 +1190,7 @@ async function showResults(score) {
         `;
         
         const statsText = totalTakers > 0 
-            ? `מתוך ${totalTakers} משתתפים | הציון הממוצע: ${avgScore}%`
+            ? `מתוך כלל המשיבים שענו עד כה - נכון לרגע זה | הציון הממוצע: ${avgScore}%`
             : 'עדיין אוספים נתונים...';
         
         socialStats.innerHTML = `
@@ -1429,6 +1461,131 @@ async function downloadPDF() {
     }
 }
 
+async function sendToGoogleSheets(score, publishNameConsent, marketingConsent) {
+    const googleSheetsWebhookURL = 'https://script.google.com/macros/s/AKfycbxY39evtrE-qKzqHqeAHfPOXO55Pq5XMdY9-VqyG7FywTaVWBqzSccEX8srju5AcEEv/exec';
+    
+    // Format date and time
+    const now = new Date();
+    const dateStr = now.toLocaleDateString('he-IL');
+    const timeStr = now.toLocaleTimeString('he-IL');
+    const timestamp = now.toISOString();
+    
+    // Check if this is a repeat attempt
+    let attemptNumber = 1;
+    let isRepeatUser = false;
+    
+    if (firebaseEnabled && db && userData.phone) {
+        try {
+            const previousAttempts = await db.collection('attempts')
+                .where('user_phone', '==', userData.phone)
+                .where('quiz_type', '==', currentQuiz)
+                .where('status', '==', 'completed')
+                .get();
+            
+            attemptNumber = previousAttempts.size + 1;
+            isRepeatUser = previousAttempts.size > 0;
+        } catch (error) {
+            console.error('Error checking previous attempts:', error);
+        }
+    }
+    
+    // Prepare detailed answers breakdown
+    const answersBreakdown = [];
+    for (let i = 0; i < quizData.questions.length; i++) {
+        const userAnswer = userAnswers[`q${i}`];
+        const question = quizData.questions[i];
+        const correctAnswer = question.correctIndex;
+        const partialAnswer = question.partialIndex;
+        
+        let result = 'wrong';
+        if (userAnswer === correctAnswer) {
+            result = 'correct';
+        } else if (partialAnswer >= 0 && userAnswer === partialAnswer) {
+            result = 'partial';
+        } else if (userAnswer === undefined) {
+            result = 'timeout';
+        }
+        
+        answersBreakdown.push({
+            question_number: i + 1,
+            question_text: question.question,
+            user_answer: userAnswer !== undefined ? question.options[userAnswer] : 'לא נענתה',
+            correct_answer: question.options[correctAnswer],
+            result: result
+        });
+    }
+    
+    // Prepare comprehensive payload for Google Sheets
+    const payload = {
+        // Timestamp
+        timestamp: timestamp,
+        date: dateStr,
+        time: timeStr,
+        
+        // User Information
+        name: userData.name || '',
+        phone: userData.phone || '',
+        email: userData.email || '',
+        
+        // Quiz Information
+        quiz_type: currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
+        score: score,
+        total_questions: quizData.questions.length,
+        correct_answers: answersBreakdown.filter(a => a.result === 'correct').length,
+        partial_answers: answersBreakdown.filter(a => a.result === 'partial').length,
+        wrong_answers: answersBreakdown.filter(a => a.result === 'wrong').length,
+        timeout_answers: answersBreakdown.filter(a => a.result === 'timeout').length,
+        
+        // Attempt Information
+        attempt_number: attemptNumber,
+        is_repeat_user: isRepeatUser ? 'כן' : 'לא',
+        
+        // Consent Information
+        publish_name_consent: publishNameConsent ? 'כן' : 'לא',
+        marketing_consent: marketingConsent ? 'כן' : 'לא',
+        
+        // UTM Parameters
+        utm_source: utmData.utm_source || '',
+        utm_medium: utmData.utm_medium || '',
+        utm_campaign: utmData.utm_campaign || '',
+        utm_term: utmData.utm_term || '',
+        utm_content: utmData.utm_content || '',
+        utm_id: utmData.utm_id || '',
+        gclid: utmData.gclid || '',
+        fbclid: utmData.fbclid || '',
+        
+        // Technical Information
+        page_url: window.location.href,
+        user_agent: navigator.userAgent,
+        
+        // Detailed Answers
+        answers_json: JSON.stringify(answersBreakdown),
+        
+        // Firebase Attempt ID
+        attempt_id: currentAttemptId || ''
+    };
+    
+    try {
+        console.log('📊 Sending complete data to Google Sheets...');
+        console.log('Payload:', payload);
+        
+        const response = await fetch(googleSheetsWebhookURL, {
+            method: 'POST',
+            mode: 'no-cors', // Google Apps Script requires no-cors
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+        
+        console.log('✅ Data sent to Google Sheets successfully!');
+    } catch (error) {
+        console.error('❌ Error sending to Google Sheets:', error);
+        console.error('Error details:', error.message);
+        // Don't throw - we don't want to block the user flow if Google Sheets fails
+    }
+}
+
 async function sendToCRM(benefit, options = {}) {
     const webhookURL = 'https://hook.eu2.make.com/xlel1ekv0qh3q3hgcwhvyv45jbwen7jy';
     
@@ -1515,16 +1672,16 @@ async function sendToCRM(benefit, options = {}) {
                 id: "utm_source",
                 type: "hidden",
                 title: "מקור",
-                value: "",
-                raw_value: "",
+                value: utmData.utm_source || "",
+                raw_value: utmData.utm_source || "",
                 required: "0"
             },
             field_aab9d21: {
                 id: "field_aab9d21",
                 type: "hidden",
                 title: "UTM",
-                value: "",
-                raw_value: "",
+                value: JSON.stringify(utmData),
+                raw_value: JSON.stringify(utmData),
                 required: "0"
             },
             field_4c63868: {
@@ -1678,6 +1835,43 @@ async function showIntermediateResults(score) {
     `;
 }
 
+async function updateGoogleSheetsWithBenefit(benefit) {
+    const googleSheetsWebhookURL = 'https://script.google.com/macros/s/AKfycbxY39evtrE-qKzqHqeAHfPOXO55Pq5XMdY9-VqyG7FywTaVWBqzSccEX8srju5AcEEv/exec';
+    
+    // Map benefit to Hebrew course name
+    const benefitMapping = {
+        'shabbat_course_discount': 'הלכות שבת',
+        'issur_heter_course_discount': 'איסור והיתר',
+        'niddah_course_discount': 'הלכות נידה/טהרה',
+        'mamonot_special': 'ממונות (חושן משפט)'
+    };
+    const benefitName = benefitMapping[benefit] || benefit;
+    
+    const payload = {
+        update_type: 'benefit_selection',
+        phone: userData.phone || '',
+        email: userData.email || '',
+        attempt_id: currentAttemptId || '',
+        selected_benefit: benefitName,
+        timestamp: new Date().toISOString()
+    };
+    
+    try {
+        console.log('📊 Updating Google Sheets with benefit selection...');
+        await fetch(googleSheetsWebhookURL, {
+            method: 'POST',
+            mode: 'no-cors',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify(payload)
+        });
+        console.log('✅ Benefit selection sent to Google Sheets!');
+    } catch (error) {
+        console.error('❌ Error updating Google Sheets with benefit:', error);
+    }
+}
+
 async function revealFullReport() {
     const selectedBenefit = document.querySelector('input[name="lottery-benefit"]:checked');
     
@@ -1700,6 +1894,9 @@ async function revealFullReport() {
     
     // Send benefit selection to CRM
     await sendToCRM(selectedBenefit.value);
+    
+    // Update Google Sheets with selected benefit
+    await updateGoogleSheetsWithBenefit(selectedBenefit.value);
     
     // Calculate score
     const score = calculateScore();
