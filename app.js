@@ -621,6 +621,9 @@ function updateTimerDisplay() {
 }
 
 function handleTimeout() {
+    // Lock to prevent clicks during timeout
+    isAnswerLocked = true;
+    
     const message = document.createElement('div');
     message.className = 'feedback-message timeout';
     message.innerHTML = `
@@ -630,9 +633,11 @@ function handleTimeout() {
     document.body.appendChild(message);
     
     questionAnswerStatus[`q${currentQuestionIndex}`] = 'timeout';
+    updateProgressCircles();
     
     setTimeout(() => {
         message.remove();
+        isAnswerLocked = false; // Unlock before moving to next question
         currentQuestionIndex++;
         showQuestion();
     }, 2500);
@@ -745,6 +750,7 @@ async function selectAnswer(answerIndex) {
     // Store timeout reference to prevent race conditions
     questionTransitionTimeout = setTimeout(() => {
         questionTransitionTimeout = null;
+        isAnswerLocked = false; // Unlock before moving to next question
         currentQuestionIndex++;
         showQuestion();
     }, 1600);
@@ -774,6 +780,7 @@ function closeNeedReview() {
 
 function nextQuestion() {
     stopTimer();
+    isAnswerLocked = false; // Unlock before moving to next question
     currentQuestionIndex++;
     showQuestion();
 }
