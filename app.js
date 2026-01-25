@@ -76,6 +76,70 @@ function captureUTMParameters() {
 
 // Call on page load
 captureUTMParameters();
+
+// Track quiz abandonment
+let quizStartTime = null;
+window.addEventListener('beforeunload', function(e) {
+    if (currentQuiz && currentQuestionIndex < (quizData?.questions?.length || 0) && !userData.phone) {
+        // User is leaving in the middle of quiz without completing
+        trackEvent('quiz_abandoned', {
+            quiz_type: currentQuiz,
+            last_question: currentQuestionIndex + 1,
+            total_questions: quizData?.questions?.length || 0,
+            time_spent: quizStartTime ? Math.round((Date.now() - quizStartTime) / 1000) : 0,
+            questions_answered: Object.keys(userAnswers).length
+        });
+    }
+});
+
+// Analytics tracking function - works in iframe and standalone
+function trackEvent(eventName, eventParams = {}) {
+    try {
+        // Add UTM parameters to all events
+        const enrichedParams = {
+            ...eventParams,
+            utm_source: utmData.utm_source || '',
+            utm_medium: utmData.utm_medium || '',
+            utm_campaign: utmData.utm_campaign || '',
+            page_location: window.location.href,
+            timestamp: new Date().toISOString()
+        };
+        
+        // Method 1: Send to parent window's dataLayer (for iframe)
+        if (window.parent && window.parent !== window) {
+            if (window.parent.dataLayer) {
+                window.parent.dataLayer.push({
+                    event: eventName,
+                    ...enrichedParams
+                });
+                console.log('📊 Analytics (parent):', eventName, enrichedParams);
+            }
+        }
+        
+        // Method 2: Send to current window's dataLayer (for standalone)
+        if (window.dataLayer) {
+            window.dataLayer.push({
+                event: eventName,
+                ...enrichedParams
+            });
+            console.log('📊 Analytics (local):', eventName, enrichedParams);
+        }
+        
+        // Method 3: Send to gtag if available
+        if (typeof gtag === 'function') {
+            gtag('event', eventName, enrichedParams);
+            console.log('📊 Analytics (gtag):', eventName, enrichedParams);
+        }
+        
+        // Fallback: Log to console for debugging
+        if (!window.dataLayer && !window.parent?.dataLayer && typeof gtag !== 'function') {
+            console.log('📊 Analytics (console only):', eventName, enrichedParams);
+        }
+    } catch (error) {
+        console.error('Analytics tracking error:', error);
+    }
+}
+
 let csvCache = {};
 let questionTimer = null;
 let timeRemaining = 30;
@@ -107,6 +171,15 @@ async function startQuiz(quizType) {
     
     // Clear cache to ensure fresh shuffle each time
     csvCache = {};
+    
+    // Set quiz start time for abandonment tracking
+    quizStartTime = Date.now();
+    
+    // Analytics: Quiz Started
+    trackEvent('quiz_started', {
+        quiz_type: quizType === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר',
+        quiz_type_en: quizType
+    });
     
     // Show quiz type badge
     const quizTypeBadge = document.getElementById('quiz-type-badge');
@@ -655,6 +728,15 @@ function handleTimeout() {
     questionAnswerStatus[`q${currentQuestionIndex}`] = 'timeout';
     updateProgressCircles();
     
+    // Analytics: Question Timeout
+    trackEvent('question_answered', {
+        question_number: currentQuestionIndex + 1,
+        answer_result: 'timeout',
+        time_remaining: 0,
+        time_taken: 30,
+        quiz_type: currentQuiz
+    });
+    
     setTimeout(() => {
         message.remove();
         isAnswerLocked = false; // Unlock before moving to next question
@@ -749,6 +831,15 @@ async function selectAnswer(answerIndex) {
     }
     
     questionAnswerStatus[`q${currentQuestionIndex}`] = answerStatus;
+    
+    // Analytics: Question Answered
+    trackEvent('question_answered', {
+        question_number: currentQuestionIndex + 1,
+        answer_result: answerStatus,
+        time_remaining: timeRemaining,
+        time_taken: 30 - timeRemaining,
+        quiz_type: currentQuiz
+    });
     
     const buttons = document.querySelectorAll('.answer-option');
     buttons.forEach((btn, idx) => {
@@ -967,6 +1058,16 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     
     await updateGlobalStats(score);
     
+    // Analytics: Lead Submitted
+    trackEvent('lead_submitted', {
+        has_email: !!userData.email,
+        has_phone: !!userData.phone,
+        marketing_consent: marketingConsent,
+        publish_name_consent: publishNameConsent,
+        quiz_type: currentQuiz,
+        score: score
+    });
+    
     // Send complete data to Google Sheets (ALWAYS - regardless of consent)
     await sendToGoogleSheets(score, publishNameConsent, marketingConsent);
     
@@ -1080,6 +1181,22 @@ async function updateGlobalStats(score) {
 }
 
 async function showResults(score) {
+    // Analytics: Quiz Completed
+    const totalQuestions = quizData.questions.length;
+    const correctAnswers = Object.keys(questionAnswerStatus).filter(k => questionAnswerStatus[k] === 'correct').length;
+    const wrongAnswers = Object.keys(questionAnswerStatus).filter(k => questionAnswerStatus[k] === 'wrong').length;
+    const timeoutAnswers = Object.keys(questionAnswerStatus).filter(k => questionAnswerStatus[k] === 'timeout').length;
+    
+    trackEvent('quiz_completed', {
+        quiz_type: currentQuiz,
+        score: score,
+        total_questions: totalQuestions,
+        correct_answers: correctAnswers,
+        wrong_answers: wrongAnswers,
+        timeout_answers: timeoutAnswers,
+        is_high_scorer: score >= 80
+    });
+    
     document.getElementById('final-score').textContent = `${score}%`;
     
     const resultsHeader = document.getElementById('results-header');
@@ -1891,6 +2008,13 @@ async function revealFullReport() {
             console.error('Error saving benefit:', error);
         }
     }
+    
+    // Analytics: Benefit Selected
+    trackEvent('benefit_selected', {
+        benefit_type: selectedBenefit.value,
+        quiz_type: currentQuiz,
+        score: calculateScore()
+    });
     
     // Send benefit selection to CRM
     await sendToCRM(selectedBenefit.value);
