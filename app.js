@@ -55,7 +55,7 @@ let isAnswerLocked = false;
 let questionTransitionTimeout = null;
 
 function showScreen(screenId) {
-    const screens = ['screen-lobby', 'screen-question', 'screen-lead-collection', 'screen-processing', 'screen-intermediate-results', 'screen-results', 'screen-already-completed'];
+    const screens = ['screen-lobby', 'screen-instructions', 'screen-question', 'screen-lead-collection', 'screen-processing', 'screen-intermediate-results', 'screen-results', 'screen-already-completed'];
     screens.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
@@ -96,8 +96,12 @@ async function startQuiz(quizType) {
     } else {
         await loadQuizData(quizType);
         await createNewAttempt();
-        showQuestion();
+        showScreen('screen-instructions');
     }
+}
+
+function startQuestions() {
+    showQuestion();
 }
 
 async function loadQuizData(quizType) {
