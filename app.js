@@ -903,6 +903,10 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     userData.phone = document.getElementById('lead-phone').value;
     userData.email = document.getElementById('lead-email').value;
     
+    // Get consent checkboxes
+    const publishNameConsent = document.getElementById('publish-name-consent').checked;
+    const marketingConsent = document.getElementById('marketing-consent').checked;
+    
     // Check if this phone number already completed this quiz
     const alreadyCompleted = await checkIfUserAlreadyCompleted(userData.phone, currentQuiz);
     
@@ -923,6 +927,8 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
                 user_name: userData.name,
                 status: 'completed',
                 final_score: score,
+                publish_name: publishNameConsent,
+                marketing_consent: marketingConsent,
                 updated_at: firebase.firestore.FieldValue.serverTimestamp()
             });
         } catch (error) {
@@ -932,8 +938,15 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     
     await updateGlobalStats(score);
     
-    // Send to CRM webhook with user data
-    await sendToCRM('quiz_completed');
+    // Send to CRM webhook with user data (always send, even without marketing consent)
+    await sendToCRM('quiz_completed', { marketing_consent: marketingConsent });
+    
+    // If no marketing consent, don't proceed to results - just thank and stop
+    if (!marketingConsent) {
+        alert('תודה על השתתפותך! הנתונים שלך נשמרו במערכת.\n\nשים לב: ללא אישור דיוור, לא נוכל לשלוח לך את הדוח המפורט.\n\nאתה רשום כמי שביצע את המבחן ולא תוכל להיבחן שוב באותו תחום.');
+        showScreen('screen-lobby');
+        return;
+    }
     
     // Show processing animation
     showScreen('screen-processing');
@@ -1416,10 +1429,11 @@ async function downloadPDF() {
     }
 }
 
-async function sendToCRM(benefit) {
+async function sendToCRM(benefit, options = {}) {
     const webhookURL = 'https://hook.eu2.make.com/xlel1ekv0qh3q3hgcwhvyv45jbwen7jy';
     
     const score = calculateScore();
+    const marketingConsent = options.marketing_consent !== undefined ? options.marketing_consent : true;
     
     // Format date and time in Hebrew
     const now = new Date();
@@ -1437,10 +1451,11 @@ async function sendToCRM(benefit) {
     };
     const courseName = benefitMapping[benefit] || benefit;
     
-    // Create note with quiz details
+    // Create note with quiz details including marketing consent status
+    const consentNote = marketingConsent ? '' : ' [לא אישר דיוור]';
     const quizNote = benefit === 'quiz_completed' 
-        ? `ליד מאתגר הפסיקה. ציון: ${score}%. השלים מבחן - טרם בחר הטבה`
-        : `ליד מאתגר הפסיקה. ציון: ${score}%. התעניין בהטבה: ${benefit}`;
+        ? `ליד מאתגר הפסיקה. ציון: ${score}%. השלים מבחן - טרם בחר הטבה${consentNote}`
+        : `ליד מאתגר הפסיקה. ציון: ${score}%. התעניין בהטבה: ${benefit}${consentNote}`;
     
     const payload = [{
         form: {
@@ -1715,6 +1730,33 @@ window.openLeaderboard = function() {
     showLeaderboard('shabbat');
 }
 
+// Handle consent checkboxes
+document.getElementById('publish-name-consent').addEventListener('change', function() {
+    const anonymousNotice = document.getElementById('anonymous-notice');
+    if (!this.checked) {
+        anonymousNotice.classList.remove('hidden');
+    } else {
+        anonymousNotice.classList.add('hidden');
+    }
+});
+
+document.getElementById('marketing-consent').addEventListener('change', function() {
+    const noMarketingNotice = document.getElementById('no-marketing-notice');
+    const submitBtn = document.getElementById('submit-lead-btn');
+    
+    if (!this.checked) {
+        noMarketingNotice.classList.remove('hidden');
+        submitBtn.disabled = true;
+        submitBtn.style.opacity = '0.5';
+        submitBtn.style.cursor = 'not-allowed';
+    } else {
+        noMarketingNotice.classList.add('hidden');
+        submitBtn.disabled = false;
+        submitBtn.style.opacity = '1';
+        submitBtn.style.cursor = 'pointer';
+    }
+});
+
 window.showLeaderboard = async function(quizType) {
     currentLeaderboardQuiz = quizType;
     
@@ -1770,8 +1812,9 @@ async function fetchLeaderboard(quizType) {
         const leaderboardData = [];
         leaderboardQuery.forEach(doc => {
             const data = doc.data();
+            const publishName = data.publish_name !== false; // Default true if not set
             leaderboardData.push({
-                name: data.user_name || 'משתמש אנונימי',
+                name: publishName ? (data.user_name || 'משתמש אנונימי') : 'משתמש אנונימי',
                 score: data.final_score || 0,
                 phone: data.user_phone || ''
             });
@@ -1816,9 +1859,14 @@ function displayLeaderboard(data) {
         else if (rank === 2) rankDisplay = '🥈';
         else if (rank === 3) rankDisplay = '🥉';
         
+        // Format name with הרב and שליט"א if not anonymous
+        const displayName = entry.name === 'משתמש אנונימי' 
+            ? entry.name 
+            : `הרב ${entry.name} שליט"א`;
+        
         entryDiv.innerHTML = `
             <div class="leaderboard-rank">${rankDisplay}</div>
-            <div class="leaderboard-name">${entry.name}</div>
+            <div class="leaderboard-name">${displayName}</div>
             <div class="leaderboard-score">${entry.score}%</div>
         `;
         
