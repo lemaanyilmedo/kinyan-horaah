@@ -191,6 +191,29 @@
             margin: 0 auto;
         }
         
+        .progress-circle svg {
+            position: absolute;
+            top: -4px;
+            left: -4px;
+            width: 68px;
+            height: 68px;
+            transform: rotate(-90deg);
+            pointer-events: none;
+        }
+        
+        .progress-circle .circle-bg {
+            fill: none;
+            stroke: rgba(255, 255, 255, 0.2);
+            stroke-width: 4;
+        }
+        
+        .progress-circle .circle-progress {
+            fill: none;
+            stroke-width: 4;
+            stroke-linecap: round;
+            transition: stroke-dasharray 0.6s ease;
+        }
+        
         .progress-circle.active {
             background: var(--gold);
             color: white;
@@ -200,18 +223,30 @@
         }
         
         .progress-circle.correct {
-            background: #22c55e;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
+        }
+        
+        .progress-circle.correct .circle-progress {
+            stroke: #22c55e;
         }
         
         .progress-circle.wrong {
-            background: #f59e0b;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
         }
         
+        .progress-circle.wrong .circle-progress {
+            stroke: #f59e0b;
+        }
+        
         .progress-circle.timeout {
-            background: #94a3b8;
+            background: rgba(255, 255, 255, 0.2);
             color: white;
+        }
+        
+        .progress-circle.timeout .circle-progress {
+            stroke: #94a3b8;
         }
         
         @keyframes pulse {
@@ -1136,7 +1171,7 @@
         <div class="full-width-content fade-in">
             <!-- Question Header -->
             <div class="question-header">
-                השאלה שהגיעה לשולחן בית ההוראה
+                השאלה שהגיעה אליך:
             </div>
             
             <!-- Progress Circles -->

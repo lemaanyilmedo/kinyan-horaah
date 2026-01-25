@@ -130,6 +130,44 @@ async function loadQuizData(quizType) {
     }
 }
 
+function convertToPersonalPhrasing(question) {
+    // Convert third-person questions to first-person personal phrasing
+    let personal = question;
+    
+    // Common patterns to convert
+    const conversions = [
+        { from: /אדם ש/g, to: '' },
+        { from: /אישה ש/g, to: '' },
+        { from: /ילד ש/g, to: '' },
+        { from: /מישהו ש/g, to: '' },
+        { from: /אדם שהגיע/g, to: 'הגעתי' },
+        { from: /אישה שהדליקה/g, to: 'הדלקתי' },
+        { from: /אדם ששכח/g, to: 'שכחתי' },
+        { from: /אישה שמצאה/g, to: 'מצאתי' },
+        { from: /אישה שביקשה/g, to: 'ביקשתי' },
+        { from: /תינוק שבכה/g, to: 'התינוק שלי בכה' },
+        { from: /האם מותר לו/g, to: 'האם מותר לי' },
+        { from: /מה עליו לעשות/g, to: 'מה עלי לעשות' },
+        { from: /האם מותר לה/g, to: 'האם מותר לי' },
+        { from: /מה עליה לעשות/g, to: 'מה עלי לעשות' },
+        { from: /האם מותר לאב/g, to: 'האם מותר לי' },
+        { from: /להניח לו/g, to: 'להניח לו' },
+        { from: /שלו /g, to: 'שלי ' },
+        { from: /שלה /g, to: 'שלי ' },
+        { from: /אותו/g, to: 'אותו' },
+        { from: /אותה/g, to: 'אותה' }
+    ];
+    
+    conversions.forEach(conv => {
+        personal = personal.replace(conv.from, conv.to);
+    });
+    
+    // Clean up any double spaces
+    personal = personal.replace(/\s+/g, ' ').trim();
+    
+    return personal;
+}
+
 function parseCSV(csvText, quizType) {
     const lines = csvText.split('\n').filter(line => line.trim());
     const allQuestions = [];
@@ -138,7 +176,7 @@ function parseCSV(csvText, quizType) {
         const parts = parseCSVLine(lines[i]);
         if (parts.length >= 7) {
             allQuestions.push({
-                question: parts[0],
+                question: convertToPersonalPhrasing(parts[0]),
                 options: [parts[1], parts[2], parts[3]],
                 correctIndex: parseInt(parts[4]) - 1,
                 partialIndex: parseInt(parts[5]) - 1,
@@ -208,7 +246,7 @@ function parseCSVLine(line) {
 function getDefaultQuizData(quizType) {
     const shabbatQuestions = [
         {
-            question: "אדם שהגיע לבית הכנסת בשבת והבחין שהוא שכח את הטלית בבית. הבית נמצא במרחק של 5 דקות הליכה בתוך העירוב. מה עליו לעשות?",
+            question: "הגעתי לבית הכנסת בשבת והבחנתי ששכחתי את הטלית בבית. הבית נמצא במרחק של 5 דקות הליכה בתוך העירוב. מה עלי לעשות?",
             options: [
                 "אסור לחזור, כי אין חוזרים על טלית בשבת",
                 "מותר לחזור, אבל רק אם עדיין לא התחילה התפילה",
@@ -218,7 +256,7 @@ function getDefaultQuizData(quizType) {
             explanation: "לפי השולחן עורך (או\"ח סי' ח), מותר לחזור על טלית רק אם עדיין לא התחיל להתפלל. אם כבר התחיל - אסור לחזור."
         },
         {
-            question: "אישה הדליקה נרות שבת ושכחה לכבות את האור במטבח. האם מותר לה לבקש מבעלה (שעדיין לא קיבל שבת) לכבות?",
+            question: "הדלקתי נרות שבת ושכחתי לכבות את האור במטבח. האם מותר לי לבקש מבעלי (שעדיין לא קיבל שבת) לכבות?",
             options: [
                 "אסור, כי היא כבר קיבלה שבת ואסור לה לגרום למלאכה",
                 "מותר, כי הבעל עדיין לא קיבל שבת",
@@ -228,7 +266,7 @@ function getDefaultQuizData(quizType) {
             explanation: "אף שהבעל עדיין לא קיבל שבת, האישה שכבר קיבלה שבת אסורה לבקש ממנו לעשות מלאכה עבורה (משנה ברורה)."
         },
         {
-            question: "ילד בן 11 ביקש לפתוח את האור בחדר בשבת. האם מותר לאב להניח לו?",
+            question: "הילד שלי בן 11 ביקש לפתוח את האור בחדר בשבת. האם מותר לי להניח לו?",
             options: [
                 "מותר, כי קטן שעושה מלאכה מדעתו - אין מחויבים למנוע ממנו",
                 "אסור, יש חיוב חינוך ולכן חייבים למנוע ממנו",
@@ -238,7 +276,7 @@ function getDefaultQuizData(quizType) {
             explanation: "יש חיוב מדרבנן לחנך ילדים בשמירת שבת מגיל שמבין (בערך 6-7). לכן חייבים למנוע מילד לעשות מלאכה בשבת."
         },
         {
-            question: "אדם ששכח והדליק סיגריה בשבת (בשוגג). מה עליו לעשות?",
+            question: "שכחתי והדלקתי סיגריה בשבת (בשוגג). מה עלי לעשות?",
             options: [
                 "לזרוק מיד את הסיגריה ולכבות אותה",
                 "להניח את הסיגריה על משטח בטוח ולא לכבות",
@@ -248,7 +286,7 @@ function getDefaultQuizData(quizType) {
             explanation: "אסור לכבות את הסיגריה כי זו מלאכה נוספת. יש להניחה במקום בטוח ולא לכבות (שו\"ע ומשנה ברורה)."
         },
         {
-            question: "תינוק שבכה בשבת והאם צריכה לחמם לו בקבוק. יש לה מים חמים מהקומקום החשמלי שהיה דולק מערב שבת. האם מותר לשפוך ישירות על הבקבוק?",
+            question: "התינוק שלי בכה בשבת ואני צריכה לחמם לו בקבוק. יש לי מים חמים מהקומקום החשמלי שהיה דולק מערב שבת. האם מותר לשפוך ישירות על הבקבוק?",
             options: [
                 "מותר, כי זה צורך התינוק והמים כבר חמים",
                 "אסור, כי זה בישול על ידי שפיכת רותחין",
@@ -261,7 +299,7 @@ function getDefaultQuizData(quizType) {
     
     const issurHeterQuestions = [
         {
-            question: "אישה מצאה חרק קטן בכרוב שקנתה. האם מותר לה לחתוך את האזור ולהשתמש בשאר הכרוב?",
+            question: "מצאתי חרק קטן בכרוב שקניתי. האם מותר לי לחתוך את האזור ולהשתמש בשאר הכרוב?",
             options: [
                 "מותר, כי די להסיר את האזור הנגוע",
                 "אסור, צריך לזרוק את כל הכרוב",
@@ -271,7 +309,7 @@ function getDefaultQuizData(quizType) {
             explanation: "כרוב שנמצא בו חרק נחשב למוחזק בתולעים, ויש לבדוק היטב או לזרוק. בדרך כלל ממליצים לזרוק כי קשה לבדוק לעומק."
         },
         {
-            question: "בשר עוף שנשאר מחוץ למקרר למשך 4 שעות בקיץ. האם מותר לאכול אותו?",
+            question: "יש לי בשר עוף שנשאר מחוץ למקרר למשך 4 שעות בקיץ. האם מותר לאכול אותו?",
             options: [
                 "מותר, כי 4 שעות זה לא מספיק זמן להפסד",
                 "אסור מצד סכנת נפשות",
@@ -281,7 +319,7 @@ function getDefaultQuizData(quizType) {
             explanation: "בשר עוף שנשאר בחוץ בטמפרטורה גבוהה מעל שעתיים נחשב למסוכן בריאותית ואסור באכילה (סכנת סלמונלה)."
         },
         {
-            question: "גבינה צהובה שנמצאה בה נקודה ירוקה קטנה של עובש. מה הדין?",
+            question: "יש לי גבינה צהובה שנמצאה בה נקודה ירוקה קטנה של עובש. מה הדין?",
             options: [
                 "מותר לחתוך את הנקודה ולאכול את השאר",
                 "אסור לאכול את כל הגבינה",
@@ -291,7 +329,7 @@ function getDefaultQuizData(quizType) {
             explanation: "בגבינה קשה, מותר לחתוך את אזור העובש עם מרווח של כ-2 ס\"ם מסביב ולאכול את השאר."
         },
         {
-            question: "ירקות קפואים שהופשרו במקרר והוחזרו להקפאה. האם מותר לאכול אותם?",
+            question: "יש לי ירקות קפואים שהופשרו במקרר והוחזרו להקפאה. האם מותר לאכול אותם?",
             options: [
                 "מותר בלי בעיה",
                 "אסור, כי הם כבר הופשרו פעם",
@@ -301,7 +339,7 @@ function getDefaultQuizData(quizType) {
             explanation: "אם הירקות הופשרו חלקית בלבד (עדיין היו גבישי קרח) - מותר להקפיא שוב. אם הופשרו לגמרי - לא מומלץ מבחינה בריאותית."
         },
         {
-            question: "תבשיל חלבי שנתערב בו בטעות כף בשרית נקייה. מה הדין?",
+            question: "יש לי תבשיל חלבי שנתערבה בו בטעות כף בשרית נקייה. מה הדין?",
             options: [
                 "התבשיל אסור באכילה",
                 "התבשיל מותר, רק הכף צריכה הכשר",
@@ -411,10 +449,13 @@ async function showQuestion() {
     // Wait for transition
     await sleep(600);
     
-    // Phase 3: Show answers one by one
-    // Unlock answers for new question
-    isAnswerLocked = false;
+    // Phase 3: Add "כיצד היית מכריע?" header before answers
+    const decisionHeader = document.createElement('div');
+    decisionHeader.style.cssText = 'text-align: center; color: white; font-size: clamp(1.3rem, 1.8vw, 1.8rem); font-weight: 600; margin: 1.5rem 0 1rem 0; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);';
+    decisionHeader.textContent = 'כיצד היית מכריע?';
+    answersContainer.appendChild(decisionHeader);
     
+    // Phase 4: Show answers one by one
     console.log('Creating answer buttons, options:', question.options);
     question.options.forEach((option, index) => {
         const button = document.createElement('button');
@@ -439,7 +480,10 @@ async function showQuestion() {
     // Wait for all answers to appear
     await sleep(500);
     
-    // Phase 4: Start the timer
+    // Unlock answers for interaction
+    isAnswerLocked = false;
+    
+    // Phase 5: Start the timer
     startTimer();
 }
 
@@ -510,7 +554,41 @@ function updateProgressCircles() {
                 circle.classList.add('timeout');
             }
             
-            circle.textContent = i + 1;
+            // Add SVG donut ring for answered questions
+            if (status && !isCurrent) {
+                const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+                const bgCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                const progressCircle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+                
+                // Background circle
+                bgCircle.setAttribute('class', 'circle-bg');
+                bgCircle.setAttribute('cx', '34');
+                bgCircle.setAttribute('cy', '34');
+                bgCircle.setAttribute('r', '30');
+                
+                // Progress circle (full ring for completed questions)
+                progressCircle.setAttribute('class', 'circle-progress');
+                progressCircle.setAttribute('cx', '34');
+                progressCircle.setAttribute('cy', '34');
+                progressCircle.setAttribute('r', '30');
+                
+                // Calculate circumference and set full ring
+                const circumference = 2 * Math.PI * 30;
+                progressCircle.setAttribute('stroke-dasharray', `${circumference} ${circumference}`);
+                progressCircle.setAttribute('stroke-dashoffset', '0');
+                
+                svg.appendChild(bgCircle);
+                svg.appendChild(progressCircle);
+                circle.appendChild(svg);
+            }
+            
+            // Add number text
+            const numberSpan = document.createElement('span');
+            numberSpan.textContent = i + 1;
+            numberSpan.style.position = 'relative';
+            numberSpan.style.zIndex = '2';
+            circle.appendChild(numberSpan);
+            
             progressCircles.appendChild(circle);
         }
     }
@@ -1674,12 +1752,12 @@ function restartQuiz() {
 // Leaderboard Functions
 let currentLeaderboardQuiz = 'shabbat';
 
-function openLeaderboard() {
+window.openLeaderboard = function() {
     showScreen('screen-leaderboard');
     showLeaderboard('shabbat');
 }
 
-async function showLeaderboard(quizType) {
+window.showLeaderboard = async function(quizType) {
     currentLeaderboardQuiz = quizType;
     
     // Update button states
