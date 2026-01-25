@@ -130,44 +130,6 @@ async function loadQuizData(quizType) {
     }
 }
 
-function convertToPersonalPhrasing(question) {
-    // Convert third-person questions to first-person personal phrasing
-    let personal = question;
-    
-    // Common patterns to convert
-    const conversions = [
-        { from: /אדם ש/g, to: '' },
-        { from: /אישה ש/g, to: '' },
-        { from: /ילד ש/g, to: '' },
-        { from: /מישהו ש/g, to: '' },
-        { from: /אדם שהגיע/g, to: 'הגעתי' },
-        { from: /אישה שהדליקה/g, to: 'הדלקתי' },
-        { from: /אדם ששכח/g, to: 'שכחתי' },
-        { from: /אישה שמצאה/g, to: 'מצאתי' },
-        { from: /אישה שביקשה/g, to: 'ביקשתי' },
-        { from: /תינוק שבכה/g, to: 'התינוק שלי בכה' },
-        { from: /האם מותר לו/g, to: 'האם מותר לי' },
-        { from: /מה עליו לעשות/g, to: 'מה עלי לעשות' },
-        { from: /האם מותר לה/g, to: 'האם מותר לי' },
-        { from: /מה עליה לעשות/g, to: 'מה עלי לעשות' },
-        { from: /האם מותר לאב/g, to: 'האם מותר לי' },
-        { from: /להניח לו/g, to: 'להניח לו' },
-        { from: /שלו /g, to: 'שלי ' },
-        { from: /שלה /g, to: 'שלי ' },
-        { from: /אותו/g, to: 'אותו' },
-        { from: /אותה/g, to: 'אותה' }
-    ];
-    
-    conversions.forEach(conv => {
-        personal = personal.replace(conv.from, conv.to);
-    });
-    
-    // Clean up any double spaces
-    personal = personal.replace(/\s+/g, ' ').trim();
-    
-    return personal;
-}
-
 function parseCSV(csvText, quizType) {
     const lines = csvText.split('\n').filter(line => line.trim());
     const allQuestions = [];
@@ -176,7 +138,7 @@ function parseCSV(csvText, quizType) {
         const parts = parseCSVLine(lines[i]);
         if (parts.length >= 7) {
             allQuestions.push({
-                question: convertToPersonalPhrasing(parts[0]),
+                question: parts[0],
                 options: [parts[1], parts[2], parts[3]],
                 correctIndex: parseInt(parts[4]) - 1,
                 partialIndex: parseInt(parts[5]) - 1,
