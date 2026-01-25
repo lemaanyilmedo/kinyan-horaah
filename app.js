@@ -1794,12 +1794,10 @@ async function fetchLeaderboard(quizType) {
     }
     
     try {
-        // Query top 10 completed attempts for this quiz type, ordered by score
+        // Simple query without composite index - just filter by quiz_type and status
         const leaderboardQuery = await db.collection('attempts')
             .where('quiz_type', '==', quizType)
             .where('status', '==', 'completed')
-            .orderBy('final_score', 'desc')
-            .limit(10)
             .get();
         
         if (leaderboardQuery.empty) {
@@ -1808,7 +1806,7 @@ async function fetchLeaderboard(quizType) {
             return;
         }
         
-        // Process and display results
+        // Process results and sort in JavaScript
         const leaderboardData = [];
         leaderboardQuery.forEach(doc => {
             const data = doc.data();
@@ -1820,7 +1818,11 @@ async function fetchLeaderboard(quizType) {
             });
         });
         
-        displayLeaderboard(leaderboardData);
+        // Sort by score descending and take top 10
+        leaderboardData.sort((a, b) => b.score - a.score);
+        const top10 = leaderboardData.slice(0, 10);
+        
+        displayLeaderboard(top10);
         
     } catch (error) {
         console.error('Error fetching leaderboard:', error);
