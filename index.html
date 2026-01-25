@@ -677,6 +677,51 @@
             text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
         }
         
+        /* Loading Overlay */
+        .loading-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(50, 55, 60, 0.95);
+            backdrop-filter: blur(8px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+        }
+        
+        .loading-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .loading-content {
+            text-align: center;
+        }
+        
+        .loading-spinner {
+            width: 80px;
+            height: 80px;
+            border: 4px solid rgba(212, 177, 130, 0.2);
+            border-top: 4px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 0.8s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+            margin: 0 auto 1.5rem;
+            box-shadow: 0 4px 20px rgba(212, 177, 130, 0.3);
+        }
+        
+        .loading-text {
+            font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+            color: var(--gold);
+            font-weight: 600;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
         /* Distribution Widget Styles */
         .distribution-widget {
             background: rgba(255, 255, 255, 0.1);
@@ -886,23 +931,23 @@
         }
         
         .leaderboard-entry.top-1 {
-            background: rgba(255, 215, 0, 0.12);
-            border: 2px solid rgba(255, 215, 0, 0.4);
-            box-shadow: 0 4px 20px rgba(255, 215, 0, 0.2);
+            background: rgba(212, 177, 130, 0.15);
+            border: 2px solid rgba(212, 177, 130, 0.5);
+            box-shadow: 0 4px 20px rgba(212, 177, 130, 0.25);
         }
         
         .leaderboard-entry.top-1:hover {
-            box-shadow: 0 8px 32px rgba(255, 215, 0, 0.3);
+            box-shadow: 0 8px 32px rgba(212, 177, 130, 0.35);
         }
         
         .leaderboard-entry.top-2 {
-            background: rgba(192, 192, 192, 0.12);
-            border: 2px solid rgba(192, 192, 192, 0.4);
+            background: rgba(212, 177, 130, 0.12);
+            border: 2px solid rgba(212, 177, 130, 0.4);
         }
         
         .leaderboard-entry.top-3 {
-            background: rgba(205, 127, 50, 0.12);
-            border: 2px solid rgba(205, 127, 50, 0.4);
+            background: rgba(212, 177, 130, 0.1);
+            border: 2px solid rgba(212, 177, 130, 0.35);
         }
         
         .leaderboard-rank {
@@ -950,16 +995,16 @@
         }
         
         .leaderboard-entry.top-1 .leaderboard-score {
-            color: #FFD700;
             font-size: 2rem;
+            font-weight: 900;
         }
         
         .leaderboard-entry.top-2 .leaderboard-score {
-            color: #E8E8E8;
+            font-size: 1.9rem;
         }
         
         .leaderboard-entry.top-3 .leaderboard-score {
-            color: #CD7F32;
+            font-size: 1.85rem;
         }
         
         .trophy-icon {
@@ -1095,8 +1140,16 @@
     </style>
 </head>
 <body>
-    <div class="version-badge">גירסה 23</div>
+    <div class="version-badge">גירסה 25</div>
     <div id="quiz-type-badge" class="quiz-type-badge hidden"></div>
+    
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" class="loading-overlay">
+        <div class="loading-content">
+            <div class="loading-spinner"></div>
+            <div class="loading-text">טוען...</div>
+        </div>
+    </div>
     
     <!-- Screen 1: Lobby -->
     <div id="screen-lobby" class="full-screen-container">
@@ -1557,6 +1610,31 @@
             
         </div>
     </div>
+
+    <!-- Loading Overlay -->
+    <div id="loading-overlay" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(50, 55, 60, 0.95); backdrop-filter: blur(10px); display: none; align-items: center; justify-content: center; z-index: 9999; opacity: 0; transition: opacity 0.3s ease;">
+        <div style="text-align: center;">
+            <div class="spinner" style="width: 80px; height: 80px; margin: 0 auto 2rem; border: 6px solid rgba(212, 177, 130, 0.2); border-top: 6px solid var(--gold); border-radius: 50%; animation: spin 1s linear infinite;"></div>
+            <div class="loading-text" style="color: var(--gold); font-size: 1.8rem; font-weight: 600; letter-spacing: 1px;">טוען...</div>
+        </div>
+    </div>
+    
+    <!-- Version Number -->
+    <div style="position: fixed; bottom: 10px; left: 10px; color: rgba(212, 177, 130, 0.6); font-size: 0.9rem; font-weight: 600; z-index: 1000; background: rgba(50, 55, 60, 0.7); padding: 0.3rem 0.8rem; border-radius: 8px; backdrop-filter: blur(5px);">
+        v24
+    </div>
+    
+    <style>
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        #loading-overlay.active {
+            display: flex !important;
+            opacity: 1 !important;
+        }
+    </style>
 
     <script src="app.js"></script>
 </body>

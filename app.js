@@ -1,3 +1,7 @@
+// Version
+const APP_VERSION = 'v24';
+console.log(`🚀 Kinyan Horaah Quiz App ${APP_VERSION}`);
+
 const CSV_URLS = {
     shabbat: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTms4MIHYC7w0sRgy0I_4hg1967D_snpA9BUcT2NTwuZRxbRb_mzkZ6kScFXLfJGbT_t3cDXTPBxomc/pub?gid=0&single=true&output=tsv',
     issur_heter: 'https://docs.google.com/spreadsheets/d/e/2PACX-1vTms4MIHYC7w0sRgy0I_4hg1967D_snpA9BUcT2NTwuZRxbRb_mzkZ6kScFXLfJGbT_t3cDXTPBxomc/pub?gid=1643191626&single=true&output=tsv'
@@ -147,6 +151,20 @@ let questionAnswerStatus = {};
 let isAnswerLocked = false;
 let questionTransitionTimeout = null;
 
+function showLoading(text = 'טוען...') {
+    const overlay = document.getElementById('loading-overlay');
+    const loadingText = overlay.querySelector('.loading-text');
+    if (loadingText) {
+        loadingText.textContent = text;
+    }
+    overlay.classList.add('active');
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('active');
+}
+
 function showScreen(screenId) {
     const screens = ['screen-lobby', 'screen-instructions', 'screen-question', 'screen-lead-collection', 'screen-processing', 'screen-intermediate-results', 'screen-results', 'screen-already-completed'];
     screens.forEach(id => {
@@ -163,6 +181,9 @@ function showScreen(screenId) {
 }
 
 async function startQuiz(quizType) {
+    // Show loading spinner
+    showLoading('מכין את השאלות...');
+    
     currentQuiz = quizType;
     currentQuestionIndex = 0;
     userAnswers = {};
@@ -200,6 +221,9 @@ async function startQuiz(quizType) {
         await createNewAttempt();
         showScreen('screen-instructions');
     }
+    
+    // Hide loading spinner
+    hideLoading();
 }
 
 function startQuestions() {
@@ -464,6 +488,15 @@ async function createNewAttempt() {
 
 async function showQuestion() {
     console.log('showQuestion called for question index:', currentQuestionIndex);
+    
+    // Prevent multiple simultaneous calls
+    if (isAnswerLocked) {
+        console.log('Question transition already in progress, aborting');
+        return;
+    }
+    
+    // Lock immediately to prevent race conditions
+    isAnswerLocked = true;
     
     if (currentQuestionIndex >= quizData.questions.length) {
         stopTimer();
@@ -1019,6 +1052,9 @@ async function checkIfUserAlreadyCompleted(phone, quizType) {
 document.getElementById('lead-form').addEventListener('submit', async (e) => {
     e.preventDefault();
     
+    // Show loading spinner
+    showLoading('מעבד את הנתונים...');
+    
     userData.name = document.getElementById('lead-name').value;
     userData.phone = document.getElementById('lead-phone').value;
     userData.email = document.getElementById('lead-email').value;
@@ -1031,6 +1067,7 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     const alreadyCompleted = await checkIfUserAlreadyCompleted(userData.phone, currentQuiz);
     
     if (alreadyCompleted) {
+        hideLoading();
         showScreen('screen-already-completed');
         return;
     }
@@ -1076,10 +1113,14 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     
     // If no marketing consent, don't proceed to results - just thank and stop
     if (!marketingConsent) {
+        hideLoading();
         alert('תודה על השתתפותך! הנתונים שלך נשמרו במערכת.\n\nשים לב: ללא אישור דיוור, לא נוכל לשלוח לך את הדוח המפורט.\n\nאתה רשום כמי שביצע את המבחן ולא תוכל להיבחן שוב באותו תחום.');
         showScreen('screen-lobby');
         return;
     }
+    
+    // Hide loading spinner before showing processing screen
+    hideLoading();
     
     // Show processing animation
     showScreen('screen-processing');
@@ -2155,32 +2196,23 @@ function displayLeaderboard(data) {
         return;
     }
     
-    // SVG Icons for medals
-    const crownSVG = `
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path d="M32 12L36 24L48 20L42 32L54 36L42 40L48 52L36 48L32 60L28 48L16 52L22 40L10 36L22 32L16 20L28 24L32 12Z" 
-                  fill="#FFD700" stroke="#FFA500" stroke-width="2" stroke-linejoin="round"/>
-            <circle cx="32" cy="32" r="8" fill="#FFA500" opacity="0.3"/>
+    // SVG Icon - Torah Crown (Keter Torah) - Minimalist gold design for all top 3
+    const torahCrownSVG = (size = 'medium') => {
+        const scale = size === 'large' ? 1.15 : size === 'small' ? 0.9 : 1;
+        return `
+        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg" style="transform: scale(${scale})">
+            <!-- Crown base -->
+            <path d="M16 42 L20 28 L24 42 L28 28 L32 42 L36 28 L40 42 L44 28 L48 42 Z" 
+                  fill="none" stroke="#D4B182" stroke-width="2" stroke-linejoin="round"/>
+            <!-- Crown top band -->
+            <rect x="14" y="42" width="36" height="6" rx="1" fill="#D4B182" opacity="0.3" stroke="#D4B182" stroke-width="1.5"/>
+            <!-- Crown bottom band -->
+            <rect x="12" y="48" width="40" height="4" rx="2" fill="#D4B182" stroke="#b89968" stroke-width="1.5"/>
+            <!-- Center ornament -->
+            <circle cx="32" cy="35" r="3" fill="#D4B182" opacity="0.5"/>
         </svg>
     `;
-    
-    const silverMedalSVG = `
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="38" r="18" fill="#E8E8E8" stroke="#C0C0C0" stroke-width="2.5"/>
-            <circle cx="32" cy="38" r="13" fill="none" stroke="#C0C0C0" stroke-width="2"/>
-            <path d="M24 14L28 30L32 14L36 30L40 14" stroke="#C0C0C0" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <text x="32" y="43" text-anchor="middle" font-size="14" font-weight="bold" fill="#999">2</text>
-        </svg>
-    `;
-    
-    const bronzeMedalSVG = `
-        <svg viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <circle cx="32" cy="38" r="18" fill="#CD7F32" stroke="#8B4513" stroke-width="2.5"/>
-            <circle cx="32" cy="38" r="13" fill="none" stroke="#8B4513" stroke-width="2"/>
-            <path d="M24 14L28 30L32 14L36 30L40 14" stroke="#8B4513" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
-            <text x="32" y="43" text-anchor="middle" font-size="14" font-weight="bold" fill="#5D3A1A">3</text>
-        </svg>
-    `;
+    };
     
     data.forEach((entry, index) => {
         const rank = index + 1;
@@ -2196,16 +2228,16 @@ function displayLeaderboard(data) {
             entryDiv.classList.add('top-3');
         }
         
-        // Rank display with SVG icons for top 3
+        // Rank display with Torah Crown for top 3, numbers for rest
         let rankDisplay;
         if (rank === 1) {
-            rankDisplay = crownSVG;
+            rankDisplay = torahCrownSVG('large');
         } else if (rank === 2) {
-            rankDisplay = silverMedalSVG;
+            rankDisplay = torahCrownSVG('medium');
         } else if (rank === 3) {
-            rankDisplay = bronzeMedalSVG;
+            rankDisplay = torahCrownSVG('small');
         } else {
-            rankDisplay = `<span style="font-size: 1.8rem; font-weight: 700; color: rgba(255, 255, 255, 0.6);">${rank}</span>`;
+            rankDisplay = `<span style="font-size: 1.6rem; font-weight: 600; color: rgba(212, 177, 130, 0.7);">${rank}</span>`;
         }
         
         // Format name with הרב and שליט"א if not anonymous
