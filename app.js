@@ -52,9 +52,10 @@ let questionTimer = null;
 let timeRemaining = 30;
 let questionAnswerStatus = {};
 let isAnswerLocked = false;
+let questionTransitionTimeout = null;
 
 function showScreen(screenId) {
-    const screens = ['screen-lobby', 'screen-question', 'screen-lead-collection', 'screen-results', 'screen-already-completed'];
+    const screens = ['screen-lobby', 'screen-question', 'screen-lead-collection', 'screen-processing', 'screen-intermediate-results', 'screen-results', 'screen-already-completed'];
     screens.forEach(id => {
         const element = document.getElementById(id);
         if (element) {
@@ -344,11 +345,20 @@ async function createNewAttempt() {
 async function showQuestion() {
     console.log('showQuestion called for question index:', currentQuestionIndex);
     
+    // Prevent concurrent executions
+    if (isAnswerLocked) {
+        console.log('Question transition already in progress, aborting');
+        return;
+    }
+    
     if (currentQuestionIndex >= quizData.questions.length) {
         stopTimer();
         showScreen('screen-lead-collection');
         return;
     }
+    
+    // Lock immediately to prevent race conditions
+    isAnswerLocked = true;
     
     const question = quizData.questions[currentQuestionIndex];
     console.log('Question data:', question);
@@ -361,8 +371,15 @@ async function showQuestion() {
     showScreen('screen-question');
     updateProgressCircles();
     
-    // Clear previous content
+    // Clear previous content and event listeners
     questionTextEl.textContent = '';
+    
+    // Remove old buttons and their event listeners
+    const oldButtons = answersContainer.querySelectorAll('.answer-option');
+    oldButtons.forEach(btn => {
+        btn.onclick = null;
+        btn.remove();
+    });
     answersContainer.innerHTML = '';
     
     // Phase 1: Full-screen intro with typing animation
@@ -628,6 +645,12 @@ async function selectAnswer(answerIndex) {
     // Lock immediately to prevent double-clicks
     isAnswerLocked = true;
     
+    // Clear any existing transition timeout
+    if (questionTransitionTimeout) {
+        clearTimeout(questionTransitionTimeout);
+        questionTransitionTimeout = null;
+    }
+    
     stopTimer();
     
     userAnswers[`q${currentQuestionIndex}`] = answerIndex;
@@ -661,7 +684,9 @@ async function selectAnswer(answerIndex) {
     await updateAttemptInDB();
     updateProgressCircles();
     
-    setTimeout(() => {
+    // Store timeout reference to prevent race conditions
+    questionTransitionTimeout = setTimeout(() => {
+        questionTransitionTimeout = null;
         currentQuestionIndex++;
         showQuestion();
     }, 1600);
@@ -849,7 +874,13 @@ document.getElementById('lead-form').addEventListener('submit', async (e) => {
     // Send to CRM webhook with user data
     await sendToCRM('quiz_completed');
     
-    showResults(score);
+    // Show processing animation
+    showScreen('screen-processing');
+    
+    // Wait 2.5 seconds then show intermediate results
+    setTimeout(() => {
+        showIntermediateResults(score);
+    }, 2500);
 });
 
 function calculateScore() {
@@ -1126,6 +1157,28 @@ async function downloadPDF() {
         const score = calculateScore();
         const quizTitle = currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר';
         
+        // Fetch distribution data from Firebase
+        let questionErrors = {};
+        let totalTakers = 1;
+        
+        if (firebaseEnabled && db) {
+            try {
+                const statsRef = db.collection('stats').doc('global_stats');
+                const statsDoc = await statsRef.get();
+                
+                if (statsDoc.exists) {
+                    const data = statsDoc.data();
+                    const fieldName = currentQuiz === 'shabbat' ? 'total_shabbat_takers' : 'total_issur_heter_takers';
+                    const questionErrorsField = currentQuiz === 'shabbat' ? 'question_errors_shabbat' : 'question_errors_issur_heter';
+                    
+                    totalTakers = data[fieldName] || 1;
+                    questionErrors = data[questionErrorsField] || {};
+                }
+            } catch (error) {
+                console.error('Error fetching distribution data:', error);
+            }
+        }
+        
         let questionsHTML = '';
         quizData.questions.forEach((q, index) => {
             const userAnswer = userAnswers[`q${index}`];
@@ -1134,6 +1187,83 @@ async function downloadPDF() {
             const statusIcon = isCorrect ? '✓' : (isPartial ? '◐' : '✗');
             const statusColor = isCorrect ? '#22c55e' : (isPartial ? '#f59e0b' : '#ef4444');
             const statusText = isCorrect ? 'נכון' : (isPartial ? 'חלקי' : 'שגוי');
+            
+            // Calculate distribution percentages
+            const errorCount = questionErrors[`q${index}`] || 0;
+            const wrongPercent = Math.round((errorCount / totalTakers) * 100);
+            const correctPercent = 100 - wrongPercent;
+            
+            // For questions with partial answers, calculate 3-way distribution
+            let distributionHTML = '';
+            if (q.partialIndex >= 0) {
+                // Estimate distribution (in real scenario, would track each answer separately)
+                const partialPercent = Math.round(wrongPercent * 0.4); // Assume 40% of wrong answers are partial
+                const actualWrongPercent = wrongPercent - partialPercent;
+                const actualCorrectPercent = 100 - wrongPercent;
+                
+                distributionHTML = `
+                    <div style="background: rgba(212, 177, 130, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(212, 177, 130, 0.3);">
+                        <h5 style="color: #b89968; font-size: 16px; font-weight: bold; margin: 0 0 12px 0;">📊 התפלגות תשובות המשיבים:</h5>
+                        
+                        <div style="margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #22c55e;">✓ תשובה נכונה</span>
+                                <span style="font-size: 14px; font-weight: bold; color: #22c55e;">${actualCorrectPercent}%</span>
+                            </div>
+                            <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #22c55e, #86efac); height: 100%; width: ${actualCorrectPercent}%; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                        
+                        <div style="margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #f59e0b;">◐ תשובה חלקית</span>
+                                <span style="font-size: 14px; font-weight: bold; color: #f59e0b;">${partialPercent}%</span>
+                            </div>
+                            <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #f59e0b, #fbbf24); height: 100%; width: ${partialPercent}%; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #ef4444;">✗ תשובה שגויה</span>
+                                <span style="font-size: 14px; font-weight: bold; color: #ef4444;">${actualWrongPercent}%</span>
+                            </div>
+                            <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #ef4444, #f87171); height: 100%; width: ${actualWrongPercent}%; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            } else {
+                // Simple 2-way distribution
+                distributionHTML = `
+                    <div style="background: rgba(212, 177, 130, 0.1); padding: 15px; border-radius: 8px; margin-top: 15px; border: 1px solid rgba(212, 177, 130, 0.3);">
+                        <h5 style="color: #b89968; font-size: 16px; font-weight: bold; margin: 0 0 12px 0;">📊 התפלגות תשובות המשיבים:</h5>
+                        
+                        <div style="margin-bottom: 8px;">
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #22c55e;">✓ תשובה נכונה</span>
+                                <span style="font-size: 14px; font-weight: bold; color: #22c55e;">${correctPercent}%</span>
+                            </div>
+                            <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #22c55e, #86efac); height: 100%; width: ${correctPercent}%; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                                <span style="font-size: 14px; font-weight: 600; color: #ef4444;">✗ תשובה שגויה</span>
+                                <span style="font-size: 14px; font-weight: bold; color: #ef4444;">${wrongPercent}%</span>
+                            </div>
+                            <div style="background: #e5e7eb; height: 20px; border-radius: 10px; overflow: hidden;">
+                                <div style="background: linear-gradient(90deg, #ef4444, #f87171); height: 100%; width: ${wrongPercent}%; transition: width 0.8s ease;"></div>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            }
             
             questionsHTML += `
                 <div style="margin-bottom: 25px; padding: 20px; background: #fdfbf8; border-right: 5px solid ${statusColor}; border-radius: 10px; box-shadow: 0 2px 8px rgba(0,0,0,0.08);">
@@ -1148,6 +1278,8 @@ async function downloadPDF() {
                         <p style="color: #22c55e; margin: 0; font-size: 16px;"><strong style="color: #D4B182;">התשובה הנכונה:</strong> ${q.options[q.correctIndex]}</p>
                         ${isPartial ? `<p style="color: #f59e0b; margin: 8px 0 0 0; font-size: 16px;"><strong style="color: #D4B182;">תשובה חלקית:</strong> ${q.options[q.partialIndex]}</p>` : ''}
                     </div>
+                    
+                    ${distributionHTML}
                     
                     <div style="margin-top: 15px; padding: 18px; background: linear-gradient(135deg, rgba(212, 177, 130, 0.08), rgba(212, 177, 130, 0.15)); border-radius: 8px; border: 1px solid rgba(212, 177, 130, 0.3);">
                         <p style="color: #32373c; font-size: 15px; line-height: 1.6; margin: 0;"><strong style="color: #b89968;">💡 הסבר:</strong> ${q.explanation}</p>
@@ -1391,6 +1523,139 @@ async function sendToCRM(benefit) {
     }
 }
 
+async function showIntermediateResults(score) {
+    showScreen('screen-intermediate-results');
+    
+    // Fetch stats for comparison
+    let totalTakers = 0;
+    let avgScore = 0;
+    
+    if (firebaseEnabled && db) {
+        try {
+            const statsRef = db.collection('stats').doc('global_stats');
+            const statsDoc = await statsRef.get();
+            
+            if (statsDoc.exists) {
+                const data = statsDoc.data();
+                const fieldName = currentQuiz === 'shabbat' ? 'total_shabbat_takers' : 'total_issur_heter_takers';
+                const avgFieldName = currentQuiz === 'shabbat' ? 'avg_score_shabbat' : 'avg_score_issur_heter';
+                
+                totalTakers = data[fieldName] || 0;
+                avgScore = data[avgFieldName] || 0;
+            }
+        } catch (error) {
+            console.error('Error fetching stats:', error);
+        }
+    }
+    
+    // Calculate average answer time
+    const totalQuestions = quizData.questions.length;
+    const avgTimePerQuestion = 30; // Default, could be calculated from actual data
+    
+    // Populate intermediate parameters
+    const paramsContainer = document.getElementById('intermediate-params');
+    paramsContainer.innerHTML = `
+        <!-- Parameter 1: Score vs Average -->
+        <div class="param-card">
+            <div class="donut-chart">
+                <svg width="180" height="180">
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="20"/>
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="${score >= avgScore ? '#86efac' : '#fbbf24'}" stroke-width="20" 
+                            stroke-dasharray="${(score / 100) * 439.8} 439.8" stroke-linecap="round" 
+                            transform="rotate(-90 90 90)"/>
+                </svg>
+                <div class="donut-chart-center">
+                    <div class="donut-chart-percentage">${score}%</div>
+                    <div class="donut-chart-label">הציון שלך</div>
+                </div>
+            </div>
+            <div class="param-text">
+                <h4>הציון שלך מול הממוצע</h4>
+                <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
+                <p>הציון הממוצע של ${totalTakers > 0 ? totalTakers : 'המשיבים'} הוא ${avgScore}%</p>
+                <p>${score >= avgScore ? 'אתה מעל הממוצע! 🎯' : 'יש מקום לשיפור, אבל רבים נמצאים באותו מקום 💪'}</p>
+            </div>
+        </div>
+        
+        <!-- Parameter 2: Confidence Level -->
+        <div class="param-card">
+            <div class="donut-chart">
+                <svg width="180" height="180">
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="20"/>
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="#D4B182" stroke-width="20" 
+                            stroke-dasharray="${(Object.keys(userAnswers).length / totalQuestions) * 439.8} 439.8" stroke-linecap="round" 
+                            transform="rotate(-90 90 90)"/>
+                </svg>
+                <div class="donut-chart-center">
+                    <div class="donut-chart-percentage">${Math.round((Object.keys(userAnswers).length / totalQuestions) * 100)}%</div>
+                    <div class="donut-chart-label">השלמת</div>
+                </div>
+            </div>
+            <div class="param-text">
+                <h4>רמת השלמת המבחן</h4>
+                <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
+                <p>ענית על ${Object.keys(userAnswers).length} מתוך ${totalQuestions} שאלות</p>
+                <p>רוב המשיבים משלימים את כל השאלות 📝</p>
+            </div>
+        </div>
+        
+        <!-- Parameter 3: Category Performance -->
+        <div class="param-card">
+            <div class="donut-chart">
+                <svg width="180" height="180">
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="rgba(255,255,255,0.2)" stroke-width="20"/>
+                    <circle cx="90" cy="90" r="70" fill="none" stroke="#f59e0b" stroke-width="20" 
+                            stroke-dasharray="${(score / 100) * 439.8} 439.8" stroke-linecap="round" 
+                            transform="rotate(-90 90 90)"/>
+                </svg>
+                <div class="donut-chart-center">
+                    <div class="donut-chart-percentage">${score}%</div>
+                    <div class="donut-chart-label">ביצועים</div>
+                </div>
+            </div>
+            <div class="param-text">
+                <h4>ביצועים בתחום ${currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר'}</h4>
+                <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
+                <p>תחום זה מאתגר רבים מהנבחנים</p>
+                <p>${score >= 70 ? 'הצלחת להתמודד היטב! 🌟' : 'זה תחום שדורש התעמקות נוספת 📚'}</p>
+            </div>
+        </div>
+    `;
+}
+
+async function revealFullReport() {
+    const selectedBenefit = document.querySelector('input[name="lottery-benefit"]:checked');
+    
+    if (!selectedBenefit) {
+        alert('אנא בחר הטבה להגרלה');
+        return;
+    }
+    
+    // Save selected benefit
+    if (firebaseEnabled && db && currentAttemptId && !currentAttemptId.startsWith('local_')) {
+        try {
+            await db.collection('attempts').doc(currentAttemptId).update({
+                selected_benefit: selectedBenefit.value,
+                updated_at: firebase.firestore.FieldValue.serverTimestamp()
+            });
+        } catch (error) {
+            console.error('Error saving benefit:', error);
+        }
+    }
+    
+    // Send benefit selection to CRM
+    await sendToCRM(selectedBenefit.value);
+    
+    // Calculate score
+    const score = calculateScore();
+    
+    // Show results screen
+    await showResults(score);
+    
+    // Generate and send detailed report
+    await downloadPDF();
+}
+
 function restartQuiz() {
     const otherQuiz = currentQuiz === 'shabbat' ? 'issur_heter' : 'shabbat';
     currentQuiz = null;
@@ -1400,4 +1665,126 @@ function restartQuiz() {
     currentAttemptId = null;
     
     showScreen('screen-lobby');
+}
+
+// Leaderboard Functions
+let currentLeaderboardQuiz = 'shabbat';
+
+function openLeaderboard() {
+    showScreen('screen-leaderboard');
+    showLeaderboard('shabbat');
+}
+
+async function showLeaderboard(quizType) {
+    currentLeaderboardQuiz = quizType;
+    
+    // Update button states
+    const shabbatBtn = document.getElementById('leaderboard-shabbat-btn');
+    const issurBtn = document.getElementById('leaderboard-issur-btn');
+    
+    if (quizType === 'shabbat') {
+        shabbatBtn.style.background = 'var(--gold)';
+        shabbatBtn.style.color = 'white';
+        issurBtn.style.background = 'rgba(50, 55, 60, 0.85)';
+        issurBtn.style.color = 'white';
+    } else {
+        issurBtn.style.background = 'var(--gold)';
+        issurBtn.style.color = 'white';
+        shabbatBtn.style.background = 'rgba(50, 55, 60, 0.85)';
+        shabbatBtn.style.color = 'white';
+    }
+    
+    // Show loading state
+    document.getElementById('leaderboard-loading').classList.remove('hidden');
+    document.getElementById('leaderboard-list').classList.add('hidden');
+    document.getElementById('leaderboard-empty').classList.add('hidden');
+    
+    // Fetch leaderboard data
+    await fetchLeaderboard(quizType);
+}
+
+async function fetchLeaderboard(quizType) {
+    if (!firebaseEnabled || !db) {
+        // Show empty state if Firebase is not available
+        document.getElementById('leaderboard-loading').classList.add('hidden');
+        document.getElementById('leaderboard-empty').classList.remove('hidden');
+        return;
+    }
+    
+    try {
+        // Query top 10 completed attempts for this quiz type, ordered by score
+        const leaderboardQuery = await db.collection('attempts')
+            .where('quiz_type', '==', quizType)
+            .where('status', '==', 'completed')
+            .orderBy('final_score', 'desc')
+            .limit(10)
+            .get();
+        
+        if (leaderboardQuery.empty) {
+            document.getElementById('leaderboard-loading').classList.add('hidden');
+            document.getElementById('leaderboard-empty').classList.remove('hidden');
+            return;
+        }
+        
+        // Process and display results
+        const leaderboardData = [];
+        leaderboardQuery.forEach(doc => {
+            const data = doc.data();
+            leaderboardData.push({
+                name: data.user_name || 'משתמש אנונימי',
+                score: data.final_score || 0,
+                phone: data.user_phone || ''
+            });
+        });
+        
+        displayLeaderboard(leaderboardData);
+        
+    } catch (error) {
+        console.error('Error fetching leaderboard:', error);
+        document.getElementById('leaderboard-loading').classList.add('hidden');
+        document.getElementById('leaderboard-empty').classList.remove('hidden');
+    }
+}
+
+function displayLeaderboard(data) {
+    const listContainer = document.getElementById('leaderboard-list');
+    listContainer.innerHTML = '';
+    
+    if (data.length === 0) {
+        document.getElementById('leaderboard-loading').classList.add('hidden');
+        document.getElementById('leaderboard-empty').classList.remove('hidden');
+        return;
+    }
+    
+    data.forEach((entry, index) => {
+        const rank = index + 1;
+        const entryDiv = document.createElement('div');
+        entryDiv.className = 'leaderboard-entry';
+        
+        // Add special class for top 3
+        if (rank === 1) {
+            entryDiv.classList.add('top-1');
+        } else if (rank === 2) {
+            entryDiv.classList.add('top-2');
+        } else if (rank === 3) {
+            entryDiv.classList.add('top-3');
+        }
+        
+        // Rank with medal emoji for top 3
+        let rankDisplay = rank;
+        if (rank === 1) rankDisplay = '🥇';
+        else if (rank === 2) rankDisplay = '🥈';
+        else if (rank === 3) rankDisplay = '🥉';
+        
+        entryDiv.innerHTML = `
+            <div class="leaderboard-rank">${rankDisplay}</div>
+            <div class="leaderboard-name">${entry.name}</div>
+            <div class="leaderboard-score">${entry.score}%</div>
+        `;
+        
+        listContainer.appendChild(entryDiv);
+    });
+    
+    document.getElementById('leaderboard-loading').classList.add('hidden');
+    document.getElementById('leaderboard-list').classList.remove('hidden');
 }

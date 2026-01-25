@@ -28,7 +28,8 @@
         body {
             font-family: 'Assistant', 'Almoni Tzar', sans-serif;
             color: var(--dark-slate);
-            overflow: hidden;
+            overflow-x: hidden;
+            overflow-y: auto;
             font-size: 20px;
             background: linear-gradient(rgba(50, 55, 60, 0.88), rgba(50, 55, 60, 0.92)),
                         url('https://www.kinyanhoraah.co.il/wp-content/uploads/2026/01/WhatsApp-Image-2026-01-22-at-18.00.10.jpeg') center/cover fixed;
@@ -36,17 +37,17 @@
             background-size: cover;
             background-position: center;
             background-repeat: no-repeat;
-            height: 100vh;
+            min-height: 100vh;
         }
         
         .full-screen-container {
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             align-items: center;
             justify-content: center;
-            padding: 0;
+            padding: 2rem 0;
             width: 100%;
-            overflow: hidden;
+            overflow-y: auto;
         }
         
         .content-glass {
@@ -64,11 +65,11 @@
         .full-width-content {
             width: 100%;
             padding: 1.5rem 5%;
-            height: 100vh;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
-            overflow: hidden;
+            overflow-y: auto;
         }
         
         .full-width-content.scrollable {
@@ -604,6 +605,289 @@
             margin-top: 0.3rem;
         }
         
+        /* Processing Animation Styles */
+        .processing-animation {
+            text-align: center;
+            color: white;
+        }
+        
+        .spinner-gold {
+            width: 80px;
+            height: 80px;
+            border: 8px solid rgba(212, 177, 130, 0.3);
+            border-top: 8px solid var(--gold);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .processing-animation h2 {
+            font-size: clamp(2.5rem, 4vw, 4rem);
+            font-weight: bold;
+            color: var(--gold);
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .processing-animation p {
+            font-size: clamp(1.5rem, 2vw, 2rem);
+            color: white;
+            opacity: 0.95;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        /* Distribution Widget Styles */
+        .distribution-widget {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 177, 130, 0.4);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-top: 1rem;
+        }
+        
+        .distribution-widget h5 {
+            color: var(--gold);
+            font-size: 1.2rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+        }
+        
+        .distribution-bars {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+        
+        .dist-bar {
+            display: grid;
+            grid-template-columns: 120px 1fr 60px;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .bar-label {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .bar-fill {
+            height: 24px;
+            border-radius: 12px;
+            transition: width 0.8s ease;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        }
+        
+        .dist-bar.correct .bar-fill {
+            background: linear-gradient(90deg, #22c55e, #86efac);
+        }
+        
+        .dist-bar.partial .bar-fill {
+            background: linear-gradient(90deg, #f59e0b, #fbbf24);
+        }
+        
+        .dist-bar.wrong .bar-fill {
+            background: linear-gradient(90deg, #ef4444, #f87171);
+        }
+        
+        .bar-percent {
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            text-align: right;
+        }
+        
+        /* Intermediate Results Styles */
+        .param-card {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(15px);
+            border: 3px solid rgba(212, 177, 130, 0.6);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-bottom: 1.5rem;
+            display: grid;
+            grid-template-columns: 180px 1fr;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .param-text h4 {
+            color: var(--gold);
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 0.5rem;
+        }
+        
+        .param-text p {
+            color: white;
+            font-size: 1.2rem;
+            line-height: 1.5;
+        }
+        
+        .lottery-section {
+            background: rgba(212, 177, 130, 0.2);
+            backdrop-filter: blur(15px);
+            border: 3px solid var(--gold);
+            border-radius: 20px;
+            padding: 2rem;
+            margin: 2rem 0;
+        }
+        
+        .lottery-section h3 {
+            color: var(--gold);
+            font-size: clamp(1.8rem, 2.5vw, 2.5rem);
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            line-height: 1.3;
+        }
+        
+        .benefit-options {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .benefit-option {
+            background: rgba(255, 255, 255, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.4);
+            border-radius: 15px;
+            padding: 1.2rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        
+        .benefit-option:hover {
+            background: rgba(212, 177, 130, 0.3);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+        }
+        
+        .benefit-option input[type="radio"] {
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+        }
+        
+        .benefit-option label {
+            color: white;
+            font-size: 1.2rem;
+            font-weight: 600;
+            cursor: pointer;
+            flex: 1;
+        }
+        
+        .reveal-section {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            border-radius: 15px;
+            padding: 2rem;
+            text-align: center;
+        }
+        
+        .reveal-section h4 {
+            color: white;
+            font-size: clamp(1.3rem, 1.7vw, 1.7rem);
+            line-height: 1.5;
+            margin-bottom: 1.5rem;
+        }
+        
+        /* Leaderboard Styles */
+        .leaderboard-entry {
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(10px);
+            border: 2px solid rgba(212, 177, 130, 0.4);
+            border-radius: 15px;
+            padding: 1.5rem;
+            margin-bottom: 1rem;
+            display: grid;
+            grid-template-columns: 80px 1fr 100px;
+            align-items: center;
+            gap: 1.5rem;
+            transition: all 0.3s ease;
+        }
+        
+        .leaderboard-entry:hover {
+            background: rgba(212, 177, 130, 0.25);
+            border-color: var(--gold);
+            transform: translateX(-5px);
+        }
+        
+        .leaderboard-entry.top-1 {
+            background: linear-gradient(135deg, rgba(255, 215, 0, 0.3), rgba(212, 177, 130, 0.3));
+            border: 3px solid #FFD700;
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.4);
+        }
+        
+        .leaderboard-entry.top-2 {
+            background: linear-gradient(135deg, rgba(192, 192, 192, 0.3), rgba(212, 177, 130, 0.25));
+            border: 3px solid #C0C0C0;
+        }
+        
+        .leaderboard-entry.top-3 {
+            background: linear-gradient(135deg, rgba(205, 127, 50, 0.3), rgba(212, 177, 130, 0.25));
+            border: 3px solid #CD7F32;
+        }
+        
+        .leaderboard-rank {
+            font-size: 2.5rem;
+            font-weight: 900;
+            text-align: center;
+            color: var(--gold);
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .leaderboard-entry.top-1 .leaderboard-rank {
+            color: #FFD700;
+            font-size: 3rem;
+        }
+        
+        .leaderboard-entry.top-2 .leaderboard-rank {
+            color: #C0C0C0;
+        }
+        
+        .leaderboard-entry.top-3 .leaderboard-rank {
+            color: #CD7F32;
+        }
+        
+        .leaderboard-name {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: white;
+            text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
+        }
+        
+        .leaderboard-score {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--gold);
+            text-align: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        
+        .leaderboard-entry.top-1 .leaderboard-score {
+            color: #FFD700;
+        }
+        
+        .leaderboard-entry.top-2 .leaderboard-score {
+            color: #C0C0C0;
+        }
+        
+        .leaderboard-entry.top-3 .leaderboard-score {
+            color: #CD7F32;
+        }
+        
         /* Mobile Responsive Styles */
         @media (max-width: 768px) {
             /* Lobby Screen - Two columns to single column */
@@ -683,6 +967,11 @@
             /* Fix overflow issues */
             body {
                 overflow-x: hidden;
+                overflow-y: auto;
+            }
+            
+            .full-screen-container {
+                padding: 1rem 0 !important;
             }
             
             .full-width-content {
@@ -723,7 +1012,7 @@
                     <button onclick="window.open('#', '_blank')" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
                         תקנון ההגרלה
                     </button>
-                    <button onclick="window.open('#', '_blank')" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
+                    <button onclick="openLeaderboard()" class="btn-secondary" style="padding: 0.8rem 1.5rem; font-size: clamp(1rem, 1.3vw, 1.3rem);">
                         מקומות ראשונים
                     </button>
                 </div>
@@ -745,6 +1034,57 @@
                 <p style="color: rgba(255, 255, 255, 0.85); font-size: clamp(1.1rem, 1.4vw, 1.4rem); margin-top: 1.5rem; text-align: center; opacity: 0.95;">
                     ניתן להתמודד בשני התחומים ולהכפיל את סיכויי הזכייה
                 </p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 1.2: Leaderboard -->
+    <div id="screen-leaderboard" class="full-screen-container hidden">
+        <div class="full-width-content scrollable fade-in" style="padding: 2rem 5%; max-width: 1200px; margin: 0 auto;">
+            <!-- Header -->
+            <div style="text-align: center; margin-bottom: 3rem;">
+                <h1 style="font-size: clamp(3rem, 5vw, 5rem); font-weight: 900; color: var(--gold); margin-bottom: 1rem; text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);">
+                    🏆 לוח המובילים 🏆
+                </h1>
+                <p style="font-size: clamp(1.3rem, 1.8vw, 1.8rem); color: white; line-height: 1.5;">
+                    עשרת הפוסקים המובילים באתגר הפסיקה
+                </p>
+            </div>
+            
+            <!-- Quiz Type Selector -->
+            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
+                <button id="leaderboard-shabbat-btn" onclick="showLeaderboard('shabbat')" class="btn-secondary" style="padding: 1rem 2rem; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+                    הלכות שבת
+                </button>
+                <button id="leaderboard-issur-btn" onclick="showLeaderboard('issur_heter')" class="btn-secondary" style="padding: 1rem 2rem; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
+                    איסור והיתר
+                </button>
+            </div>
+            
+            <!-- Leaderboard Container -->
+            <div id="leaderboard-container" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 3px solid rgba(212, 177, 130, 0.6); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
+                <!-- Loading State -->
+                <div id="leaderboard-loading" style="text-align: center; padding: 3rem;">
+                    <div class="spinner-gold" style="margin: 0 auto 1.5rem;"></div>
+                    <p style="color: white; font-size: 1.5rem;">טוען את הלוח המובילים...</p>
+                </div>
+                
+                <!-- Leaderboard List -->
+                <div id="leaderboard-list" class="hidden">
+                    <!-- Will be populated dynamically -->
+                </div>
+                
+                <!-- Empty State -->
+                <div id="leaderboard-empty" class="hidden" style="text-align: center; padding: 3rem;">
+                    <p style="color: white; font-size: 1.5rem;">עדיין אין נתונים להצגה</p>
+                </div>
+            </div>
+            
+            <!-- Back Button -->
+            <div style="text-align: center;">
+                <button onclick="showScreen('screen-lobby')" class="btn-primary" style="max-width: 400px; font-size: clamp(1.2rem, 1.5vw, 1.5rem);">
+                    חזרה למסך הראשי
+                </button>
             </div>
         </div>
     </div>
@@ -888,7 +1228,7 @@
             <!-- Left Side: Text Content -->
             <div>
                 <h2 style="font-size: clamp(2.5rem, 4vw, 4rem); font-weight: bold; margin-bottom: 1.5rem; color: var(--gold); line-height: 1.2;">
-                    ההכרעה שלך התקבלה!
+                    תן לנו את הפרטים כדי שנוכל לבדוק את התשובות ולעבד את הנתונים
                 </h2>
                 
                 <p style="margin-bottom: 1.5rem; line-height: 1.5; font-size: clamp(1.3rem, 1.8vw, 1.8rem); color: white;">
@@ -939,9 +1279,68 @@
                     </div>
                     
                     <button type="submit" class="btn-primary" style="width: 100%; font-size: clamp(1.4rem, 1.8vw, 1.8rem); padding: 1.3rem;">
-                        חשוף את הפסיקות שלי ◀
+                        שלח את המבחן לבדיקה
                     </button>
                 </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 4.5: Processing Animation -->
+    <div id="screen-processing" class="full-screen-container hidden">
+        <div class="full-width-content fade-in" style="display: flex; align-items: center; justify-content: center;">
+            <div class="processing-animation">
+                <div class="spinner-gold"></div>
+                <h2>אנחנו בודקים ומשווים…</h2>
+                <p>והנה כמה תוצאות ביניים שאנחנו כבר יכולים לשקף לך:</p>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Screen 4.7: Intermediate Results -->
+    <div id="screen-intermediate-results" class="full-screen-container hidden">
+        <div class="full-width-content scrollable fade-in" style="padding: 2rem 5%; max-width: 1200px; margin: 0 auto;">
+            <h2 style="font-size: clamp(2.5rem, 4vw, 4rem); font-weight: bold; margin-bottom: 2rem; color: var(--gold); text-align: center;">
+                תוצאות ביניים
+            </h2>
+            
+            <!-- Parameters with Donut Charts -->
+            <div id="intermediate-params">
+                <!-- Will be populated dynamically -->
+            </div>
+            
+            <!-- Lottery Section -->
+            <div class="lottery-section">
+                <h3>הניקוד שצברת מעניק לך את האפשרות להיכנס להגרלה על מגוון הטבות מבית היוצר של קניין הוראה</h3>
+                
+                <form id="lottery-form">
+                    <div class="benefit-options">
+                        <div class="benefit-option">
+                            <input type="radio" name="lottery-benefit" value="shabbat_course_discount" id="lottery-shabbat" required>
+                            <label for="lottery-shabbat">הלכות שבת</label>
+                        </div>
+                        <div class="benefit-option">
+                            <input type="radio" name="lottery-benefit" value="issur_heter_course_discount" id="lottery-issur" required>
+                            <label for="lottery-issur">איסור והיתר</label>
+                        </div>
+                        <div class="benefit-option">
+                            <input type="radio" name="lottery-benefit" value="niddah_course_discount" id="lottery-niddah" required>
+                            <label for="lottery-niddah">הלכות נידה/טהרה</label>
+                        </div>
+                        <div class="benefit-option">
+                            <input type="radio" name="lottery-benefit" value="mamonot_special" id="lottery-mamonot" required>
+                            <label for="lottery-mamonot">ממונות (חושן משפט)</label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Reveal Full Report Section -->
+            <div class="reveal-section">
+                <h4>לקבלת הציון המדויק ודו״ח הפירוט המלא הכולל את התשובות הנכונות והשוואת ציונך מול משיבים אחרים - לחץ כאן</h4>
+                <button onclick="revealFullReport()" class="btn-primary" style="width: 100%; max-width: 600px; margin: 0 auto; font-size: clamp(1.3rem, 1.7vw, 1.7rem);">
+                    הצג את דוח הבדיקה המלא / פירוט הציון המדויק
+                </button>
             </div>
         </div>
     </div>
