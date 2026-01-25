@@ -1730,59 +1730,49 @@ window.openLeaderboard = function() {
     showLeaderboard('shabbat');
 }
 
-// Handle consent checkboxes
-document.getElementById('publish-name-consent').addEventListener('change', function() {
-    const anonymousNotice = document.getElementById('anonymous-notice');
-    if (!this.checked) {
-        anonymousNotice.classList.remove('hidden');
-    } else {
-        anonymousNotice.classList.add('hidden');
-    }
-});
+// Handle consent checkboxes - only if elements exist
+const publishNameCheckbox = document.getElementById('publish-name-consent');
+if (publishNameCheckbox) {
+    publishNameCheckbox.addEventListener('change', function() {
+        const anonymousNotice = document.getElementById('anonymous-notice');
+        if (!this.checked) {
+            anonymousNotice.classList.remove('hidden');
+        } else {
+            anonymousNotice.classList.add('hidden');
+        }
+    });
+}
 
-document.getElementById('marketing-consent').addEventListener('change', function() {
-    const noMarketingNotice = document.getElementById('no-marketing-notice');
-    const submitBtn = document.getElementById('submit-lead-btn');
-    
-    if (!this.checked) {
-        noMarketingNotice.classList.remove('hidden');
-        submitBtn.disabled = true;
-        submitBtn.style.opacity = '0.5';
-        submitBtn.style.cursor = 'not-allowed';
-    } else {
-        noMarketingNotice.classList.add('hidden');
-        submitBtn.disabled = false;
-        submitBtn.style.opacity = '1';
-        submitBtn.style.cursor = 'pointer';
-    }
-});
+const marketingCheckbox = document.getElementById('marketing-consent');
+if (marketingCheckbox) {
+    marketingCheckbox.addEventListener('change', function() {
+        const noMarketingNotice = document.getElementById('no-marketing-notice');
+        const submitBtn = document.getElementById('submit-lead-btn');
+        
+        if (!this.checked) {
+            noMarketingNotice.classList.remove('hidden');
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.5';
+            submitBtn.style.cursor = 'not-allowed';
+        } else {
+            noMarketingNotice.classList.add('hidden');
+            submitBtn.disabled = false;
+            submitBtn.style.opacity = '1';
+            submitBtn.style.cursor = 'pointer';
+        }
+    });
+}
 
-window.showLeaderboard = async function(quizType) {
-    currentLeaderboardQuiz = quizType;
-    
-    // Update button states
-    const shabbatBtn = document.getElementById('leaderboard-shabbat-btn');
-    const issurBtn = document.getElementById('leaderboard-issur-btn');
-    
-    if (quizType === 'shabbat') {
-        shabbatBtn.style.background = 'var(--gold)';
-        shabbatBtn.style.color = 'white';
-        issurBtn.style.background = 'rgba(50, 55, 60, 0.85)';
-        issurBtn.style.color = 'white';
-    } else {
-        issurBtn.style.background = 'var(--gold)';
-        issurBtn.style.color = 'white';
-        shabbatBtn.style.background = 'rgba(50, 55, 60, 0.85)';
-        shabbatBtn.style.color = 'white';
-    }
+window.showLeaderboard = async function(quizType = 'shabbat') {
+    currentLeaderboardQuiz = 'shabbat'; // Always use shabbat
     
     // Show loading state
     document.getElementById('leaderboard-loading').classList.remove('hidden');
     document.getElementById('leaderboard-list').classList.add('hidden');
     document.getElementById('leaderboard-empty').classList.add('hidden');
     
-    // Fetch leaderboard data
-    await fetchLeaderboard(quizType);
+    // Fetch leaderboard data - always shabbat
+    await fetchLeaderboard('shabbat');
 }
 
 async function fetchLeaderboard(quizType) {

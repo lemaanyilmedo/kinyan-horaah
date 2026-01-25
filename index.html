@@ -1018,7 +1018,7 @@
     </style>
 </head>
 <body>
-    <div class="version-badge">גירסה 18</div>
+    <div class="version-badge">גירסה 19</div>
     <div id="quiz-type-badge" class="quiz-type-badge hidden"></div>
     
     <!-- Screen 1: Lobby -->
@@ -1056,19 +1056,13 @@
             <!-- Right Side: Action Buttons -->
             <div>
                 <p style="font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.5; margin-bottom: 1.5rem; color: white; text-align: center; font-weight: 600;">
-                    בחר את התחום ההלכתי שבו תרצה להתמודד עם שאלות מהשטח:
+                    מוכן להתמודד עם שאלות מעשיות מהשטח בהלכות שבת?
                 </p>
                 <div style="display: flex; flex-direction: column; gap: 1.5rem;">
                     <button onclick="startQuiz('shabbat')" class="btn-primary" style="font-size: clamp(1.5rem, 2vw, 2rem); padding: 1.8rem;">
-                        שאלות מעשיות בהלכות שבת
-                    </button>
-                    <button onclick="startQuiz('issur_heter')" class="btn-primary" style="font-size: clamp(1.5rem, 2vw, 2rem); padding: 1.8rem;">
-                        שאלות מעשיות באיסור והיתר
+                        אני מוכן לאתגר!
                     </button>
                 </div>
-                <p style="color: rgba(255, 255, 255, 0.85); font-size: clamp(1.1rem, 1.4vw, 1.4rem); margin-top: 1.5rem; text-align: center; opacity: 0.95;">
-                    ניתן להתמודד בשני התחומים ולהכפיל את סיכויי הזכייה
-                </p>
             </div>
         </div>
     </div>
@@ -1086,15 +1080,6 @@
                 </p>
             </div>
             
-            <!-- Quiz Type Selector -->
-            <div style="display: flex; gap: 1rem; justify-content: center; margin-bottom: 2rem;">
-                <button id="leaderboard-shabbat-btn" onclick="showLeaderboard('shabbat')" class="btn-secondary" style="padding: 1rem 2rem; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
-                    הלכות שבת
-                </button>
-                <button id="leaderboard-issur-btn" onclick="showLeaderboard('issur_heter')" class="btn-secondary" style="padding: 1rem 2rem; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
-                    איסור והיתר
-                </button>
-            </div>
             
             <!-- Leaderboard Container -->
             <div id="leaderboard-container" style="background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(15px); border: 3px solid rgba(212, 177, 130, 0.6); border-radius: 20px; padding: 2rem; margin-bottom: 2rem;">
@@ -1481,15 +1466,6 @@
                     </p>
                 </div>
                 
-                <div style="background: rgba(255, 255, 255, 0.1); border: 2px solid rgba(255, 255, 255, 0.3); border-radius: 15px; padding: 1.5rem; text-align: center;">
-                    <p style="font-size: clamp(1.1rem, 1.4vw, 1.4rem); color: white; margin-bottom: 1rem;">
-                        רוצה לנסות את התחום השני?
-                    </p>
-                    
-                    <button onclick="restartQuiz()" class="btn-secondary" style="width: 100%; font-size: clamp(1.1rem, 1.4vw, 1.4rem);">
-                        רוצה להכפיל סיכויים? היבחן עכשיו בנושא השני!
-                    </button>
-                </div>
             </div>
         </div>
     </div>
