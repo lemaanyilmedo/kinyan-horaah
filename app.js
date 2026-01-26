@@ -1,5 +1,5 @@
 // Version
-const APP_VERSION = 'v24';
+const APP_VERSION = 'v25';
 console.log(`🚀 Kinyan Horaah Quiz App ${APP_VERSION}`);
 
 const CSV_URLS = {
@@ -1331,11 +1331,11 @@ async function showResults(score) {
         
         socialStats.innerHTML = `
             <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
-                <strong style="color: var(--gold); font-size: clamp(1.4rem, 1.8vw, 1.8rem);">📊 הנתונים:</strong><br>
+                <strong style="color: var(--gold); font-size: clamp(1.4rem, 1.8vw, 1.8rem);">הנתונים:</strong><br>
                 ${statsText}
             </p>
             <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
-                🎯 <strong style="color: var(--gold);">אתה בטופ ${highScorersPercent}% הפוסקים!</strong><br>
+                <strong style="color: var(--gold);">אתה בטופ ${highScorersPercent}% הפוסקים!</strong><br>
                 בעוד ${100 - highScorersPercent}% מהנבחנים התקשו להכריע בשאלות המעשיות, אתה ידעת לכוון לאמיתה של תורה.
             </p>
             <p style="font-weight: bold; color: #86efac; font-size: clamp(1.4rem, 1.8vw, 1.8rem); margin-top: 1.5rem;">
@@ -1355,7 +1355,7 @@ async function showResults(score) {
         
         socialStats.innerHTML = `
             <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
-                <strong style="color: var(--gold); font-size: clamp(1.4rem, 1.8vw, 1.8rem);">📊 הנתונים:</strong><br>
+                <strong style="color: var(--gold); font-size: clamp(1.4rem, 1.8vw, 1.8rem);">הנתונים:</strong><br>
                 ${statsText}
             </p>
             <p style="margin-bottom: 1.2rem; color: white; font-size: clamp(1.3rem, 1.7vw, 1.7rem); line-height: 1.6;">
@@ -1525,11 +1525,11 @@ async function downloadPDF() {
                         ${isPartial ? `<p style="color: #f59e0b; margin: 8px 0 0 0; font-size: 16px;"><strong style="color: #D4B182;">תשובה חלקית:</strong> ${q.options[q.partialIndex]}</p>` : ''}
                     </div>
                     
-                    ${distributionHTML}
-                    
-                    <div style="margin-top: 15px; padding: 18px; background: linear-gradient(135deg, rgba(212, 177, 130, 0.08), rgba(212, 177, 130, 0.15)); border-radius: 8px; border: 1px solid rgba(212, 177, 130, 0.3);">
+                    <div style="margin-top: 15px; padding: 18px; background: linear-gradient(135deg, rgba(212, 177, 130, 0.08), rgba(212, 177, 130, 0.15)); border-radius: 8px; border: 1px solid rgba(212, 177, 130, 0.3); margin-bottom: 15px;">
                         <p style="color: #32373c; font-size: 15px; line-height: 1.6; margin: 0;"><strong style="color: #b89968;">💡 הסבר:</strong> ${q.explanation}</p>
                     </div>
+                    
+                    ${distributionHTML}
                 </div>
             `;
         });
@@ -1583,39 +1583,59 @@ async function downloadPDF() {
 </html>
         `;
         
-        const emailWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
-        
-        const payload = {
-            "to": userData.email,
-            "subject": `תוצאות אתגר הפסיקה שלך - ${quizTitle} - קניין הוראה`,
-            "html": htmlEmail
-        };
-        
-        console.log('📤 Sending HTML email to webhook...');
-        console.log('Webhook URL:', emailWebhookURL);
-        console.log('Recipient:', userData.email);
-        console.log('Subject:', payload.subject);
-        
-        await fetch(emailWebhookURL, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify(payload)
-        })
-        .then(response => {
-            console.log('📬 Webhook response status:', response.status);
-            console.log('📬 Webhook response OK:', response.ok);
-            return response.text();
-        })
-        .then(data => {
-            console.log('✅ Webhook response data:', data);
-            console.log('✅ HTML email sent successfully!');
-        })
-        .catch(error => {
-            console.error('❌ Error sending email:', error);
-            console.error('Error details:', error.message);
-        });
+        // If user provided email, send via email
+        if (userData.email && userData.email.trim() !== '') {
+            const emailWebhookURL = 'https://hook.eu2.make.com/5hpmbhxrti8kzmjw29zp39a6dp9kacje';
+            
+            const payload = {
+                "to": userData.email,
+                "subject": `תוצאות אתגר הפסיקה שלך - ${quizTitle} - קניין הוראה`,
+                "html": htmlEmail
+            };
+            
+            console.log('📤 Sending HTML email to webhook...');
+            console.log('Webhook URL:', emailWebhookURL);
+            console.log('Recipient:', userData.email);
+            console.log('Subject:', payload.subject);
+            
+            await fetch(emailWebhookURL, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => {
+                console.log('📬 Webhook response status:', response.status);
+                console.log('📬 Webhook response OK:', response.ok);
+                return response.text();
+            })
+            .then(data => {
+                console.log('✅ Webhook response data:', data);
+                console.log('✅ HTML email sent successfully!');
+            })
+            .catch(error => {
+                console.error('❌ Error sending email:', error);
+                console.error('Error details:', error.message);
+            });
+        } else {
+            // No email provided - display report directly on screen
+            console.log('📄 No email provided - displaying report directly on screen');
+            
+            // Create a modal to display the report
+            const reportModal = document.createElement('div');
+            reportModal.id = 'report-modal';
+            reportModal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.9); z-index: 10000; overflow-y: auto; padding: 20px;';
+            reportModal.innerHTML = `
+                <div style="max-width: 800px; margin: 0 auto; position: relative;">
+                    <button onclick="document.getElementById('report-modal').remove()" style="position: sticky; top: 10px; left: 100%; background: var(--gold); color: white; border: none; padding: 10px 20px; border-radius: 8px; cursor: pointer; font-size: 18px; font-weight: bold; margin-bottom: 20px; z-index: 10001;">
+                        ✕ סגור
+                    </button>
+                    ${htmlEmail}
+                </div>
+            `;
+            document.body.appendChild(reportModal);
+        }
         
     } catch (error) {
         console.error('Error in downloadPDF:', error);
@@ -1944,7 +1964,6 @@ async function showIntermediateResults(score) {
             </div>
             <div class="param-text">
                 <h4>הציון שלך מול הממוצע</h4>
-                <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
                 <p>הציון הממוצע של כלל המשיבים עד לרגע זה הוא ${avgScore}%</p>
                 <p>${score >= avgScore ? 'אתה מעל הממוצע! 🎯' : 'יש מקום לשיפור, אבל רבים נמצאים באותו מקום 💪'}</p>
             </div>
@@ -1966,7 +1985,6 @@ async function showIntermediateResults(score) {
             </div>
             <div class="param-text">
                 <h4>רמת השלמת המבחן</h4>
-                <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
                 <p>ענית על ${Object.keys(userAnswers).length} מתוך ${totalQuestions} שאלות</p>
                 <p>רוב המשיבים משלימים את כל השאלות 📝</p>
             </div>
@@ -1988,9 +2006,8 @@ async function showIntermediateResults(score) {
             </div>
             <div class="param-text">
                 <h4>ביצועים בתחום ${currentQuiz === 'shabbat' ? 'הלכות שבת' : 'איסור והיתר'}</h4>
-                <p><strong style="color: var(--gold);">אתה לא לבד!</strong></p>
                 <p>תחום זה מאתגר רבים מהנבחנים</p>
-                <p>${score >= 70 ? 'הצלחת להתמודד היטב! 🌟' : 'זה תחום שדורש התעמקות נוספת 📚'}</p>
+                <p>${score >= 70 ? 'הצלחת להתמודד היטב! 🌟' : 'זה תחום שדורש התעמקות נוספת '}</p>
             </div>
         </div>
     `;
